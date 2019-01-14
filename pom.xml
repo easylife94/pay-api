@@ -39,6 +39,14 @@
                 <artifactId>pay-api-core</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+
+            <!--pay-center-->
+            <dependency>
+                <groupId>com.pay</groupId>
+                <artifactId>pay-center-client</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>

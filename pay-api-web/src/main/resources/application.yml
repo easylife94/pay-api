@@ -25,3 +25,6 @@ mybatis:
     ##开启日志打印
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+feign:
+  hystrix:
+    enabled: true

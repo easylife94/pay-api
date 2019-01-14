@@ -24,6 +24,9 @@ public class PayApi {
     public ApiPayResultDTO gateway(ApiPayDTO apiPayDTO){
         ApiPayResultDTO apiPayResultDTO = new ApiPayResultDTO();
 
+        //1.验证签名
+        //2.
+
 
 
         return apiPayResultDTO;
