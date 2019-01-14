@@ -26,4 +26,19 @@
         <module>pay-api-client</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <!--pay-api-->
+            <dependency>
+                <groupId>com.pay</groupId>
+                <artifactId>pay-api-client</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pay</groupId>
+                <artifactId>pay-api-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

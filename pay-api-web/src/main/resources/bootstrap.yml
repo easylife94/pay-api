@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: pay-config-server
+      profile: pay-api
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://pay-eureka-server:8761/eureka
+

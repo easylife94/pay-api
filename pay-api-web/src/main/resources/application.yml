@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  mvc:
+    static-path-pattern: /static/**
+    dispatch-options-request: false
+  application:
+    name: pay-api
+
+  ##freemarker
+  freemarker:
+    cache: false
+    check-template-location: true
+    charset: utf-8
+    suffix: .ftl
+
+mybatis:
+  mapper-locations: /mapper/*.xml
+  configuration:
+    ##启用从数据库列名A_COLUMN到驼峰大小写Java属性名aColumn的自动映射。
+    map-underscore-to-camel-case: true
+    ##允许JDBC支持生成的键
+    use-generated-keys: true
+    ##开启日志打印
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
