@@ -7,6 +7,8 @@ spring:
       profile: pay-api
 
 eureka:
+  instance:
+    hostname: pay-api
   client:
     service-url:
       defaultZone: http://pay-eureka-server:8761/eureka
