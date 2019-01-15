@@ -21,6 +21,10 @@ mybatis:
     map-underscore-to-camel-case: true
     use-generated-keys: true
 
+eureka:
+  instance:
+    prefer-ip-address: true
+
 feign:
   hystrix:
     enabled: true
