@@ -18,12 +18,8 @@ spring:
 mybatis:
   mapper-locations: /mapper/*.xml
   configuration:
-    ##启用从数据库列名A_COLUMN到驼峰大小写Java属性名aColumn的自动映射。
     map-underscore-to-camel-case: true
-    ##允许JDBC支持生成的键
     use-generated-keys: true
-    ##开启日志打印
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 feign:
   hystrix:
