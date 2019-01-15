@@ -25,7 +25,8 @@ public class PayApi {
         ApiPayResultDTO apiPayResultDTO = new ApiPayResultDTO();
 
         //1.验证签名
-        //2.
+        //1.1获取会员信息
+        //1.2参数签名
 
 
 

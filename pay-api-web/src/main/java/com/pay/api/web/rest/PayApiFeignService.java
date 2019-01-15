@@ -18,6 +18,7 @@ public class PayApiFeignService implements IPayApiFeignService {
 
     @Override
     public String test() {
+        logger.info("test service is available");
         return "service is available";
     }
 }
