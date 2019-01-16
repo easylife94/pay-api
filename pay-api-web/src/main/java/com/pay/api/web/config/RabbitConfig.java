@@ -1,7 +1,7 @@
 package com.pay.api.web.config;
 
 
-import com.pay.api.client.constants.PayApiMqNames;
+import com.pay.api.client.constants.PayApiMessageQueueNames;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +22,6 @@ public class RabbitConfig {
      */
     @Bean
     public Queue testQueue() {
-        return new Queue(PayApiMqNames.QUEUE_TEST);
+        return new Queue(PayApiMessageQueueNames.QUEUE_TEST);
     }
 }

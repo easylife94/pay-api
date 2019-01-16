@@ -1,5 +1,7 @@
 package com.pay.api.client.dto.api;
 
+import java.util.StringJoiner;
+
 /**
  * 支付接口返回参数
  *
@@ -29,7 +31,7 @@ public class ApiPayResultDTO<T> {
     private String subMsg;
 
     /**
-     * 签名串
+     * 签名串，在网关返回成功的时候返回
      */
     private String sign;
 
@@ -84,5 +86,17 @@ public class ApiPayResultDTO<T> {
 
     public void setContent(T content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ApiPayResultDTO.class.getSimpleName() + "[", "]")
+                .add("code='" + code + "'")
+                .add("msg='" + msg + "'")
+                .add("subCode='" + subCode + "'")
+                .add("subMsg='" + subMsg + "'")
+                .add("sign='" + sign + "'")
+                .add("content=" + content)
+                .toString();
     }
 }

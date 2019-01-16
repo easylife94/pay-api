@@ -8,7 +8,7 @@ package com.pay.api.client.constants;
  * @author chenwei
  * @date 2018-12-16
  */
-public class PayApiMqNames {
+public class PayApiMessageQueueNames {
 
 
     /**

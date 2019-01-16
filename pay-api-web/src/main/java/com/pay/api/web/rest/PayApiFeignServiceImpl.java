@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019/1/14 14:15
  */
 @RestController
-public class PayApiFeignService implements IPayApiFeignService {
+public class PayApiFeignServiceImpl implements IPayApiFeignService {
 
-    private static Logger logger = LoggerFactory.getLogger(PayApiFeignService.class);
+    private static Logger logger = LoggerFactory.getLogger(PayApiFeignServiceImpl.class);
 
     @Override
     public String test() {

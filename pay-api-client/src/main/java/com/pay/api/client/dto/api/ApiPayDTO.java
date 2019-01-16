@@ -1,5 +1,9 @@
 package com.pay.api.client.dto.api;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.StringJoiner;
+
 /**
  * 支付接口请求参数
  *
@@ -41,18 +45,12 @@ public class ApiPayDTO {
     private String timestamp;
 
     /**
-     * content编码格式：uft-8,gbk
-     * 实例值：uft-8
-     */
-    private String charset;
-
-    /**
      * 请求参数content和返回结果content支持格式：目前仅支持json
      * 实例值：JSON
      */
     private String format;
     /**
-     * content是否加密
+     * 返回结果content是否加密，默认请求不加密
      * 实例值：true
      */
     private Boolean encrypt;
@@ -85,14 +83,6 @@ public class ApiPayDTO {
 
     public void setFormat(String format) {
         this.format = format;
-    }
-
-    public String getCharset() {
-        return charset;
-    }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
     }
 
     public String getSignType() {
@@ -141,5 +131,20 @@ public class ApiPayDTO {
 
     public void setEncrypt(Boolean encrypt) {
         this.encrypt = encrypt;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ApiPayDTO.class.getSimpleName() + "[", "]")
+                .add("member='" + member + "'")
+                .add("method='" + method + "'")
+                .add("signType='" + signType + "'")
+                .add("sign='" + sign + "'")
+                .add("version='" + version + "'")
+                .add("timestamp='" + timestamp + "'")
+                .add("format='" + format + "'")
+                .add("encrypt=" + encrypt)
+                .add("content='" + content + "'")
+                .toString();
     }
 }
