@@ -20,8 +20,8 @@ public class PayApiMethodOrderQuery implements IPayApiMethod {
     private static final Logger logger = LoggerFactory.getLogger(PayApiMethodOrderQuery.class);
 
     @Override
-    public ApiPayMethodResultDTO operate(String content) {
-        ApiPayMethodResultDTO apiPayMethodResultDTO = new ApiPayMethodResultDTO();
+    public ApiPayMethodResultDTO<Object> operate(String content) {
+        ApiPayMethodResultDTO<Object> apiPayMethodResultDTO = new ApiPayMethodResultDTO<>();
 
         //TODO 订单查询方法
         logger.info("查询订单");

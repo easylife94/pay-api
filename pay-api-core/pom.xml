@@ -26,15 +26,22 @@
             <artifactId>spring-web</artifactId>
         </dependency>
 
+        <!--fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
+        <!-- pay-api -->
+        <dependency>
+            <groupId>com.pay</groupId>
+            <artifactId>pay-api-client</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.pay</groupId>
-            <artifactId>pay-api-client</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -10,7 +10,7 @@ import com.pay.api.core.method.IPayApiMethod;
  * @author chenwei
  * @date 2019/1/14 11:30
  */
-public interface PayApiGatewayService {
+public interface IPayApiGatewayService {
 
 
     /**
@@ -44,7 +44,7 @@ public interface PayApiGatewayService {
      * 路由方法
      *
      * @param method
-     * @return 找不到mehotd方法则返回空
+     * @return 找不到mehotd方法则返回null
      */
     IPayApiMethod route(String method);
 

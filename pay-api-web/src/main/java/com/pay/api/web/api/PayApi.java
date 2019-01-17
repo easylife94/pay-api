@@ -1,12 +1,11 @@
 package com.pay.api.web.api;
 
-import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.ApiPayGatewayResultEnum;
 import com.pay.api.client.dto.api.ApiPayDTO;
 import com.pay.api.client.dto.api.ApiPayMethodResultDTO;
 import com.pay.api.client.dto.api.ApiPayResultDTO;
 import com.pay.api.core.method.IPayApiMethod;
-import com.pay.api.core.service.PayApiGatewayService;
+import com.pay.api.core.service.IPayApiGatewayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * 支付接口
@@ -30,7 +27,7 @@ public class PayApi {
     private static final Logger logger = LoggerFactory.getLogger(PayApi.class);
 
     @Autowired
-    private PayApiGatewayService payApiGatewayService;
+    private IPayApiGatewayService payApiGatewayService;
 
     /**
      * 验证签名、路由方法和返回参数签名
@@ -44,7 +41,7 @@ public class PayApi {
         Boolean verifySign = payApiGatewayService.verifySign(apiPayDTO.getContent(), apiPayDTO.getSignType(), apiPayDTO.getSign());
         ApiPayGatewayResultEnum gatewayResultEnum;
 
-        logger.error("支付接口网关，请求参数:{}",apiPayDTO);
+        logger.info("支付接口网关，请求参数:{}", apiPayDTO);
 
         //1.验证签名
         if (Boolean.TRUE.equals(verifySign)) {
@@ -64,7 +61,8 @@ public class PayApi {
 
                 //4.是否要加密
                 if (Boolean.TRUE.equals(apiPayDTO.getEncrypt())) {
-                    payApiGatewayService.encrypt(apiPayDTO.getContent());
+                    String encryptContent = payApiGatewayService.encrypt(apiPayDTO.getContent());
+                    apiPayDTO.setContent(encryptContent);
                 }
                 gatewayResultEnum = ApiPayGatewayResultEnum.SUCCESS;
             } else {
@@ -76,6 +74,9 @@ public class PayApi {
 
         apiPayResultDTO.setCode(gatewayResultEnum.getCode());
         apiPayResultDTO.setMsg(gatewayResultEnum.getMsg());
+
+        logger.info("支付接口网关，返回参数:{}", apiPayResultDTO);
+
         return apiPayResultDTO;
     }
 }

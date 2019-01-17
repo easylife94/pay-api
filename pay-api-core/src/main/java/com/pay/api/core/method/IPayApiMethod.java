@@ -14,7 +14,7 @@ public interface IPayApiMethod {
     /**
      * 执行
      *
-     * @param content
+     * @param content 请求参数内容
      * @return
      */
     ApiPayMethodResultDTO operate(String content);

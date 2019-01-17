@@ -4,7 +4,7 @@ import com.pay.api.client.constants.PayApiBeanPrefix;
 import com.pay.api.client.dto.api.ApiPayDTO;
 import com.pay.api.client.dto.api.ApiPayResultDTO;
 import com.pay.api.core.method.IPayApiMethod;
-import com.pay.api.core.service.PayApiGatewayService;
+import com.pay.api.core.service.IPayApiGatewayService;
 import com.pay.api.core.utils.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @date 2019/1/14 11:32
  */
 @Service
-public class PayApiGatewayServiceImpl implements PayApiGatewayService {
+public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
 
     private static final Logger logger = LoggerFactory.getLogger(PayApiGatewayServiceImpl.class);
 

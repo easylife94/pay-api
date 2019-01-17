@@ -8,7 +8,7 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/1/14 11:18
  */
-public class ApiPayResultDTO<T> {
+public class ApiPayResultDTO {
 
     /**
      * 支付网关返回码
@@ -38,7 +38,7 @@ public class ApiPayResultDTO<T> {
     /**
      * 返回参数内容
      */
-    private T content;
+    private Object content;
 
     public String getCode() {
         return code;
@@ -80,11 +80,11 @@ public class ApiPayResultDTO<T> {
         this.sign = sign;
     }
 
-    public T getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(T content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 
