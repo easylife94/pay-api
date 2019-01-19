@@ -19,8 +19,14 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
 
     private static final Logger logger = LoggerFactory.getLogger(PayApiGatewayServiceImpl.class);
 
+    /**
+     * 验签规则，去掉sign参数，调用统一签名方法获取签名
+     *
+     * @param apiPayDTO
+     * @return
+     */
     @Override
-    public Boolean verifySign(String content, String signType, String sign) {
+    public Boolean verifySign(ApiPayDTO apiPayDTO) {
 
         //TODO 参数验证签名
 

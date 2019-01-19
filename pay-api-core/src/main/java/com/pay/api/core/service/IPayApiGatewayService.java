@@ -16,12 +16,10 @@ public interface IPayApiGatewayService {
     /**
      * 校验签名
      *
-     * @param content
-     * @param signType
-     * @param sign
+     * @param apiPayDTO
      * @return
      */
-    Boolean verifySign(String content, String signType, String sign);
+    Boolean verifySign(ApiPayDTO apiPayDTO);
 
     /**
      * 加密

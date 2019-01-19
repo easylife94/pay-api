@@ -38,7 +38,7 @@ public class PayApi {
     @RequestMapping(value = "/gateway", method = RequestMethod.POST)
     public ApiPayResultDTO gateway(@RequestBody ApiPayDTO apiPayDTO) {
         ApiPayResultDTO apiPayResultDTO = new ApiPayResultDTO();
-        Boolean verifySign = payApiGatewayService.verifySign(apiPayDTO.getContent(), apiPayDTO.getSignType(), apiPayDTO.getSign());
+        Boolean verifySign = payApiGatewayService.verifySign(apiPayDTO);
         ApiPayGatewayResultEnum gatewayResultEnum;
 
         logger.info("支付接口网关，请求参数:{}", apiPayDTO);
