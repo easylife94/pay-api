@@ -4,6 +4,7 @@ import com.pay.api.client.constants.ApiPayMethodNames;
 import com.pay.api.client.constants.PayApiBeanPrefix;
 import com.pay.api.client.dto.api.ApiPayMethodResultDTO;
 import com.pay.api.core.method.IPayApiMethod;
+import com.pay.center.client.dto.service.MemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class PayApiMethodOrderQuery implements IPayApiMethod {
     private static final Logger logger = LoggerFactory.getLogger(PayApiMethodOrderQuery.class);
 
     @Override
-    public ApiPayMethodResultDTO<Object> operate(String content) {
+    public ApiPayMethodResultDTO<Object> operate(String content, MemberDTO memberDTO) {
         ApiPayMethodResultDTO<Object> apiPayMethodResultDTO = new ApiPayMethodResultDTO<>();
 
         //TODO 订单查询方法

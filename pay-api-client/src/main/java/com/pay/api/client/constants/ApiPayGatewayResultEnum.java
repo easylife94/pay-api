@@ -12,9 +12,10 @@ public enum ApiPayGatewayResultEnum {
      *
      */
     SUCCESS("10000", "成功"),
-    SIGN_ERROR("20000", "签名错误"),
-    METHOD_NOT_EXIST("30000", "方法不存在"),
-    ;
+    MEMBER_NOT_EXIST("20000", "会员不存在"),
+    SIGN_ERROR("30000", "签名错误"),
+    METHOD_NOT_EXIST("40000", "方法不存在"),
+    PUBLIC_PARAMS_ERROR("50000", "公共参数错误");;
 
     private String code;
     private String msg;

@@ -10,6 +10,7 @@ import com.pay.api.client.dto.api.method.ApiPayUnifiedPayDTO;
 import com.pay.api.client.dto.api.method.ApiPayUnifiedPayResultDTO;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.ITradeRouteService;
+import com.pay.center.client.dto.service.MemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class PayApiMethodUnifiedPay implements IPayApiMethod {
      * @return
      */
     @Override
-    public ApiPayMethodResultDTO<ApiPayUnifiedPayResultDTO> operate(String content) {
+    public ApiPayMethodResultDTO<ApiPayUnifiedPayResultDTO> operate(String content, MemberDTO memberDTO) {
         //TODO 统一支付方法
         ApiPayMethodResultDTO<ApiPayUnifiedPayResultDTO> apiPayMethodResultDTO = new ApiPayMethodResultDTO();
         JSONObject json = JSONObject.parseObject(content);
