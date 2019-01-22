@@ -66,7 +66,7 @@ public class PayApi {
         //3.验证签名
         Boolean verifySign = payApiGatewayService.verifySign(apiPayDTO, memberDTO);
         if (!Boolean.TRUE.equals(verifySign)) {
-            return gatewayError(apiPayResultDTO, ApiPayGatewayResultEnum.SIGN_ERROR);
+            return gatewayError(apiPayResultDTO, ApiPayGatewayResultEnum.VERIFY_SIGN_ERROR);
         }
 
         //4.1路由方法
@@ -82,7 +82,9 @@ public class PayApi {
         apiPayResultDTO.setContent(resultDTO.getData());
 
         //5.参数签名
-        payApiGatewayService.sign(apiPayDTO, apiPayResultDTO, memberDTO);
+        if(!Boolean.TRUE.equals(payApiGatewayService.sign(apiPayDTO, apiPayResultDTO, memberDTO))){
+            return gatewayError(apiPayResultDTO, ApiPayGatewayResultEnum.SIGN_ERROR);
+        }
 
         //6.是否要加密
         if (Boolean.TRUE.equals(apiPayDTO.getEncrypt())) {

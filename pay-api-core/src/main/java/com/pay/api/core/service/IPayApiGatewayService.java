@@ -47,8 +47,9 @@ public interface IPayApiGatewayService {
      * @param apiPayDTO       请求参数
      * @param apiPayResultDTO 返回结果参数
      * @param memberDTO       会员
+     * @return 当且仅当签名成功返回true
      */
-    void sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, MemberDTO memberDTO);
+    Boolean sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, MemberDTO memberDTO);
 
 
     /**

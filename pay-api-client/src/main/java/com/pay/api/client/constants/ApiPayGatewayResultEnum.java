@@ -19,9 +19,9 @@ public enum ApiPayGatewayResultEnum {
     MEMBER_NOT_EXIST("20000", "会员不存在"),
 
     /**
-     * 签名错误
+     * 验证签名错误
      */
-    SIGN_ERROR("30000", "签名错误"),
+    VERIFY_SIGN_ERROR("30000", "验证签名错误"),
 
     /**
      * 方法不存在
@@ -32,6 +32,11 @@ public enum ApiPayGatewayResultEnum {
      * 公共参数错误
      */
     PUBLIC_PARAMS_ERROR("50000", "公共参数错误"),
+
+    /**
+     * 签名错误
+     */
+    SIGN_ERROR("60000", "签名错误"),
     ;
 
     private String code;

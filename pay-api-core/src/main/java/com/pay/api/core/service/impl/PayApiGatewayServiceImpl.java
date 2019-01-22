@@ -14,6 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
+
 /**
  * 支付网关服务
  *
@@ -106,43 +112,55 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
         String signType = apiPayDTO.getSignType().toUpperCase();
         ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
         if (signType != null) {
-            switch (signTypeEnum) {
-                case RSA:
-                    return SignUtils.verifyRsa(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
-                case RSA2:
-                    return SignUtils.verifyRsa2(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
-                default:
-                    logger.error("暂不支持签名算法类型:{}", signType);
-                    return Boolean.FALSE;
+            try {
+                switch (signTypeEnum) {
+                    case RSA:
+                        return SignUtils.verifyRsa(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
+                    case RSA2:
+                        return SignUtils.verifyRsa2(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
+                    default:
+                        logger.error("暂不支持签名算法类型:{}", signType);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("验签异常，异常信息：{}", e.getMessage());
             }
         } else {
             logger.error("签名枚举类型不存在:{}", signType);
-            return Boolean.FALSE;
         }
+        return Boolean.FALSE;
     }
 
     @Override
-    public void sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, MemberDTO memberDTO) {
-
+    public Boolean sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, MemberDTO memberDTO) {
         String contentStr = SignUtils.str(apiPayResultDTO.getContent());
         String signType = apiPayDTO.getSignType().toUpperCase();
         ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
         if (signType != null) {
-            switch (signTypeEnum) {
-                case RSA:
-                    apiPayResultDTO.setSign(SignUtils.signRsa(contentStr, memberDTO.getSysPriKey()));
-                case RSA2:
-                    apiPayResultDTO.setSign(SignUtils.signRsa2(contentStr, memberDTO.getSysPriKey()));
-                default:
-                    logger.error("暂不支持签名算法类型:{}", signType);
+            try {
+                switch (signTypeEnum) {
+                    case RSA:
+                        apiPayResultDTO.setSign(SignUtils.signRsa(contentStr, memberDTO.getSysPriKey()));
+                        return Boolean.TRUE;
+                    case RSA2:
+                        apiPayResultDTO.setSign(SignUtils.signRsa2(contentStr, memberDTO.getSysPriKey()));
+                        return Boolean.TRUE;
+                    default:
+                        logger.error("暂不支持签名算法类型:{}", signType);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("签名异常，异常信息：{}", e.getMessage());
             }
         } else {
             logger.error("签名枚举类型不存在:{}", signType);
         }
+        return Boolean.FALSE;
     }
 
     @Override
     public String encrypt(String content, MemberDTO memberDTO) {
+
         return null;
     }
 
