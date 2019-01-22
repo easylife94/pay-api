@@ -1,9 +1,9 @@
 package com.pay.api.web.api;
 
-import com.pay.api.client.constants.ApiPayGatewayParamsErrorEnum;
 import com.pay.api.client.constants.ApiPayGatewayResultEnum;
 import com.pay.api.client.dto.api.ApiPayDTO;
 import com.pay.api.client.dto.api.ApiPayMethodResultDTO;
+import com.pay.api.client.dto.api.ApiPayParamsCheckResultDTO;
 import com.pay.api.client.dto.api.ApiPayResultDTO;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
@@ -50,13 +50,12 @@ public class PayApi {
         ApiPayResultDTO apiPayResultDTO = new ApiPayResultDTO();
 
         //1.公共参数校验
-        ApiPayGatewayParamsErrorEnum errorEnum = payApiGatewayService.publicParamsCheck(apiPayDTO);
-        if(errorEnum != null){
-            apiPayResultDTO.setSubCode(errorEnum.getType());
-            apiPayResultDTO.setSubMsg(errorEnum.getError());
+        ApiPayParamsCheckResultDTO paramsCheckResultDTO = payApiGatewayService.publicParamsCheck(apiPayDTO);
+        if (Boolean.TRUE.equals(paramsCheckResultDTO.getPass())) {
+            apiPayResultDTO.setSubCode(paramsCheckResultDTO.getType());
+            apiPayResultDTO.setSubMsg(paramsCheckResultDTO.getMsg());
             return gatewayError(apiPayResultDTO, ApiPayGatewayResultEnum.PUBLIC_PARAMS_ERROR);
         }
-
 
         //2.获取会员
         MemberDTO memberDTO = payCenterFeignServiceClient.getMember(apiPayDTO.getMember());

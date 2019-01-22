@@ -1,19 +1,22 @@
 package com.pay.api.core.service.impl;
 
-import com.pay.api.client.constants.ApiPayGatewayParamsErrorEnum;
-import com.pay.api.client.constants.PayApiBeanPrefix;
+import com.pay.api.client.constants.*;
 import com.pay.api.client.dto.api.ApiPayDTO;
+import com.pay.api.client.dto.api.ApiPayParamsCheckResultDTO;
 import com.pay.api.client.dto.api.ApiPayResultDTO;
 import com.pay.api.client.utils.SignUtils;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
 import com.pay.api.core.utils.SpringContextUtil;
 import com.pay.center.client.dto.service.MemberDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
+ * 支付网关服务
+ *
  * @author chenwei
  * @date 2019/1/14 11:32
  */
@@ -22,30 +25,120 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
 
     private static final Logger logger = LoggerFactory.getLogger(PayApiGatewayServiceImpl.class);
 
+    /**
+     * TODO 参数校验优化
+     *
+     * @param apiPayDTO 请求参数
+     * @return 参数校验结果
+     */
     @Override
-    public ApiPayGatewayParamsErrorEnum publicParamsCheck(ApiPayDTO apiPayDTO) {
-        //todo 公共参数校验
-        return null;
+    public ApiPayParamsCheckResultDTO publicParamsCheck(ApiPayDTO apiPayDTO) {
+        ApiPayParamsCheckResultDTO apiPayParamsCheckDTO = new ApiPayParamsCheckResultDTO();
+
+        //1.是否为空
+        if (StringUtils.isBlank(apiPayDTO.getMember())) {
+            return paramsError(apiPayParamsCheckDTO, "member", ApiPayGatewayPublicParamsErrorEnum.PARAM_REQUIRED);
+        }
+        if (StringUtils.isBlank(apiPayDTO.getMethod())) {
+            return paramsError(apiPayParamsCheckDTO, "method", ApiPayGatewayPublicParamsErrorEnum.PARAM_REQUIRED);
+        }
+        if (StringUtils.isBlank(apiPayDTO.getSignType())) {
+            return paramsError(apiPayParamsCheckDTO, "signType", ApiPayGatewayPublicParamsErrorEnum.PARAM_REQUIRED);
+        }
+        if (StringUtils.isBlank(apiPayDTO.getSign())) {
+            return paramsError(apiPayParamsCheckDTO, "sign", ApiPayGatewayPublicParamsErrorEnum.PARAM_REQUIRED);
+        }
+        if (StringUtils.isBlank(apiPayDTO.getVersion())) {
+            return paramsError(apiPayParamsCheckDTO, "version", ApiPayGatewayPublicParamsErrorEnum.PARAM_REQUIRED);
+        }
+        if (StringUtils.isBlank(apiPayDTO.getTimestamp())) {
+            return paramsError(apiPayParamsCheckDTO, "timestamp", ApiPayGatewayPublicParamsErrorEnum.PARAM_REQUIRED);
+        }
+        if (StringUtils.isBlank(apiPayDTO.getFormat())) {
+            return paramsError(apiPayParamsCheckDTO, "format", ApiPayGatewayPublicParamsErrorEnum.PARAM_REQUIRED);
+        }
+        if (StringUtils.isBlank(apiPayDTO.getContent())) {
+            return paramsError(apiPayParamsCheckDTO, "content", ApiPayGatewayPublicParamsErrorEnum.PARAM_REQUIRED);
+        }
+
+        //2.参数值校验
+        //2.1 signType
+        String signType = apiPayDTO.getSignType().toUpperCase();
+        ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
+        if (signTypeEnum == null) {
+            return paramsError(apiPayParamsCheckDTO, "sign", ApiPayGatewayPublicParamsErrorEnum.SIGN_TYPE_ERROR);
+        }
+        //2.2 format
+        String format = apiPayDTO.getFormat().toUpperCase();
+        ApiPayGatewayFormatEnum formatEnum = ApiPayGatewayFormatEnum.getByType(format);
+        if (formatEnum == null) {
+            return paramsError(apiPayParamsCheckDTO, "format", ApiPayGatewayPublicParamsErrorEnum.FORMAT_ERROR);
+        }
+        //2.3 version
+        String version = apiPayDTO.getVersion();
+        ApiPayGatewayVersionEnum versionEnum = ApiPayGatewayVersionEnum.get(version);
+        if (versionEnum != null) {
+            return paramsError(apiPayParamsCheckDTO, "version", ApiPayGatewayPublicParamsErrorEnum.VERSION_ERROR);
+        }
+        //2.4 timestamp
+        //todo 时间戳校验
+
+        apiPayParamsCheckDTO.setPass(true);
+        return apiPayParamsCheckDTO;
+    }
+
+    /**
+     * 参数异常时，设置pass为false。并设置提示信息和类型。
+     *
+     * @param apiPayParamsCheckDTO 参数校验返回结果
+     * @param param                参数名称
+     * @return apiPayParamsCheckDTO参数原值返回
+     */
+    private ApiPayParamsCheckResultDTO paramsError(ApiPayParamsCheckResultDTO apiPayParamsCheckDTO, String param, ApiPayGatewayPublicParamsErrorEnum e) {
+        apiPayParamsCheckDTO.setPass(false);
+        apiPayParamsCheckDTO.setMsg("参数：[" + param + "]错误，错误信息：" + e.getError());
+        apiPayParamsCheckDTO.setType(e.getType());
+        return apiPayParamsCheckDTO;
     }
 
     @Override
     public Boolean verifySign(ApiPayDTO apiPayDTO, MemberDTO memberDTO) {
         String signType = apiPayDTO.getSignType().toUpperCase();
-        switch (signType) {
-            case "RSA":
-                return SignUtils.verifyRsa(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
-            case "RSA2":
-                return SignUtils.verifyRsa2(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
-            default:
-                logger.error("不支持签名算法类型:{}", signType);
-                return Boolean.FALSE;
+        ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
+        if (signType != null) {
+            switch (signTypeEnum) {
+                case RSA:
+                    return SignUtils.verifyRsa(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
+                case RSA2:
+                    return SignUtils.verifyRsa2(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
+                default:
+                    logger.error("暂不支持签名算法类型:{}", signType);
+                    return Boolean.FALSE;
+            }
+        } else {
+            logger.error("签名枚举类型不存在:{}", signType);
+            return Boolean.FALSE;
         }
     }
 
     @Override
     public void sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, MemberDTO memberDTO) {
 
-        //TODO 参数生成签名
+        String contentStr = SignUtils.str(apiPayResultDTO.getContent());
+        String signType = apiPayDTO.getSignType().toUpperCase();
+        ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
+        if (signType != null) {
+            switch (signTypeEnum) {
+                case RSA:
+                    apiPayResultDTO.setSign(SignUtils.signRsa(contentStr, memberDTO.getSysPriKey()));
+                case RSA2:
+                    apiPayResultDTO.setSign(SignUtils.signRsa2(contentStr, memberDTO.getSysPriKey()));
+                default:
+                    logger.error("暂不支持签名算法类型:{}", signType);
+            }
+        } else {
+            logger.error("签名枚举类型不存在:{}", signType);
+        }
     }
 
     @Override

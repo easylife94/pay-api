@@ -6,10 +6,28 @@ package com.pay.api.client.constants;
  * @author chenwei
  * @date 2019-01-20
  */
-public enum ApiPayGatewayParamsErrorEnum {
+public enum ApiPayGatewayPublicParamsErrorEnum {
 
-    //todo 支付网关公共参数错误枚举
-    ;
+    /**
+     * 参数必填
+     */
+    PARAM_REQUIRED("PARAM_REQUIRED", "参数必填"),
+
+    /**
+     * 签名类型错误
+     */
+    SIGN_TYPE_ERROR("SIGN_TYPE_ERROR", "签名类型错误"),
+
+    /**
+     * 格式错误
+     */
+    FORMAT_ERROR("FORMAT_ERROR", "格式错误"),
+
+    /**
+     * 版本错误
+     */
+    VERSION_ERROR("VERSION_ERROR", "版本错误");
+
     /**
      * 类型
      */
@@ -20,7 +38,7 @@ public enum ApiPayGatewayParamsErrorEnum {
      */
     private String error;
 
-    ApiPayGatewayParamsErrorEnum(String type, String error) {
+    ApiPayGatewayPublicParamsErrorEnum(String type, String error) {
         this.type = type;
         this.error = error;
     }

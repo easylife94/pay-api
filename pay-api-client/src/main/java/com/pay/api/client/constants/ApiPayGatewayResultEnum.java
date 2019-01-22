@@ -9,13 +9,30 @@ package com.pay.api.client.constants;
 public enum ApiPayGatewayResultEnum {
 
     /**
-     *
+     * 成功
      */
     SUCCESS("10000", "成功"),
+
+    /**
+     * 会员不存在
+     */
     MEMBER_NOT_EXIST("20000", "会员不存在"),
+
+    /**
+     * 签名错误
+     */
     SIGN_ERROR("30000", "签名错误"),
+
+    /**
+     * 方法不存在
+     */
     METHOD_NOT_EXIST("40000", "方法不存在"),
-    PUBLIC_PARAMS_ERROR("50000", "公共参数错误");;
+
+    /**
+     * 公共参数错误
+     */
+    PUBLIC_PARAMS_ERROR("50000", "公共参数错误"),
+    ;
 
     private String code;
     private String msg;
@@ -29,15 +46,7 @@ public enum ApiPayGatewayResultEnum {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getMsg() {
         return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 }

@@ -1,13 +1,13 @@
 package com.pay.api.core.service;
 
-import com.pay.api.client.constants.ApiPayGatewayParamsErrorEnum;
 import com.pay.api.client.dto.api.ApiPayDTO;
+import com.pay.api.client.dto.api.ApiPayParamsCheckResultDTO;
 import com.pay.api.client.dto.api.ApiPayResultDTO;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.center.client.dto.service.MemberDTO;
 
 /**
- * 支付网关管理器
+ * 支付网关服务接口
  *
  * @author chenwei
  * @date 2019/1/14 11:30
@@ -19,9 +19,9 @@ public interface IPayApiGatewayService {
      * 公共参数校验
      *
      * @param apiPayDTO 请求参数
-     * @return 校验通过返回null
+     * @return 不为空
      */
-    ApiPayGatewayParamsErrorEnum publicParamsCheck(ApiPayDTO apiPayDTO);
+    ApiPayParamsCheckResultDTO publicParamsCheck(ApiPayDTO apiPayDTO);
 
     /**
      * 校验签名
