@@ -1,4 +1,4 @@
-package com.pay.api.client.dto.api;
+package com.pay.api.client.dto;
 
 import java.util.StringJoiner;
 
@@ -153,4 +153,6 @@ public class ApiPayDTO {
                 .add("content='" + content + "'")
                 .toString();
     }
+
+
 }

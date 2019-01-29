@@ -1,7 +1,7 @@
 package com.pay.api.core.service;
 
-import com.pay.api.client.dto.api.TradeRouteDTO;
-import com.pay.api.client.dto.api.TradeRouteMerchantDTO;
+import com.pay.api.client.dto.TradeRouteDTO;
+import com.pay.api.client.dto.TradeRouteMerchantDTO;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package com.pay.api.core.service.impl;
 
 import com.pay.api.client.constants.*;
-import com.pay.api.client.dto.api.ApiPayDTO;
-import com.pay.api.client.dto.api.ApiPayParamsCheckResultDTO;
-import com.pay.api.client.dto.api.ApiPayResultDTO;
+import com.pay.api.client.dto.ApiPayDTO;
+import com.pay.api.client.dto.ApiPayParamsCheckResultDTO;
+import com.pay.api.client.dto.ApiPayResultDTO;
 import com.pay.api.client.utils.SignUtils;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;

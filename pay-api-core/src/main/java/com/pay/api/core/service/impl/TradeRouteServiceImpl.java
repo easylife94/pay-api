@@ -1,7 +1,7 @@
 package com.pay.api.core.service.impl;
 
-import com.pay.api.client.dto.api.TradeRouteDTO;
-import com.pay.api.client.dto.api.TradeRouteMerchantDTO;
+import com.pay.api.client.dto.TradeRouteDTO;
+import com.pay.api.client.dto.TradeRouteMerchantDTO;
 import com.pay.api.core.service.ITradeRouteService;
 import org.springframework.stereotype.Service;
 

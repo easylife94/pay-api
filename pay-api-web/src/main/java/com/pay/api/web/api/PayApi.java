@@ -1,10 +1,10 @@
 package com.pay.api.web.api;
 
 import com.pay.api.client.constants.ApiPayGatewayResultEnum;
-import com.pay.api.client.dto.api.ApiPayDTO;
-import com.pay.api.client.dto.api.ApiPayMethodResultDTO;
-import com.pay.api.client.dto.api.ApiPayParamsCheckResultDTO;
-import com.pay.api.client.dto.api.ApiPayResultDTO;
+import com.pay.api.client.dto.ApiPayDTO;
+import com.pay.api.client.dto.ApiPayMethodResultDTO;
+import com.pay.api.client.dto.ApiPayParamsCheckResultDTO;
+import com.pay.api.client.dto.ApiPayResultDTO;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
 import com.pay.center.client.dto.service.MemberDTO;
@@ -39,10 +39,10 @@ public class PayApi {
     }
 
     /**
-     * 验证签名、路由方法和返回参数签名
+     * 网关接口
      *
-     * @param
-     * @return
+     * @param apiPayDTO 网关请求参数
+     * @return 统一返回结果
      */
     @RequestMapping(value = "/gateway", method = RequestMethod.POST)
     public ApiPayResultDTO gateway(@RequestBody ApiPayDTO apiPayDTO) {
@@ -82,7 +82,7 @@ public class PayApi {
         apiPayResultDTO.setContent(resultDTO.getData());
 
         //5.参数签名
-        if(!Boolean.TRUE.equals(payApiGatewayService.sign(apiPayDTO, apiPayResultDTO, memberDTO))){
+        if (!Boolean.TRUE.equals(payApiGatewayService.sign(apiPayDTO, apiPayResultDTO, memberDTO))) {
             return gatewayError(apiPayResultDTO, ApiPayGatewayResultEnum.SIGN_ERROR);
         }
 
@@ -95,7 +95,7 @@ public class PayApi {
         apiPayResultDTO.setCode(ApiPayGatewayResultEnum.SUCCESS.getCode());
         apiPayResultDTO.setMsg(ApiPayGatewayResultEnum.SUCCESS.getMsg());
 
-        logger.info("支付接口网关，返回参数:{}", apiPayResultDTO);
+        logger.info("支付接口网关，返回成功，请求参数:{}，返回参数:{}", apiPayDTO, apiPayResultDTO);
 
         return apiPayResultDTO;
     }
@@ -110,7 +110,7 @@ public class PayApi {
     private ApiPayResultDTO gatewayError(ApiPayResultDTO apiPayResultDTO, ApiPayGatewayResultEnum e) {
         apiPayResultDTO.setCode(e.getCode());
         apiPayResultDTO.setMsg(e.getMsg());
-        logger.info("支付接口网关，返回失败参数:{}", apiPayResultDTO);
+        logger.info("支付接口网关，返回失败，返回参数:{}", apiPayResultDTO);
         return apiPayResultDTO;
     }
 }

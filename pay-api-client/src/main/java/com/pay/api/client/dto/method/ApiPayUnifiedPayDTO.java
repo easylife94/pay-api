@@ -1,6 +1,4 @@
-package com.pay.api.client.dto.api.method;
-
-import org.springframework.validation.annotation.Validated;
+package com.pay.api.client.dto.method;
 
 import javax.validation.constraints.NotBlank;
 import java.util.StringJoiner;

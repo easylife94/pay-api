@@ -2,7 +2,7 @@ package com.pay.api.core.method.impl;
 
 import com.pay.api.client.constants.ApiPayMethodNames;
 import com.pay.api.client.constants.PayApiBeanPrefix;
-import com.pay.api.client.dto.api.ApiPayMethodResultDTO;
+import com.pay.api.client.dto.ApiPayMethodResultDTO;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.center.client.dto.service.MemberDTO;
 import org.slf4j.Logger;

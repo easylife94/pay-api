@@ -10,6 +10,9 @@ import org.apache.commons.lang3.StringUtils;
  */
 public enum ApiPayGatewayVersionEnum {
 
+    /**
+     * 1.0版本
+     */
     V_1_0("1.0"),
     ;
 

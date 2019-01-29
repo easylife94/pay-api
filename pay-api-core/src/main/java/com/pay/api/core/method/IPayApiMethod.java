@@ -1,6 +1,6 @@
 package com.pay.api.core.method;
 
-import com.pay.api.client.dto.api.ApiPayMethodResultDTO;
+import com.pay.api.client.dto.ApiPayMethodResultDTO;
 import com.pay.center.client.dto.service.MemberDTO;
 
 /**

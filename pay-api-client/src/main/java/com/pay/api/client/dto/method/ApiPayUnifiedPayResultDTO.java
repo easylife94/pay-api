@@ -1,4 +1,4 @@
-package com.pay.api.client.dto.api.method;
+package com.pay.api.client.dto.method;
 
 import java.util.StringJoiner;
 
@@ -24,6 +24,7 @@ public class ApiPayUnifiedPayResultDTO {
 
     /**
      * 系统下单时间
+     * 格式：yyyy-MM-dd
      * 必填
      */
     private String orderTime;
@@ -69,6 +70,20 @@ public class ApiPayUnifiedPayResultDTO {
      * 非必填
      */
     private String content;
+
+    public ApiPayUnifiedPayResultDTO(String orderNumber, String memberOrderNumber, String orderTime, String memberNumber, String merchantNumber,
+                                     String currency, String orderStatus, String payAmount, String serviceAmount, String content) {
+        this.orderNumber = orderNumber;
+        this.memberOrderNumber = memberOrderNumber;
+        this.orderTime = orderTime;
+        this.memberNumber = memberNumber;
+        this.merchantNumber = merchantNumber;
+        this.currency = currency;
+        this.orderStatus = orderStatus;
+        this.payAmount = payAmount;
+        this.serviceAmount = serviceAmount;
+        this.content = content;
+    }
 
     public String getOrderNumber() {
         return orderNumber;

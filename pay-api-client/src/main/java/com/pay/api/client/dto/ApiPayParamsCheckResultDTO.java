@@ -1,4 +1,6 @@
-package com.pay.api.client.dto.api;
+package com.pay.api.client.dto;
+
+import java.util.StringJoiner;
 
 /**
  * 支付接口参数校验结果DTO
@@ -45,5 +47,14 @@ public class ApiPayParamsCheckResultDTO {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ApiPayParamsCheckResultDTO.class.getSimpleName() + "[", "]")
+                .add("pass=" + pass)
+                .add("type='" + type + "'")
+                .add("msg='" + msg + "'")
+                .toString();
     }
 }

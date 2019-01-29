@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pay.api.core.dao.TradeOrderDao">
+  <resultMap id="BaseResultMap" type="com.pay.api.client.model.TradeOrderDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+    <result column="sys_order_number" jdbcType="VARCHAR" property="sysOrderNumber" />
+    <result column="member_order_number" jdbcType="VARCHAR" property="memberOrderNumber" />
+    <result column="platform_order_number" jdbcType="VARCHAR" property="platformOrderNumber" />
+    <result column="source_order_number" jdbcType="VARCHAR" property="sourceOrderNumber" />
+    <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
+    <result column="sys_order_time" jdbcType="BIGINT" property="sysOrderTime" />
+    <result column="platform_order_time" jdbcType="BIGINT" property="platformOrderTime" />
+    <result column="pay_time" jdbcType="BIGINT" property="payTime" />
+    <result column="sys_check_time" jdbcType="BIGINT" property="sysCheckTime" />
+    <result column="platform_check_time" jdbcType="BIGINT" property="platformCheckTime" />
+    <result column="sys_notify_time" jdbcType="BIGINT" property="sysNotifyTime" />
+    <result column="platform_notify_time" jdbcType="BIGINT" property="platformNotifyTime" />
+    <result column="trade_status" jdbcType="VARCHAR" property="tradeStatus" />
+    <result column="notify_status" jdbcType="VARCHAR" property="notifyStatus" />
+    <result column="check_status" jdbcType="VARCHAR" property="checkStatus" />
+    <result column="defrayal_channel" jdbcType="VARCHAR" property="defrayalChannel" />
+    <result column="defrayal_type" jdbcType="VARCHAR" property="defrayalType" />
+    <result column="member_id" jdbcType="BIGINT" property="memberId" />
+    <result column="member_number" jdbcType="VARCHAR" property="memberNumber" />
+    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+    <result column="agent_id" jdbcType="BIGINT" property="agentId" />
+    <result column="agent_number" jdbcType="VARCHAR" property="agentNumber" />
+    <result column="agent_name" jdbcType="VARCHAR" property="agentName" />
+    <result column="agent_level" jdbcType="INTEGER" property="agentLevel" />
+    <result column="platform_id" jdbcType="BIGINT" property="platformId" />
+    <result column="platform_number" jdbcType="VARCHAR" property="platformNumber" />
+    <result column="platform_name" jdbcType="VARCHAR" property="platformName" />
+    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
+    <result column="channel_number" jdbcType="VARCHAR" property="channelNumber" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
+    <result column="merchant_number" jdbcType="VARCHAR" property="merchantNumber" />
+    <result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
+    <result column="trade_amount" jdbcType="DECIMAL" property="tradeAmount" />
+    <result column="pay_amount" jdbcType="DECIMAL" property="payAmount" />
+    <result column="privilege_amount" jdbcType="DECIMAL" property="privilegeAmount" />
+    <result column="refund_amount" jdbcType="DECIMAL" property="refundAmount" />
+    <result column="check_amount" jdbcType="DECIMAL" property="checkAmount" />
+    <result column="channel_fee" jdbcType="DECIMAL" property="channelFee" />
+    <result column="channel_platform_fee" jdbcType="DECIMAL" property="channelPlatformFee" />
+    <result column="channel_profit" jdbcType="DECIMAL" property="channelProfit" />
+    <result column="sys_channel_profit" jdbcType="DECIMAL" property="sysChannelProfit" />
+    <result column="agent_channel_profit" jdbcType="DECIMAL" property="agentChannelProfit" />
+    <result column="service_fee" jdbcType="DECIMAL" property="serviceFee" />
+    <result column="sys_service_profit" jdbcType="DECIMAL" property="sysServiceProfit" />
+    <result column="agent_service_profit" jdbcType="DECIMAL" property="agentServiceProfit" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, gmt_create, gmt_update, is_deleted, sys_order_number, member_order_number, platform_order_number, 
+    source_order_number, trade_type, sys_order_time, platform_order_time, pay_time, sys_check_time, 
+    platform_check_time, sys_notify_time, platform_notify_time, trade_status, notify_status, 
+    check_status, defrayal_channel, defrayal_type, member_id, member_number, member_name, 
+    agent_id, agent_number, agent_name, agent_level, platform_id, platform_number, platform_name, 
+    channel_id, channel_number, channel_name, merchant_id, merchant_number, merchant_name, 
+    trade_amount, pay_amount, privilege_amount, refund_amount, check_amount, channel_fee, 
+    channel_platform_fee, channel_profit, sys_channel_profit, agent_channel_profit, service_fee, 
+    sys_service_profit, agent_service_profit
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trade_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from trade_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.pay.api.client.model.TradeOrderDO">
+    insert into trade_order (id, gmt_create, gmt_update, 
+      is_deleted, sys_order_number, member_order_number, 
+      platform_order_number, source_order_number, 
+      trade_type, sys_order_time, platform_order_time, 
+      pay_time, sys_check_time, platform_check_time, 
+      sys_notify_time, platform_notify_time, trade_status, 
+      notify_status, check_status, defrayal_channel, 
+      defrayal_type, member_id, member_number, 
+      member_name, agent_id, agent_number, 
+      agent_name, agent_level, platform_id, 
+      platform_number, platform_name, channel_id, 
+      channel_number, channel_name, merchant_id, 
+      merchant_number, merchant_name, trade_amount, 
+      pay_amount, privilege_amount, refund_amount, 
+      check_amount, channel_fee, channel_platform_fee, 
+      channel_profit, sys_channel_profit, agent_channel_profit, 
+      service_fee, sys_service_profit, agent_service_profit
+      )
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=BIT}, #{sysOrderNumber,jdbcType=VARCHAR}, #{memberOrderNumber,jdbcType=VARCHAR}, 
+      #{platformOrderNumber,jdbcType=VARCHAR}, #{sourceOrderNumber,jdbcType=VARCHAR}, 
+      #{tradeType,jdbcType=VARCHAR}, #{sysOrderTime,jdbcType=BIGINT}, #{platformOrderTime,jdbcType=BIGINT}, 
+      #{payTime,jdbcType=BIGINT}, #{sysCheckTime,jdbcType=BIGINT}, #{platformCheckTime,jdbcType=BIGINT}, 
+      #{sysNotifyTime,jdbcType=BIGINT}, #{platformNotifyTime,jdbcType=BIGINT}, #{tradeStatus,jdbcType=VARCHAR}, 
+      #{notifyStatus,jdbcType=VARCHAR}, #{checkStatus,jdbcType=VARCHAR}, #{defrayalChannel,jdbcType=VARCHAR}, 
+      #{defrayalType,jdbcType=VARCHAR}, #{memberId,jdbcType=BIGINT}, #{memberNumber,jdbcType=VARCHAR}, 
+      #{memberName,jdbcType=VARCHAR}, #{agentId,jdbcType=BIGINT}, #{agentNumber,jdbcType=VARCHAR}, 
+      #{agentName,jdbcType=VARCHAR}, #{agentLevel,jdbcType=INTEGER}, #{platformId,jdbcType=BIGINT}, 
+      #{platformNumber,jdbcType=VARCHAR}, #{platformName,jdbcType=VARCHAR}, #{channelId,jdbcType=BIGINT}, 
+      #{channelNumber,jdbcType=VARCHAR}, #{channelName,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT}, 
+      #{merchantNumber,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, #{tradeAmount,jdbcType=DECIMAL}, 
+      #{payAmount,jdbcType=DECIMAL}, #{privilegeAmount,jdbcType=DECIMAL}, #{refundAmount,jdbcType=DECIMAL}, 
+      #{checkAmount,jdbcType=DECIMAL}, #{channelFee,jdbcType=DECIMAL}, #{channelPlatformFee,jdbcType=DECIMAL}, 
+      #{channelProfit,jdbcType=DECIMAL}, #{sysChannelProfit,jdbcType=DECIMAL}, #{agentChannelProfit,jdbcType=DECIMAL}, 
+      #{serviceFee,jdbcType=DECIMAL}, #{sysServiceProfit,jdbcType=DECIMAL}, #{agentServiceProfit,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeOrderDO">
+    insert into trade_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtUpdate != null">
+        gmt_update,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="sysOrderNumber != null">
+        sys_order_number,
+      </if>
+      <if test="memberOrderNumber != null">
+        member_order_number,
+      </if>
+      <if test="platformOrderNumber != null">
+        platform_order_number,
+      </if>
+      <if test="sourceOrderNumber != null">
+        source_order_number,
+      </if>
+      <if test="tradeType != null">
+        trade_type,
+      </if>
+      <if test="sysOrderTime != null">
+        sys_order_time,
+      </if>
+      <if test="platformOrderTime != null">
+        platform_order_time,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="sysCheckTime != null">
+        sys_check_time,
+      </if>
+      <if test="platformCheckTime != null">
+        platform_check_time,
+      </if>
+      <if test="sysNotifyTime != null">
+        sys_notify_time,
+      </if>
+      <if test="platformNotifyTime != null">
+        platform_notify_time,
+      </if>
+      <if test="tradeStatus != null">
+        trade_status,
+      </if>
+      <if test="notifyStatus != null">
+        notify_status,
+      </if>
+      <if test="checkStatus != null">
+        check_status,
+      </if>
+      <if test="defrayalChannel != null">
+        defrayal_channel,
+      </if>
+      <if test="defrayalType != null">
+        defrayal_type,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="memberNumber != null">
+        member_number,
+      </if>
+      <if test="memberName != null">
+        member_name,
+      </if>
+      <if test="agentId != null">
+        agent_id,
+      </if>
+      <if test="agentNumber != null">
+        agent_number,
+      </if>
+      <if test="agentName != null">
+        agent_name,
+      </if>
+      <if test="agentLevel != null">
+        agent_level,
+      </if>
+      <if test="platformId != null">
+        platform_id,
+      </if>
+      <if test="platformNumber != null">
+        platform_number,
+      </if>
+      <if test="platformName != null">
+        platform_name,
+      </if>
+      <if test="channelId != null">
+        channel_id,
+      </if>
+      <if test="channelNumber != null">
+        channel_number,
+      </if>
+      <if test="channelName != null">
+        channel_name,
+      </if>
+      <if test="merchantId != null">
+        merchant_id,
+      </if>
+      <if test="merchantNumber != null">
+        merchant_number,
+      </if>
+      <if test="merchantName != null">
+        merchant_name,
+      </if>
+      <if test="tradeAmount != null">
+        trade_amount,
+      </if>
+      <if test="payAmount != null">
+        pay_amount,
+      </if>
+      <if test="privilegeAmount != null">
+        privilege_amount,
+      </if>
+      <if test="refundAmount != null">
+        refund_amount,
+      </if>
+      <if test="checkAmount != null">
+        check_amount,
+      </if>
+      <if test="channelFee != null">
+        channel_fee,
+      </if>
+      <if test="channelPlatformFee != null">
+        channel_platform_fee,
+      </if>
+      <if test="channelProfit != null">
+        channel_profit,
+      </if>
+      <if test="sysChannelProfit != null">
+        sys_channel_profit,
+      </if>
+      <if test="agentChannelProfit != null">
+        agent_channel_profit,
+      </if>
+      <if test="serviceFee != null">
+        service_fee,
+      </if>
+      <if test="sysServiceProfit != null">
+        sys_service_profit,
+      </if>
+      <if test="agentServiceProfit != null">
+        agent_service_profit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null">
+        #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="sysOrderNumber != null">
+        #{sysOrderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="memberOrderNumber != null">
+        #{memberOrderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platformOrderNumber != null">
+        #{platformOrderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceOrderNumber != null">
+        #{sourceOrderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null">
+        #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="sysOrderTime != null">
+        #{sysOrderTime,jdbcType=BIGINT},
+      </if>
+      <if test="platformOrderTime != null">
+        #{platformOrderTime,jdbcType=BIGINT},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=BIGINT},
+      </if>
+      <if test="sysCheckTime != null">
+        #{sysCheckTime,jdbcType=BIGINT},
+      </if>
+      <if test="platformCheckTime != null">
+        #{platformCheckTime,jdbcType=BIGINT},
+      </if>
+      <if test="sysNotifyTime != null">
+        #{sysNotifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="platformNotifyTime != null">
+        #{platformNotifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="tradeStatus != null">
+        #{tradeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyStatus != null">
+        #{notifyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="defrayalChannel != null">
+        #{defrayalChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="defrayalType != null">
+        #{defrayalType,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="memberNumber != null">
+        #{memberNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null">
+        #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="agentNumber != null">
+        #{agentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="agentName != null">
+        #{agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="agentLevel != null">
+        #{agentLevel,jdbcType=INTEGER},
+      </if>
+      <if test="platformId != null">
+        #{platformId,jdbcType=BIGINT},
+      </if>
+      <if test="platformNumber != null">
+        #{platformNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platformName != null">
+        #{platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="channelNumber != null">
+        #{channelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null">
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantId != null">
+        #{merchantId,jdbcType=BIGINT},
+      </if>
+      <if test="merchantNumber != null">
+        #{merchantNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null">
+        #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAmount != null">
+        #{tradeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null">
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="privilegeAmount != null">
+        #{privilegeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundAmount != null">
+        #{refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="checkAmount != null">
+        #{checkAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="channelFee != null">
+        #{channelFee,jdbcType=DECIMAL},
+      </if>
+      <if test="channelPlatformFee != null">
+        #{channelPlatformFee,jdbcType=DECIMAL},
+      </if>
+      <if test="channelProfit != null">
+        #{channelProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="sysChannelProfit != null">
+        #{sysChannelProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="agentChannelProfit != null">
+        #{agentChannelProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceFee != null">
+        #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="sysServiceProfit != null">
+        #{sysServiceProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="agentServiceProfit != null">
+        #{agentServiceProfit,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pay.api.client.model.TradeOrderDO">
+    update trade_order
+    <set>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null">
+        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="sysOrderNumber != null">
+        sys_order_number = #{sysOrderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="memberOrderNumber != null">
+        member_order_number = #{memberOrderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platformOrderNumber != null">
+        platform_order_number = #{platformOrderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceOrderNumber != null">
+        source_order_number = #{sourceOrderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null">
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="sysOrderTime != null">
+        sys_order_time = #{sysOrderTime,jdbcType=BIGINT},
+      </if>
+      <if test="platformOrderTime != null">
+        platform_order_time = #{platformOrderTime,jdbcType=BIGINT},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=BIGINT},
+      </if>
+      <if test="sysCheckTime != null">
+        sys_check_time = #{sysCheckTime,jdbcType=BIGINT},
+      </if>
+      <if test="platformCheckTime != null">
+        platform_check_time = #{platformCheckTime,jdbcType=BIGINT},
+      </if>
+      <if test="sysNotifyTime != null">
+        sys_notify_time = #{sysNotifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="platformNotifyTime != null">
+        platform_notify_time = #{platformNotifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="tradeStatus != null">
+        trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyStatus != null">
+        notify_status = #{notifyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="defrayalChannel != null">
+        defrayal_channel = #{defrayalChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="defrayalType != null">
+        defrayal_type = #{defrayalType,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="memberNumber != null">
+        member_number = #{memberNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null">
+        agent_id = #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="agentNumber != null">
+        agent_number = #{agentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="agentName != null">
+        agent_name = #{agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="agentLevel != null">
+        agent_level = #{agentLevel,jdbcType=INTEGER},
+      </if>
+      <if test="platformId != null">
+        platform_id = #{platformId,jdbcType=BIGINT},
+      </if>
+      <if test="platformNumber != null">
+        platform_number = #{platformNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platformName != null">
+        platform_name = #{platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null">
+        channel_id = #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="channelNumber != null">
+        channel_number = #{channelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null">
+        channel_name = #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantId != null">
+        merchant_id = #{merchantId,jdbcType=BIGINT},
+      </if>
+      <if test="merchantNumber != null">
+        merchant_number = #{merchantNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null">
+        merchant_name = #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAmount != null">
+        trade_amount = #{tradeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null">
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="privilegeAmount != null">
+        privilege_amount = #{privilegeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundAmount != null">
+        refund_amount = #{refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="checkAmount != null">
+        check_amount = #{checkAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="channelFee != null">
+        channel_fee = #{channelFee,jdbcType=DECIMAL},
+      </if>
+      <if test="channelPlatformFee != null">
+        channel_platform_fee = #{channelPlatformFee,jdbcType=DECIMAL},
+      </if>
+      <if test="channelProfit != null">
+        channel_profit = #{channelProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="sysChannelProfit != null">
+        sys_channel_profit = #{sysChannelProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="agentChannelProfit != null">
+        agent_channel_profit = #{agentChannelProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceFee != null">
+        service_fee = #{serviceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="sysServiceProfit != null">
+        sys_service_profit = #{sysServiceProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="agentServiceProfit != null">
+        agent_service_profit = #{agentServiceProfit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pay.api.client.model.TradeOrderDO">
+    update trade_order
+    set gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT},
+      sys_order_number = #{sysOrderNumber,jdbcType=VARCHAR},
+      member_order_number = #{memberOrderNumber,jdbcType=VARCHAR},
+      platform_order_number = #{platformOrderNumber,jdbcType=VARCHAR},
+      source_order_number = #{sourceOrderNumber,jdbcType=VARCHAR},
+      trade_type = #{tradeType,jdbcType=VARCHAR},
+      sys_order_time = #{sysOrderTime,jdbcType=BIGINT},
+      platform_order_time = #{platformOrderTime,jdbcType=BIGINT},
+      pay_time = #{payTime,jdbcType=BIGINT},
+      sys_check_time = #{sysCheckTime,jdbcType=BIGINT},
+      platform_check_time = #{platformCheckTime,jdbcType=BIGINT},
+      sys_notify_time = #{sysNotifyTime,jdbcType=BIGINT},
+      platform_notify_time = #{platformNotifyTime,jdbcType=BIGINT},
+      trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      notify_status = #{notifyStatus,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=VARCHAR},
+      defrayal_channel = #{defrayalChannel,jdbcType=VARCHAR},
+      defrayal_type = #{defrayalType,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=BIGINT},
+      member_number = #{memberNumber,jdbcType=VARCHAR},
+      member_name = #{memberName,jdbcType=VARCHAR},
+      agent_id = #{agentId,jdbcType=BIGINT},
+      agent_number = #{agentNumber,jdbcType=VARCHAR},
+      agent_name = #{agentName,jdbcType=VARCHAR},
+      agent_level = #{agentLevel,jdbcType=INTEGER},
+      platform_id = #{platformId,jdbcType=BIGINT},
+      platform_number = #{platformNumber,jdbcType=VARCHAR},
+      platform_name = #{platformName,jdbcType=VARCHAR},
+      channel_id = #{channelId,jdbcType=BIGINT},
+      channel_number = #{channelNumber,jdbcType=VARCHAR},
+      channel_name = #{channelName,jdbcType=VARCHAR},
+      merchant_id = #{merchantId,jdbcType=BIGINT},
+      merchant_number = #{merchantNumber,jdbcType=VARCHAR},
+      merchant_name = #{merchantName,jdbcType=VARCHAR},
+      trade_amount = #{tradeAmount,jdbcType=DECIMAL},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      privilege_amount = #{privilegeAmount,jdbcType=DECIMAL},
+      refund_amount = #{refundAmount,jdbcType=DECIMAL},
+      check_amount = #{checkAmount,jdbcType=DECIMAL},
+      channel_fee = #{channelFee,jdbcType=DECIMAL},
+      channel_platform_fee = #{channelPlatformFee,jdbcType=DECIMAL},
+      channel_profit = #{channelProfit,jdbcType=DECIMAL},
+      sys_channel_profit = #{sysChannelProfit,jdbcType=DECIMAL},
+      agent_channel_profit = #{agentChannelProfit,jdbcType=DECIMAL},
+      service_fee = #{serviceFee,jdbcType=DECIMAL},
+      sys_service_profit = #{sysServiceProfit,jdbcType=DECIMAL},
+      agent_service_profit = #{agentServiceProfit,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
