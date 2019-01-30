@@ -58,7 +58,7 @@ public class TradeOrderDO {
 
     private String agentName;
 
-    private Integer agentLevel;
+    private String agentLevel;
 
     private Long platformId;
 
@@ -105,6 +105,8 @@ public class TradeOrderDO {
     private BigDecimal agentServiceProfit;
 
     private String currency;
+
+    private String payContent;
 
     public Long getId() {
         return id;
@@ -322,11 +324,11 @@ public class TradeOrderDO {
         this.agentName = agentName == null ? null : agentName.trim();
     }
 
-    public Integer getAgentLevel() {
+    public String getAgentLevel() {
         return agentLevel;
     }
 
-    public void setAgentLevel(Integer agentLevel) {
+    public void setAgentLevel(String agentLevel) {
         this.agentLevel = agentLevel;
     }
 
@@ -512,5 +514,13 @@ public class TradeOrderDO {
 
     public void setCurrency(String currency) {
         this.currency = currency == null ? null : currency.trim();
+    }
+
+    public String getPayContent() {
+        return payContent;
+    }
+
+    public void setPayContent(String payContent) {
+        this.payContent = payContent;
     }
 }

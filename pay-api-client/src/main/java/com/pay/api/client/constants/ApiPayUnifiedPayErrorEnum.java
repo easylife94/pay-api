@@ -7,6 +7,10 @@ package com.pay.api.client.constants;
  * @date 2019-01-29
  */
 public enum ApiPayUnifiedPayErrorEnum {
+
+    /**
+     * 无可用商户
+     */
     MERCHANT_DISABLE("MERCHANT_DISABLE","无可用商户"),
     ;
 

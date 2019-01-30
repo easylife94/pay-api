@@ -11,5 +11,13 @@ import com.pay.api.client.dto.TradeHandleResultDTO;
  */
 public interface ITradeService {
 
+    /**
+     * 交易处理
+     *
+     * @param tradeHandleDTO 交易处理参数
+     * @return 交易处理返回结果
+     */
     TradeHandleResultDTO tradeHandle(TradeHandleDTO tradeHandleDTO);
+
+
 }

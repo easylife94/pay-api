@@ -25,8 +25,11 @@ public class TradeRouteDTO {
      */
     private String merchantNumber;
 
-
-
+    public TradeRouteDTO(String platformNumber, String channelNumber, String merchantNumber) {
+        this.platformNumber = platformNumber;
+        this.channelNumber = channelNumber;
+        this.merchantNumber = merchantNumber;
+    }
 
     public String getPlatformNumber() {
         return platformNumber;

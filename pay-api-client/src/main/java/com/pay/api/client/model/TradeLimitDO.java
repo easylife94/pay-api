@@ -2,6 +2,7 @@ package com.pay.api.client.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.StringJoiner;
 
 public class TradeLimitDO {
     private Long id;
@@ -142,5 +143,26 @@ public class TradeLimitDO {
 
     public void setSecondTradeInterval(Integer secondTradeInterval) {
         this.secondTradeInterval = secondTradeInterval;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ",
+                TradeLimitDO.class.getSimpleName() + "{", "}")
+                .add("id=" + id)
+                .add("gmtCreate=" + gmtCreate)
+                .add("gmtUpdate=" + gmtUpdate)
+                .add("isDeleted=" + isDeleted)
+                .add("ownType=" + ownType)
+                .add("ownId=" + ownId)
+                .add("ownNumber=" + ownNumber)
+                .add("ownName=" + ownName)
+                .add("defrayalType=" + defrayalType)
+                .add("singleTradeAmountMin=" + singleTradeAmountMin)
+                .add("singleTradeAmountMax=" + singleTradeAmountMax)
+                .add("dayTradeAmountMax=" + dayTradeAmountMax)
+                .add("monthTradeAmountMax=" + monthTradeAmountMax)
+                .add("secondTradeInterval=" + secondTradeInterval)
+                .toString();
     }
 }

@@ -2,6 +2,7 @@ package com.pay.api.client.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.StringJoiner;
 
 public class AgentProfitDO {
     private Long id;
@@ -112,5 +113,23 @@ public class AgentProfitDO {
 
     public void setTradeAmount(BigDecimal tradeAmount) {
         this.tradeAmount = tradeAmount;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ",
+                AgentProfitDO.class.getSimpleName() + "{", "}")
+                .add("id=" + id)
+                .add("gmtCreate=" + gmtCreate)
+                .add("gmtUpdate=" + gmtUpdate)
+                .add("isDeleted=" + isDeleted)
+                .add("agentId=" + agentId)
+                .add("agentNumber=" + agentNumber)
+                .add("agentName=" + agentName)
+                .add("agentLevel=" + agentLevel)
+                .add("sysOrderNumber=" + sysOrderNumber)
+                .add("profit=" + profit)
+                .add("tradeAmount=" + tradeAmount)
+                .toString();
     }
 }
