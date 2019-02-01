@@ -10,7 +10,7 @@ import com.pay.center.client.dto.service.MemberDTO;
  * @author chenwei
  * @date 2019/1/16 11:43
  */
-public interface IPayApiMethod {
+public interface IPayApiMethod<T> {
 
     /**
      * 执行
@@ -19,6 +19,6 @@ public interface IPayApiMethod {
      * @param memberDTO 会员
      * @return
      */
-    ApiPayMethodResultDTO operate(String content, MemberDTO memberDTO);
+    ApiPayMethodResultDTO<T> operate(String content,MemberDTO memberDTO);
 
 }

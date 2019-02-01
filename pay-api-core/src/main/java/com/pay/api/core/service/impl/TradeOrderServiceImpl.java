@@ -60,8 +60,8 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         tradeOrderDO.setAgentName(tradeOrderCreateDTO.getAgentName());
         tradeOrderDO.setAgentNumber(tradeOrderCreateDTO.getAgentNumber());
 
-        //系统订单信息
-        tradeOrderDO.setSysOrderNumber();
+        //系统订单信息 TODO 获取唯一订单号
+        tradeOrderDO.setSysOrderNumber("");
         tradeOrderDO.setSysOrderTime(orderTime.getTime());
 
         //币种

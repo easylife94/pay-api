@@ -37,6 +37,13 @@ public enum ApiPayGatewayResultEnum {
      * 签名错误
      */
     SIGN_ERROR("60000", "签名错误"),
+
+    //add new enum above
+
+    /**
+     * 系统异常
+     */
+    SYSTEM_ERROR("90000", "系统异常"),
     ;
 
     private String code;

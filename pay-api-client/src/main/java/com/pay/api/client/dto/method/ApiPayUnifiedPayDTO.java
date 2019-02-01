@@ -15,7 +15,6 @@ public class ApiPayUnifiedPayDTO {
      * 会员编号
      * 必填
      */
-    @NotBlank
     private String memberNumber;
 
     /**

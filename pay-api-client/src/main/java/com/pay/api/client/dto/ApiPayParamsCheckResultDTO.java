@@ -51,10 +51,11 @@ public class ApiPayParamsCheckResultDTO {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", ApiPayParamsCheckResultDTO.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ",
+                ApiPayParamsCheckResultDTO.class.getSimpleName() + "{", "}")
                 .add("pass=" + pass)
-                .add("type='" + type + "'")
-                .add("msg='" + msg + "'")
+                .add("type=" + type)
+                .add("msg=" + msg)
                 .toString();
     }
 }
