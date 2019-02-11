@@ -4,9 +4,15 @@ import com.pay.api.client.dto.TradeRouteDTO;
 import com.pay.api.client.dto.TradeRouteMerchantDTO;
 import com.pay.api.client.service.client.IPayApiFeignServiceClient;
 import com.pay.api.core.service.ITradeRouteService;
+import com.pay.center.client.dto.service.TradeMerchantDTO;
+import com.pay.center.client.dto.service.query.TradeMerchantQueryDTO;
+import com.pay.center.client.service.client.IPayCenterFeignServiceClient;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,20 +22,28 @@ import java.util.List;
 @Service
 public class TradeRouteServiceImpl implements ITradeRouteService {
 
-    private final IPayApiFeignServiceClient payApiFeignServiceClient;
+    private final IPayCenterFeignServiceClient payCenterFeignServiceClient;
 
     @Autowired
-    public TradeRouteServiceImpl(IPayApiFeignServiceClient payApiFeignServiceClient) {
-        this.payApiFeignServiceClient = payApiFeignServiceClient;
+    public TradeRouteServiceImpl(IPayCenterFeignServiceClient payCenterFeignServiceClient) {
+        this.payCenterFeignServiceClient = payCenterFeignServiceClient;
     }
 
     @Override
     public List<TradeRouteMerchantDTO> filterMerchant(TradeRouteDTO tradeRouteDTO) {
-        //todo 过滤商户
+        List<TradeRouteMerchantDTO> tradeRouteMerchants = new ArrayList<>();
+        TradeMerchantQueryDTO query = new TradeMerchantQueryDTO(tradeRouteDTO.getPlatformNumber(),
+                tradeRouteDTO.getChannelNumber(), tradeRouteDTO.getMerchantNumber());
+        List<TradeMerchantDTO> tradeMerchants = payCenterFeignServiceClient.listTradeMerchant(query);
+        if (tradeMerchants != null) {
+            for (TradeMerchantDTO merchantDTO : tradeMerchants) {
+                TradeRouteMerchantDTO tradeRouteMerchantDTO = new TradeRouteMerchantDTO(merchantDTO.getPlatformNumber(),
+                        merchantDTO.getChannelNumber(),merchantDTO.getMerchantNumber());
 
-
-
-        return null;
+                tradeRouteMerchants.add(tradeRouteMerchantDTO);
+            }
+        }
+        return tradeRouteMerchants;
     }
 
     @Override

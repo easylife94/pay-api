@@ -9,6 +9,16 @@ package com.pay.api.client.constants;
 public enum ApiPayUnifiedPayErrorEnum {
 
     /**
+     * 成功
+     */
+    SUCCESS("SUCCESS", "成功"),
+
+    /**
+     * 找不到商户
+     */
+    MERCHANT_NOT_FOUND("MERCHANT_NOT_FOUND","找不到商户"),
+
+    /**
      * 无可用商户
      */
     MERCHANT_DISABLE("MERCHANT_DISABLE","无可用商户"),

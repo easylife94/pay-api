@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 抽象支付方法类
+ * 抽象支付接口方法类
  *
  * @author chenwei
  * @date 2019/2/1 13:34
