@@ -18,7 +18,7 @@ public interface ITradeRouteService {
      * 筛选商户
      *
      * @param tradeRouteDTO
-     * @return
+     * @return 返回不为null
      */
     List<TradeRouteMerchantDTO> filterMerchant(TradeRouteDTO tradeRouteDTO);
 

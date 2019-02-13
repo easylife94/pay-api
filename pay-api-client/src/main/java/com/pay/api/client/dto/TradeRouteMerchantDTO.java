@@ -40,6 +40,12 @@ public class TradeRouteMerchantDTO {
         this.merchantNumber = merchantNumber;
     }
 
+    public TradeRouteMerchantDTO(String platformNumber, String channelNumber, String merchantNumber) {
+        this.platformNumber = platformNumber;
+        this.channelNumber = channelNumber;
+        this.merchantNumber = merchantNumber;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", TradeRouteMerchantDTO.class.getSimpleName() + "[", "]")

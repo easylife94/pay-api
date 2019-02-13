@@ -2,13 +2,13 @@ package com.pay.api.core.service.impl;
 
 import com.pay.api.client.dto.TradeMerchantRiskControlDTO;
 import com.pay.api.core.service.ITradeRiskControlService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author chenwei
  * @date 2019/2/1 11:36
  */
-@Component
+@Service
 public class TradeRiskControlServiceImpl implements ITradeRiskControlService {
 
     @Override

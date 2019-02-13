@@ -8,9 +8,8 @@ import com.pay.api.client.dto.TradeOrderCreateDTO;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.core.dao.TradeOrderDao;
 import com.pay.api.core.service.ITradeOrderService;
-import com.pay.center.client.dto.service.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -18,7 +17,7 @@ import java.util.Date;
  * @author chenwei
  * @date 2019-01-29
  */
-@Component
+@Service
 public class TradeOrderServiceImpl implements ITradeOrderService {
 
     private final TradeOrderDao tradeOrderDao;

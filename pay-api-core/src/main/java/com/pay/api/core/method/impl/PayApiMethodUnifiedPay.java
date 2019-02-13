@@ -67,9 +67,24 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         TradeRouteDTO tradeRouteDTO = new TradeRouteDTO(apiPayUnifiedPayDTO.getPlatformNumber(),
                 apiPayUnifiedPayDTO.getChannelNumber(), apiPayUnifiedPayDTO.getMerchantNumber());
         List<TradeRouteMerchantDTO> tradeRouteMerchants = tradeRouteService.filterMerchant(tradeRouteDTO);
+        if (tradeRouteMerchants.size() == 0) {
+            logger.error("筛选商户，筛选商户列表为空。筛选参数：{}", tradeRouteDTO);
+            apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.MERCHANT_NOT_FOUND.getType());
+            apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.MERCHANT_NOT_FOUND.getError());
+            return apiPayMethodResultDTO;
+        }
+
         tradeRouteService.tradeLimit(tradeRouteMerchants);
+        if (tradeRouteMerchants.size() == 0) {
+            logger.error("交易限额，可交易商户列表为空。会员订单号：{}，交易金额：{}", apiPayUnifiedPayDTO.getMemberOrderNumber(), apiPayUnifiedPayDTO.getTradeAmount());
+            apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.MERCHANT_DISABLE.getType());
+            apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.MERCHANT_DISABLE.getError());
+            return apiPayMethodResultDTO;
+        }
+
         TradeRouteMerchantDTO finalMerchant = tradeRouteService.poll(tradeRouteMerchants);
         if (finalMerchant == null) {
+            logger.error("交易轮循，商户不可用。会员订单号：{}", apiPayUnifiedPayDTO.getMemberOrderNumber());
             apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.MERCHANT_DISABLE.getType());
             apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.MERCHANT_DISABLE.getError());
             return apiPayMethodResultDTO;
