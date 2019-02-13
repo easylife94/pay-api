@@ -26,7 +26,7 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
     private static final Logger logger = LoggerFactory.getLogger(PayApiGatewayServiceImpl.class);
 
     /**
-     * TODO 参数校验优化
+     * 参数校验优化
      *
      * @param apiPayDTO 请求参数
      * @return 参数校验结果

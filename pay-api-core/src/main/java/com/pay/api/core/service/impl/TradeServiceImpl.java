@@ -15,6 +15,8 @@ public class TradeServiceImpl implements ITradeService {
     @Override
     public TradeHandleResultDTO tradeHandle(TradeHandleDTO tradeHandleDTO) {
         //todo 交易处理
+
+
         return null;
     }
 }
