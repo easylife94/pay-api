@@ -20,11 +20,6 @@ public class SpringContextUtil implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     /**
-     *
-     */
-    private static AutowireCapableBeanFactory autowireCapableBeanFactory;
-
-    /**
      * 实现ApplicationContextAware接口的回调方法。设置上下文环境
      *
      * @param applicationContext
@@ -32,7 +27,6 @@ public class SpringContextUtil implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         SpringContextUtil.applicationContext = applicationContext;
-        SpringContextUtil.autowireCapableBeanFactory = applicationContext.getAutowireCapableBeanFactory();
     }
 
     /**
@@ -51,20 +45,5 @@ public class SpringContextUtil implements ApplicationContextAware {
      */
     public static Object getBean(String name) throws BeansException {
         return applicationContext.getBean(name);
-    }
-
-    /**
-     * 自定注入bean
-     *
-     * @param beanClass bean类
-     * @param name bean名称
-     * @param <T> bean类
-     * @return bean实例
-     */
-    public static <T> T setBean(Class<T> beanClass, String name) {
-        //TODO
-        T bean = autowireCapableBeanFactory.createBean(beanClass);
-        autowireCapableBeanFactory.configureBean(bean, name);
-        return bean;
     }
 }

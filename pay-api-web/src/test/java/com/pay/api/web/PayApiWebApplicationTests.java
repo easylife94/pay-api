@@ -13,7 +13,7 @@ public class PayApiWebApplicationTests {
     public void contextLoads() {
     }
 
-//    @Test
+//    @TestPlatformTrade
 //    public void pay() throws IOException {
 //        //测试支付网关请求
 //        String content = "你好";

@@ -1,0 +1,84 @@
+package com.pay.api.core.platform;
+
+import com.pay.api.client.dto.TradeHandleDTO;
+import com.pay.api.client.dto.TradeHandleResultDTO;
+import com.pay.api.client.exception.PayApiException;
+
+/**
+ * 支付渠道支付接口
+ *
+ * @author chenwei
+ * @date 2019/2/15 13:39
+ */
+public interface IDefrayalChannelTrade {
+
+    /**
+     * 支付宝渠道支付
+     *
+     * @param tradeHandleDTO
+     * @return
+     */
+    default TradeHandleResultDTO aliPayment(TradeHandleDTO tradeHandleDTO) {
+        throw new PayApiException("不支持支付宝渠道支付");
+    }
+
+    /**
+     * 微信渠道支付
+     *
+     * @param tradeHandleDTO
+     * @return
+     */
+    default TradeHandleResultDTO wechatPayment(TradeHandleDTO tradeHandleDTO) {
+        throw new PayApiException("不支持微信渠道支付");
+    }
+
+    /**
+     * qq钱包渠道支付
+     *
+     * @param tradeHandleDTO
+     * @return
+     */
+    default TradeHandleResultDTO qqPayment(TradeHandleDTO tradeHandleDTO) {
+        throw new PayApiException("不支持qq钱包渠道支付");
+    }
+
+    /**
+     * 京东钱包渠道支付
+     *
+     * @param tradeHandleDTO
+     * @return
+     */
+    default TradeHandleResultDTO jdPayment(TradeHandleDTO tradeHandleDTO) {
+        throw new PayApiException("不支持京东钱包渠道支付");
+    }
+
+    /**
+     * 银联渠道支付
+     *
+     * @param tradeHandleDTO
+     * @return
+     */
+    default TradeHandleResultDTO unionPayment(TradeHandleDTO tradeHandleDTO) {
+        throw new PayApiException("不支持银联渠道支付");
+    }
+
+    /**
+     * 百度钱包渠道支付
+     *
+     * @param tradeHandleDTO
+     * @return
+     */
+    default TradeHandleResultDTO baiduPayment(TradeHandleDTO tradeHandleDTO) {
+        throw new PayApiException("不支持百度钱包渠道支付");
+    }
+
+    /**
+     * 线下渠道支付
+     *
+     * @param tradeHandleDTO
+     * @return
+     */
+    default TradeHandleResultDTO offlinePayment(TradeHandleDTO tradeHandleDTO) {
+        throw new PayApiException("不支持线下渠道支付");
+    }
+}
