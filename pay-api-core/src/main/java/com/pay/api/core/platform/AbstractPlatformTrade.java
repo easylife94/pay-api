@@ -1,6 +1,6 @@
 package com.pay.api.core.platform;
 
-import com.pay.api.client.dto.JsapiPreorderDTO;
+import com.pay.api.client.constants.TradeHandleStatusEnum;
 import com.pay.api.client.dto.TradeHandleDTO;
 import com.pay.api.client.dto.TradeHandleResultDTO;
 import com.pay.api.client.exception.PayApiException;
@@ -9,7 +9,7 @@ import com.pay.api.client.exception.PayApiException;
  * @author chenwei
  * @date 2019/2/14 14:37
  */
-public abstract class AbstractPlatformTrade implements IPlatformTrade, IDefrayalChannelTrade, IDefrayalTypeTrade, IPreorder {
+public abstract class AbstractPlatformTrade implements IPlatformTrade, IDefrayalChannelTrade, IDefrayalTypeTrade {
 
     @Override
     final public TradeHandleResultDTO trade(TradeHandleDTO tradeHandleDTO) {
@@ -161,7 +161,7 @@ public abstract class AbstractPlatformTrade implements IPlatformTrade, IDefrayal
 
     @Override
     final public TradeHandleResultDTO offlinePayment(TradeHandleDTO tradeHandleDTO) {
-        switch (tradeHandleDTO.getDefrayalType()){
+        switch (tradeHandleDTO.getDefrayalType()) {
             default:
                 throw new PayApiException("线下不支持" + tradeHandleDTO.getDefrayalType() + "支付方式");
         }
@@ -173,24 +173,10 @@ public abstract class AbstractPlatformTrade implements IPlatformTrade, IDefrayal
      * @param tradeHandleDTO
      * @return
      */
-    public TradeHandleResultDTO jsapiPreorder(TradeHandleDTO tradeHandleDTO, JsapiPreorderDTO jsapiPreorderDTO) {
-        switch (tradeHandleDTO.getDefrayalChannel()) {
-            case ALI:
-                return aliJsapiPreorder(tradeHandleDTO, jsapiPreorderDTO);
-            case WECHAT:
-                return wechatJsapiPreorder(tradeHandleDTO, jsapiPreorderDTO);
-            default:
-                throw new PayApiException("不支持jsapi预下单");
-        }
-    }
-
-    @Override
-    public TradeHandleResultDTO aliJsapiPreorder(TradeHandleDTO tradeHandleDTO, JsapiPreorderDTO jsapiPreorderDTO) {
-        return null;
-    }
-
-    @Override
-    public TradeHandleResultDTO wechatJsapiPreorder(TradeHandleDTO tradeHandleDTO, JsapiPreorderDTO jsapiPreorderDTO) {
-        return null;
+    public TradeHandleResultDTO jsapiPreorder(TradeHandleDTO tradeHandleDTO) {
+        //TODO 预下单
+        String content = "";
+        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, null, content, null);
+        return tradeHandleResultDTO;
     }
 }

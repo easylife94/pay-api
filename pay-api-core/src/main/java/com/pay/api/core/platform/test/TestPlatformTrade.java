@@ -1,7 +1,9 @@
-package com.pay.api.core.platform;
+package com.pay.api.core.platform.test;
 
+import com.pay.api.client.constants.TradeHandleStatusEnum;
 import com.pay.api.client.dto.TradeHandleDTO;
 import com.pay.api.client.dto.TradeHandleResultDTO;
+import com.pay.api.core.platform.AbstractPlatformTrade;
 import com.pay.api.core.service.ITradeOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,48 +24,52 @@ public class TestPlatformTrade extends AbstractPlatformTrade {
 
     @Override
     public TradeHandleResultDTO scanPayment(TradeHandleDTO tradeHandleDTO) {
-        return super.scanPayment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
     @Override
     public TradeHandleResultDTO nativePayment(TradeHandleDTO tradeHandleDTO) {
-        return super.nativePayment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
     @Override
     public TradeHandleResultDTO appPayment(TradeHandleDTO tradeHandleDTO) {
-        return super.appPayment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
     @Override
     public TradeHandleResultDTO h5Payment(TradeHandleDTO tradeHandleDTO) {
-        return super.h5Payment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
     @Override
     public TradeHandleResultDTO jsapiPayment(TradeHandleDTO tradeHandleDTO) {
-        return super.jsapiPayment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
     @Override
     public TradeHandleResultDTO solidCodePayment(TradeHandleDTO tradeHandleDTO) {
-        return super.solidCodePayment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
     @Override
     public TradeHandleResultDTO b2bPayment(TradeHandleDTO tradeHandleDTO) {
-        return super.b2bPayment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
     @Override
     public TradeHandleResultDTO b2cDebitPayment(TradeHandleDTO tradeHandleDTO) {
-        return super.b2cDebitPayment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
     @Override
     public TradeHandleResultDTO b2cCreditPayment(TradeHandleDTO tradeHandleDTO) {
-        return super.b2cCreditPayment(tradeHandleDTO);
+        return testTrade(tradeHandleDTO);
     }
 
+    private TradeHandleResultDTO testTrade(TradeHandleDTO tradeHandleDTO){
+        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS,"","",System.currentTimeMillis() + "");
+        return tradeHandleResultDTO;
+    }
 
 }

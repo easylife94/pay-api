@@ -14,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 支付网关服务
  *
@@ -25,12 +28,6 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
 
     private static final Logger logger = LoggerFactory.getLogger(PayApiGatewayServiceImpl.class);
 
-    /**
-     * TODO 参数校验优化
-     *
-     * @param apiPayDTO 请求参数
-     * @return 参数校验结果
-     */
     @Override
     public ApiPayParamsCheckResultDTO publicParamsCheck(ApiPayDTO apiPayDTO) {
         ApiPayParamsCheckResultDTO apiPayParamsCheckDTO = new ApiPayParamsCheckResultDTO();
@@ -80,8 +77,11 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
         if (versionEnum != null) {
             return paramsError(apiPayParamsCheckDTO, "version", ApiPayGatewayPublicParamsErrorEnum.VERSION_ERROR);
         }
+
         //2.4 timestamp
-        //todo 时间戳校验
+        if(!Boolean.TRUE.equals(checkTimestampFormat(apiPayDTO.getTimestamp()))){
+            return paramsError(apiPayParamsCheckDTO, "timestamp", ApiPayGatewayPublicParamsErrorEnum.TIMESTAMP_ERROR);
+        }
 
         apiPayParamsCheckDTO.setPass(true);
         return apiPayParamsCheckDTO;
@@ -99,6 +99,28 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
         apiPayParamsCheckDTO.setMsg("参数：[" + param + "]错误，错误信息：" + e.getError());
         apiPayParamsCheckDTO.setType(e.getType());
         return apiPayParamsCheckDTO;
+    }
+
+    /**
+     * 简单校验日期字符串格式：yyyy-MM-dd HH:mm:ss
+     *
+     * @param timestamp
+     * @return
+     */
+    private Boolean checkTimestampFormat(String timestamp) {
+        String eL = "^\\d{4}-\\d{2}-\\d{2}\\s[0-2]\\d:[0-5]\\d:[0-5]\\d$";
+        Pattern p = Pattern.compile(eL);
+        Matcher m = p.matcher(timestamp);
+        return m.matches();
+    }
+
+    public static void main(String[] args) {
+        long l = System.currentTimeMillis();
+        PayApiGatewayServiceImpl payApiGatewayService = new PayApiGatewayServiceImpl();
+        for(int i = 0 ; i < 1000000;i++){
+            System.out.println(payApiGatewayService.checkTimestampFormat("1199-01-01 23:59:12"));
+        }
+        System.out.println(System.currentTimeMillis() - l);
     }
 
     @Override

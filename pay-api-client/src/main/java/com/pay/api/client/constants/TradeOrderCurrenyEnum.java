@@ -8,6 +8,9 @@ package com.pay.api.client.constants;
  */
 public enum TradeOrderCurrenyEnum {
 
+    /**
+     * 人民币
+     */
     CNY("CNY", "人民币"),
     ;
 

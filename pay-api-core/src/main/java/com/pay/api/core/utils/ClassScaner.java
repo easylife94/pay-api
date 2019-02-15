@@ -25,8 +25,14 @@ import java.util.Set;
 
 public class ClassScaner implements ResourceLoaderAware {
 
-    //保存过滤规则要排除的注解
+    /**
+     * 过滤规则要排除的注解集合
+     */
     private final List<TypeFilter> includeFilters = new LinkedList<TypeFilter>();
+
+    /**
+     *
+     */
     private final List<TypeFilter> excludeFilters = new LinkedList<TypeFilter>();
 
     private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
@@ -36,15 +42,16 @@ public class ClassScaner implements ResourceLoaderAware {
                                   Class<? extends Annotation>... annotations) {
         ClassScaner cs = new ClassScaner();
 
-        if(ArrayUtils.isNotEmpty(annotations)) {
+        if (ArrayUtils.isNotEmpty(annotations)) {
             for (Class anno : annotations) {
                 cs.addIncludeFilter(new AnnotationTypeFilter(anno));
             }
         }
 
         Set<Class> classes = new HashSet<Class>();
-        for (String s : basePackages)
+        for (String s : basePackages) {
             classes.addAll(cs.doScan(s));
+        }
         return classes;
     }
 
@@ -56,6 +63,7 @@ public class ClassScaner implements ResourceLoaderAware {
         return this.resourcePatternResolver;
     }
 
+    @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourcePatternResolver = ResourcePatternUtils
                 .getResourcePatternResolver(resourceLoader);
@@ -91,8 +99,10 @@ public class ClassScaner implements ResourceLoaderAware {
                 Resource resource = resources[i];
                 if (resource.isReadable()) {
                     MetadataReader metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
-                    if ((includeFilters.size() == 0 && excludeFilters.size() == 0)
-                            || matches(metadataReader)) {
+                    boolean isEmpty = (includeFilters.size() == 0 && excludeFilters.size() == 0);
+                    boolean matches = matches(metadataReader);
+
+                    if ( isEmpty || matches) {
                         try {
                             classes.add(Class.forName(metadataReader
                                     .getClassMetadata().getClassName()));
@@ -125,6 +135,6 @@ public class ClassScaner implements ResourceLoaderAware {
 
     public static void main(String[] args) {
         ClassScaner.scan("com.pay.api.core.method", null)
-            .forEach(clazz -> System.out.println(clazz));
+                .forEach(clazz -> System.out.println(clazz));
     }
 }
