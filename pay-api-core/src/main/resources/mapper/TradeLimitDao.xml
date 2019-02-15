@@ -28,6 +28,17 @@
     from trade_limit
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <select id="selectByOwn" resultType="com.pay.api.client.model.TradeLimitDO">
+    select
+    <include refid="Base_Column_List" />
+    from trade_limit
+    where is_deleted = 0
+    AND own_type = #{ownType,jdbcType=VARCHAR}
+    AND own_number = #{ownNumber,jdbcType=VARCHAR}
+    AND defrayal_type = #{defrayalType  ,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from trade_limit
     where id = #{id,jdbcType=BIGINT}

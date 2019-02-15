@@ -16,12 +16,17 @@ public enum ApiPayUnifiedPayErrorEnum {
     /**
      * 找不到商户
      */
-    MERCHANT_NOT_FOUND("MERCHANT_NOT_FOUND","找不到商户"),
+    MERCHANT_NOT_FOUND("MERCHANT_NOT_FOUND", "找不到商户"),
 
     /**
      * 无可用商户
      */
-    MERCHANT_DISABLE("MERCHANT_DISABLE","无可用商户"),
+    MERCHANT_DISABLE("MERCHANT_DISABLE", "无可用商户"),
+
+    /**
+     *
+     */
+    NONE_MERCHANT_ROUTE("NONE_MERCHANT_ROUTE", "无商户交易路由"),
     ;
 
     private String type;
