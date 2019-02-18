@@ -1,18 +1,19 @@
 package com.pay.api.core.service.impl;
 
+import com.pay.api.client.dto.TradeRouteCreateDTO;
 import com.pay.api.client.dto.TradeRouteDTO;
 import com.pay.api.client.dto.TradeRouteMerchantDTO;
-import com.pay.api.client.service.client.IPayApiFeignServiceClient;
+import com.pay.api.client.model.TradeRouteDO;
+import com.pay.api.core.dao.TradeOrderDao;
+import com.pay.api.core.dao.TradeRouteDao;
+import com.pay.api.core.service.ITradeLimitService;
 import com.pay.api.core.service.ITradeRouteService;
-import com.pay.center.client.dto.service.TradeMerchantDTO;
-import com.pay.center.client.dto.service.query.TradeMerchantQueryDTO;
 import com.pay.center.client.service.client.IPayCenterFeignServiceClient;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,43 +23,55 @@ import java.util.List;
 @Service
 public class TradeRouteServiceImpl implements ITradeRouteService {
 
+    private final TradeRouteDao tradeRouteDao;
+    private final TradeOrderDao tradeOrderDao;
+    private final ITradeLimitService tradeLimitService;
     private final IPayCenterFeignServiceClient payCenterFeignServiceClient;
 
     @Autowired
-    public TradeRouteServiceImpl(IPayCenterFeignServiceClient payCenterFeignServiceClient) {
+    public TradeRouteServiceImpl(TradeRouteDao tradeRouteDao, TradeOrderDao tradeOrderDao, ITradeLimitService tradeLimitService,
+                                 IPayCenterFeignServiceClient payCenterFeignServiceClient) {
+        this.tradeRouteDao = tradeRouteDao;
+        this.tradeOrderDao = tradeOrderDao;
+        this.tradeLimitService = tradeLimitService;
         this.payCenterFeignServiceClient = payCenterFeignServiceClient;
     }
 
     @Override
-    public List<TradeRouteMerchantDTO> filterMerchant(TradeRouteDTO tradeRouteDTO) {
-        List<TradeRouteMerchantDTO> tradeRouteMerchants = new ArrayList<>();
-        TradeMerchantQueryDTO query = new TradeMerchantQueryDTO(tradeRouteDTO.getPlatformNumber(),
-                tradeRouteDTO.getChannelNumber(), tradeRouteDTO.getMerchantNumber());
-        List<TradeMerchantDTO> tradeMerchants = payCenterFeignServiceClient.listTradeMerchant(query);
-        if (tradeMerchants != null) {
-            for (TradeMerchantDTO merchantDTO : tradeMerchants) {
-                TradeRouteMerchantDTO tradeRouteMerchantDTO = new TradeRouteMerchantDTO(merchantDTO.getPlatformNumber(),
-                        merchantDTO.getChannelNumber(),merchantDTO.getMerchantNumber());
+    public TradeRouteMerchantDTO route(TradeRouteDTO tradeRouteDTO, BigDecimal tradeAmount) {
 
-                tradeRouteMerchants.add(tradeRouteMerchantDTO);
-            }
-        }
-        return tradeRouteMerchants;
+        //筛选商户，禁用，限额，风控，单笔交易限额
+        List<TradeRouteDO> tradeRouteDOS = tradeRouteDao.selectMemberTradableRoute(tradeRouteDTO.getMemberNumber(), tradeRouteDTO.getPlatformNumber(),
+                tradeRouteDTO.getChannelNumber(), tradeRouteDTO.getMerchantNumber(), tradeRouteDTO.getDefrayalChannelEnum().getType(),
+                tradeRouteDTO.getDefrayalTypeEnum().getType(), tradeAmount);
+
+        //轮询规则
+
+        return null;
     }
 
     @Override
-    public void tradeLimit(List<TradeRouteMerchantDTO> tradeRouteMerchants) {
+    public Boolean create(TradeRouteCreateDTO tradeRouteCreateDTO) {
+        return null;
+    }
 
-        //todo 交易限额
+    @Override
+    public void risk(TradeRouteDTO tradeRouteDTO, Boolean status, Date expireTime) {
 
     }
 
     @Override
-    public TradeRouteMerchantDTO poll(List<TradeRouteMerchantDTO> tradeRouteMerchants) {
+    public void limit(TradeRouteDTO tradeRouteDTO, Boolean status, Date expireTime) {
 
-        //todo 轮循
+    }
 
+    @Override
+    public void disable(TradeRouteDTO tradeRouteDTO, Boolean status) {
 
+    }
+
+    @Override
+    public Boolean limitUpdate(TradeRouteDTO tradeRouteDTO, BigDecimal singleTradeAmountMin, BigDecimal singleTradeAmountMax, BigDecimal dayTradeAmountMax, BigDecimal monthTradeAmountMax) {
         return null;
     }
 }

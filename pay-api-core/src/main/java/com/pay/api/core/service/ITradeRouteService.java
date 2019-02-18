@@ -1,12 +1,14 @@
 package com.pay.api.core.service;
 
+import com.pay.api.client.dto.TradeRouteCreateDTO;
 import com.pay.api.client.dto.TradeRouteDTO;
 import com.pay.api.client.dto.TradeRouteMerchantDTO;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * 交易路由
+ * 交易路由服务
  *
  * @author chenwei
  * @date 2019/1/17 15:02
@@ -15,28 +17,58 @@ public interface ITradeRouteService {
 
 
     /**
-     * 筛选商户
+     * 新增路由
      *
-     * @param tradeRouteDTO
-     * @return 返回不为null
+     * @param tradeRouteCreateDTO 新增路由参数
+     * @return 但且仅当新增成功返回true
      */
-    List<TradeRouteMerchantDTO> filterMerchant(TradeRouteDTO tradeRouteDTO);
-
+    Boolean create(TradeRouteCreateDTO tradeRouteCreateDTO);
 
     /**
-     * 交易限额
-     * 需要处理并发
+     * 交易路由
      *
-     * @param tradeRouteMerchants
-     */
-    void tradeLimit(List<TradeRouteMerchantDTO> tradeRouteMerchants);
-
-    /**
-     * 轮循商户
-     * 需要处理并发
-     *
-     * @param tradeRouteMerchants
+     * @param tradeRouteDTO 路由参数
+     * @param tradeAmount   交易金额
      * @return
      */
-    TradeRouteMerchantDTO poll(List<TradeRouteMerchantDTO> tradeRouteMerchants);
+    TradeRouteMerchantDTO route(TradeRouteDTO tradeRouteDTO, BigDecimal tradeAmount);
+
+    /**
+     * 路由风控
+     *
+     * @param tradeRouteDTO 路由参数
+     * @param status        风控状态，缺省值true
+     * @param expireTime    风控有效期，status为true时生效
+     */
+    void risk(TradeRouteDTO tradeRouteDTO, Boolean status, Date expireTime);
+
+    /**
+     * 路由限额
+     *
+     * @param tradeRouteDTO 路由参数
+     * @param status        限额状态，缺省值true
+     * @param expireTime    限额时间，status为true时生效
+     */
+    void limit(TradeRouteDTO tradeRouteDTO, Boolean status, Date expireTime);
+
+    /**
+     * 路由禁用
+     *
+     * @param tradeRouteDTO 路由参数
+     * @param status        禁用状态，缺省值true
+     */
+    void disable(TradeRouteDTO tradeRouteDTO, Boolean status);
+
+    /**
+     * 路由限额更新。空值不更新
+     *
+     * @param tradeRouteDTO        路由参数
+     * @param singleTradeAmountMin 单笔最小交易金额
+     * @param singleTradeAmountMax 单笔最大交易金额
+     * @param dayTradeAmountMax    日最大交易金额
+     * @param monthTradeAmountMax  月最大交易金额
+     * @return
+     */
+    Boolean limitUpdate(TradeRouteDTO tradeRouteDTO, BigDecimal singleTradeAmountMin, BigDecimal singleTradeAmountMax,
+                        BigDecimal dayTradeAmountMax, BigDecimal monthTradeAmountMax);
 }

@@ -1,5 +1,7 @@
 package com.pay.api.client.dto;
 
+import java.util.StringJoiner;
+
 /**
  * @author chenwei
  * @date 2019/1/30 16:17
@@ -110,5 +112,22 @@ public class TradeOrderCreateDTO {
 
     public void setMemberOrderNumber(String memberOrderNumber) {
         this.memberOrderNumber = memberOrderNumber;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ",
+                TradeOrderCreateDTO.class.getSimpleName() + "{", "}")
+                .add("memberId=" + memberId)
+                .add("memberNumber=" + memberNumber)
+                .add("memberName=" + memberName)
+                .add("agentId=" + agentId)
+                .add("agentNumber=" + agentNumber)
+                .add("agentName=" + agentName)
+                .add("agentLevel=" + agentLevel)
+                .add("defrayalChannel=" + defrayalChannel)
+                .add("defrayalType=" + defrayalType)
+                .add("memberOrderNumber=" + memberOrderNumber)
+                .toString();
     }
 }

@@ -14,6 +14,8 @@ import com.pay.api.core.service.ITradeOrderService;
 import com.pay.api.core.service.ITradeRiskControlService;
 import com.pay.api.core.service.ITradeRouteService;
 import com.pay.api.core.service.ITradeService;
+import com.pay.center.client.constants.DefrayalChannelEnum;
+import com.pay.center.client.constants.DefrayalTypeEnum;
 import com.pay.center.client.dto.service.MemberDTO;
 import com.pay.center.client.service.client.IPayCenterFeignServiceClient;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -60,35 +63,24 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     public ApiPayMethodResultDTO realOperate(ApiPayUnifiedPayDTO apiPayUnifiedPayDTO, MemberDTO memberDTO) {
         ApiPayMethodResultDTO<ApiPayUnifiedPayResultDTO> apiPayMethodResultDTO = new ApiPayMethodResultDTO<>();
 
+        DefrayalChannelEnum defrayalChannel = DefrayalChannelEnum.valueOf(apiPayUnifiedPayDTO.getDefrayalChannel());
+        DefrayalTypeEnum defrayalType = DefrayalTypeEnum.valueOf(apiPayUnifiedPayDTO.getDefrayalType());
+
         //2.交易路由
         //2.1.筛选商户，查询范围下正常商户（未风控商户）
         //2.2.交易限额，查询通道，商户的总交易金额，单笔金额限制，最大累计金额限制（并发）
         //2.3.轮循规则，平均（降低风控），可用（最近可用，不推荐）（并发）
-        TradeRouteDTO tradeRouteDTO = new TradeRouteDTO(apiPayUnifiedPayDTO.getPlatformNumber(),
-                apiPayUnifiedPayDTO.getChannelNumber(), apiPayUnifiedPayDTO.getMerchantNumber());
-        List<TradeRouteMerchantDTO> tradeRouteMerchants = tradeRouteService.filterMerchant(tradeRouteDTO);
-        if (tradeRouteMerchants.size() == 0) {
-            logger.error("筛选商户，筛选商户列表为空。筛选参数：{}", tradeRouteDTO);
-            apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.MERCHANT_NOT_FOUND.getType());
-            apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.MERCHANT_NOT_FOUND.getError());
+        TradeRouteDTO tradeRouteDTO = new TradeRouteDTO(apiPayUnifiedPayDTO.getMemberNumber(),apiPayUnifiedPayDTO.getPlatformNumber(),
+                apiPayUnifiedPayDTO.getChannelNumber(), apiPayUnifiedPayDTO.getMerchantNumber(),
+                defrayalChannel, defrayalType);
+        TradeRouteMerchantDTO routeMerchant = tradeRouteService.route(tradeRouteDTO, new BigDecimal(apiPayUnifiedPayDTO.getTradeAmount()));
+        if (routeMerchant == null) {
+            logger.error("交易路由，无交易路由。会员订单号：{}", apiPayUnifiedPayDTO.getMemberOrderNumber());
+            apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.NONE_MERCHANT_ROUTE.getType());
+            apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.NONE_MERCHANT_ROUTE.getError());
             return apiPayMethodResultDTO;
         }
 
-        tradeRouteService.tradeLimit(tradeRouteMerchants);
-        if (tradeRouteMerchants.size() == 0) {
-            logger.error("交易限额，可交易商户列表为空。会员订单号：{}，交易金额：{}", apiPayUnifiedPayDTO.getMemberOrderNumber(), apiPayUnifiedPayDTO.getTradeAmount());
-            apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.MERCHANT_DISABLE.getType());
-            apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.MERCHANT_DISABLE.getError());
-            return apiPayMethodResultDTO;
-        }
-
-        TradeRouteMerchantDTO finalMerchant = tradeRouteService.poll(tradeRouteMerchants);
-        if (finalMerchant == null) {
-            logger.error("交易轮循，商户不可用。会员订单号：{}", apiPayUnifiedPayDTO.getMemberOrderNumber());
-            apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.MERCHANT_DISABLE.getType());
-            apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.MERCHANT_DISABLE.getError());
-            return apiPayMethodResultDTO;
-        }
 
         //3.生成订单
         TradeOrderCreateDTO tradeOrderCreateDTO = new TradeOrderCreateDTO(memberDTO.getMemberId(), memberDTO.getMemberNumber(),
@@ -111,12 +103,12 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             case RISK:
                 tradeOrder.setTradeStatus(TradeOrderStatusEnum.CLOSED.getType());
                 //5.1.上游返回明确商户被风控
-                tradeRiskService.merchantRiskControl(new TradeMerchantRiskControlDTO(finalMerchant.getMerchantNumber()));
+                tradeRiskService.merchantRiskControl(new TradeMerchantRiskControlDTO(routeMerchant.getMerchantNumber()));
                 break;
             case ERROR:
                 tradeOrder.setTradeStatus(TradeOrderStatusEnum.CLOSED.getType());
                 //5.2.下单失败，系统内部风控预警
-                tradeRiskService.merchantRiskControlWarn(new TradeMerchantRiskControlDTO(finalMerchant.getMerchantNumber()));
+                tradeRiskService.merchantRiskControlWarn(new TradeMerchantRiskControlDTO(routeMerchant.getMerchantNumber()));
                 break;
             default:
                 //当做未知处理
@@ -134,4 +126,6 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
 
         return apiPayMethodResultDTO;
     }
+
+
 }

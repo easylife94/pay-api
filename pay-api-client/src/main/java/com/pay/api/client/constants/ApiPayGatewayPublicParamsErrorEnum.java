@@ -26,7 +26,14 @@ public enum ApiPayGatewayPublicParamsErrorEnum {
     /**
      * 版本错误
      */
-    VERSION_ERROR("VERSION_ERROR", "版本错误");
+    VERSION_ERROR("VERSION_ERROR", "版本错误"),
+
+    /**
+     * 时间戳错误
+     */
+    TIMESTAMP_ERROR("TIMESTAMP_ERROR","时间戳错误"),
+
+    ;
 
     /**
      * 类型
