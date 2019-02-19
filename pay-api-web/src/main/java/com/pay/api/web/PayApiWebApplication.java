@@ -18,7 +18,7 @@ public class PayApiWebApplication {
 
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(PayApiWebApplication .class);
-        springApplication.addListeners(new ApplicationStartupListener());
+//        springApplication.addListeners(new ApplicationStartupListener());
         springApplication.run(args);
     }
 

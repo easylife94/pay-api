@@ -24,3 +24,10 @@ mybatis:
 feign:
   hystrix:
     enabled: true
+
+snowflake:
+  data-center-id: 2
+
+order:
+  trade:
+    number-prefix: TO

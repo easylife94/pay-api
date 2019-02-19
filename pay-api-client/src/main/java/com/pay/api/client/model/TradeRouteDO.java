@@ -14,6 +14,8 @@ public class TradeRouteDO {
 
     private String memberNumber;
 
+    private String platformMapped;
+
     private String platformNumber;
 
     private String channelNumber;
@@ -41,6 +43,12 @@ public class TradeRouteDO {
     private Boolean tradeRisk;
 
     private Date tradeRiskTime;
+
+    private Long tradeIntervalTime;
+
+    private Long lastTradeTimestamp;
+
+    private Long lastTradeSucTimestamp;
 
     public Long getId() {
         return id;
@@ -80,6 +88,14 @@ public class TradeRouteDO {
 
     public void setMemberNumber(String memberNumber) {
         this.memberNumber = memberNumber == null ? null : memberNumber.trim();
+    }
+
+    public String getPlatformMapped() {
+        return platformMapped;
+    }
+
+    public void setPlatformMapped(String platformMapped) {
+        this.platformMapped = platformMapped;
     }
 
     public String getPlatformNumber() {
@@ -192,5 +208,29 @@ public class TradeRouteDO {
 
     public void setTradeRiskTime(Date tradeRiskTime) {
         this.tradeRiskTime = tradeRiskTime;
+    }
+
+    public Long getTradeIntervalTime() {
+        return tradeIntervalTime;
+    }
+
+    public void setTradeIntervalTime(Long tradeIntervalTime) {
+        this.tradeIntervalTime = tradeIntervalTime;
+    }
+
+    public Long getLastTradeTimestamp() {
+        return lastTradeTimestamp;
+    }
+
+    public void setLastTradeTimestamp(Long lastTradeTimestamp) {
+        this.lastTradeTimestamp = lastTradeTimestamp;
+    }
+
+    public Long getLastTradeSucTimestamp() {
+        return lastTradeSucTimestamp;
+    }
+
+    public void setLastTradeSucTimestamp(Long lastTradeSucTimestamp) {
+        this.lastTradeSucTimestamp = lastTradeSucTimestamp;
     }
 }

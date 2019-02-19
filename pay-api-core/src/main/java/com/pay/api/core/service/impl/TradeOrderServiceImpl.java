@@ -7,6 +7,7 @@ import com.pay.api.client.constants.TradeOrderStatusEnum;
 import com.pay.api.client.dto.TradeOrderCreateDTO;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.core.dao.TradeOrderDao;
+import com.pay.api.core.service.IIdService;
 import com.pay.api.core.service.ITradeOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,18 +22,19 @@ import java.util.Date;
 public class TradeOrderServiceImpl implements ITradeOrderService {
 
     private final TradeOrderDao tradeOrderDao;
+    private final IIdService idService;
 
     @Autowired
-    public TradeOrderServiceImpl(TradeOrderDao tradeOrderDao) {
+    public TradeOrderServiceImpl(TradeOrderDao tradeOrderDao, IIdService idService) {
         this.tradeOrderDao = tradeOrderDao;
+        this.idService = idService;
     }
 
     @Override
     public TradeOrderDO createTradeOrder(TradeOrderCreateDTO tradeOrderCreateDTO) {
-        //todo 创建订单对象
         TradeOrderDO tradeOrderDO = new TradeOrderDO();
-        //1.生成订单号 TODO 生成订单号和id
-//        tradeOrderDO.setId();
+        //1.生成订单号
+        tradeOrderDO.setId(idService.generateId());
         Date orderTime = new Date();
         //基本状态
         tradeOrderDO.setIsDeleted(false);
@@ -59,8 +61,8 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         tradeOrderDO.setAgentName(tradeOrderCreateDTO.getAgentName());
         tradeOrderDO.setAgentNumber(tradeOrderCreateDTO.getAgentNumber());
 
-        //系统订单信息 TODO 获取唯一订单号
-        tradeOrderDO.setSysOrderNumber("");
+        //系统订单信息
+        tradeOrderDO.setSysOrderNumber(idService.generateTradeOrderNumber());
         tradeOrderDO.setSysOrderTime(orderTime.getTime());
 
         //币种

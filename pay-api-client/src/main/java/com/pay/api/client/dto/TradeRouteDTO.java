@@ -1,8 +1,5 @@
 package com.pay.api.client.dto;
 
-import com.pay.center.client.constants.DefrayalChannelEnum;
-import com.pay.center.client.constants.DefrayalTypeEnum;
-
 import java.util.StringJoiner;
 
 /**
@@ -36,12 +33,12 @@ public class TradeRouteDTO {
     /**
      * 支付渠道
      */
-    private DefrayalChannelEnum defrayalChannelEnum;
+    private String defrayalChannel;
 
     /**
      * 支付方式
      */
-    private DefrayalTypeEnum defrayalTypeEnum;
+    private String defrayalType;
 
     @Override
     public String toString() {
@@ -50,19 +47,19 @@ public class TradeRouteDTO {
                 .add("platformNumber='" + platformNumber + "'")
                 .add("channelNumber='" + channelNumber + "'")
                 .add("merchantNumber='" + merchantNumber + "'")
-                .add("defrayalChannelEnum=" + defrayalChannelEnum)
-                .add("defrayalTypeEnum=" + defrayalTypeEnum)
+                .add("defrayalChannel=" + defrayalChannel)
+                .add("defrayalType=" + defrayalType)
                 .toString();
     }
 
     public TradeRouteDTO(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
-                         DefrayalChannelEnum defrayalChannelEnum, DefrayalTypeEnum defrayalTypeEnum) {
+                         String defrayalChannel, String defrayalType) {
         this.memberNumber = memberNumber;
         this.platformNumber = platformNumber;
         this.channelNumber = channelNumber;
         this.merchantNumber = merchantNumber;
-        this.defrayalChannelEnum = defrayalChannelEnum;
-        this.defrayalTypeEnum = defrayalTypeEnum;
+        this.defrayalChannel = defrayalChannel;
+        this.defrayalType = defrayalType;
     }
 
     public String getMemberNumber() {
@@ -97,20 +94,20 @@ public class TradeRouteDTO {
         this.merchantNumber = merchantNumber;
     }
 
-    public DefrayalChannelEnum getDefrayalChannelEnum() {
-        return defrayalChannelEnum;
+    public String getDefrayalChannel() {
+        return defrayalChannel;
     }
 
-    public void setDefrayalChannelEnum(DefrayalChannelEnum defrayalChannelEnum) {
-        this.defrayalChannelEnum = defrayalChannelEnum;
+    public void setDefrayalChannel(String defrayalChannel) {
+        this.defrayalChannel = defrayalChannel;
     }
 
-    public DefrayalTypeEnum getDefrayalTypeEnum() {
-        return defrayalTypeEnum;
+    public String getDefrayalType() {
+        return defrayalType;
     }
 
-    public void setDefrayalTypeEnum(DefrayalTypeEnum defrayalTypeEnum) {
-        this.defrayalTypeEnum = defrayalTypeEnum;
+    public void setDefrayalType(String defrayalType) {
+        this.defrayalType = defrayalType;
     }
 
 }

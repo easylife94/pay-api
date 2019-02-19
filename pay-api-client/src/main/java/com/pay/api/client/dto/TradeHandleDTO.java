@@ -39,6 +39,15 @@ public class TradeHandleDTO {
      */
     private DefrayalTypeEnum defrayalType;
 
+    public TradeHandleDTO(String platformMapped, String sysOrderNumber, BigDecimal tradeAmount,
+                          DefrayalChannelEnum defrayalChannel, DefrayalTypeEnum defrayalType) {
+        this.platformMapped = platformMapped;
+        this.sysOrderNumber = sysOrderNumber;
+        this.tradeAmount = tradeAmount;
+        this.defrayalChannel = defrayalChannel;
+        this.defrayalType = defrayalType;
+    }
+
     public String getPlatformMapped() {
         return platformMapped;
     }

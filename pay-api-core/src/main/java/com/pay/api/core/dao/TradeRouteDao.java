@@ -3,6 +3,7 @@ package com.pay.api.core.dao;
 import com.pay.api.client.model.TradeRouteDO;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface TradeRouteDao {
@@ -27,10 +28,51 @@ public interface TradeRouteDao {
      * @param merchantNumber  商户编号
      * @param defrayalChannel 支付渠道
      * @param defrayalType    支付方式
-     * @param tradeAmount     交易金额
      * @return
      */
     List<TradeRouteDO> selectMemberTradableRoute(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
-                                                 String defrayalChannel, String defrayalType,
-                                                 BigDecimal tradeAmount);
+                                                 String defrayalChannel, String defrayalType);
+
+    /**
+     * 查询路由
+     *
+     * @param memberNumber
+     * @param platformNumber
+     * @param channelNumber
+     * @param merchantNumber
+     * @param defrayalChannel
+     * @param defrayalType
+     * @return
+     */
+    List<TradeRouteDO> selectTradeRoute(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
+                                        String defrayalChannel, String defrayalType);
+
+    /**
+     * 批量插入
+     *
+     * @param records
+     * @return
+     */
+    int insertBatch(List<TradeRouteDO> records);
+
+    /**
+     * 更新路由禁用、交易限额、交易风控等状态
+     *
+     * @param memberNumber
+     * @param platformNumber
+     * @param channelNumber
+     * @param merchantNumber
+     * @param defrayalChannel
+     * @param defrayalType
+     * @param status
+     * @param tradeLimit
+     * @param tradeLimitDate
+     * @param tradeRisk
+     * @param tradeRiskDate
+     * @return
+     */
+    int updateTradeRouteStatus(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
+                               String defrayalChannel, String defrayalType, Boolean status, Boolean tradeLimit,
+                               Date tradeLimitDate, Boolean tradeRisk,Date tradeRiskDate);
+
 }

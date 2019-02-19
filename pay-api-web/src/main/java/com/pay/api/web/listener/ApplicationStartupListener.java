@@ -1,13 +1,9 @@
 package com.pay.api.web.listener;
 
-import com.pay.api.core.utils.ClassScaner;
-import com.pay.api.core.utils.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-
-import java.util.Set;
 
 /**
  * @author chenwei

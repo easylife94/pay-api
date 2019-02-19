@@ -7,6 +7,7 @@
     <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
     <result column="member_number" jdbcType="VARCHAR" property="memberNumber" />
+    <result column="platform_mapped" jdbcType="VARCHAR" property="platformNumber" />
     <result column="platform_number" jdbcType="VARCHAR" property="platformNumber" />
     <result column="channel_number" jdbcType="VARCHAR" property="channelNumber" />
     <result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
@@ -21,15 +22,17 @@
     <result column="trade_limit_time" jdbcType="TIMESTAMP" property="tradeLimitTime" />
     <result column="trade_risk" jdbcType="BIT" property="tradeRisk" />
     <result column="trade_risk_time" jdbcType="TIMESTAMP" property="tradeRiskTime" />
+    <result column="trade_interval_time" jdbcType="BIGINT" property="tradeIntervalTime" />
+    <result column="last_trade_timestamp" jdbcType="BIGINT" property="lastTradeTimestamp" />
+    <result column="last_trade_suc_timestamp" jdbcType="BIGINT" property="lastTradeSucTimestamp" />
   </resultMap>
   <sql id="Base_Column_List">
     id, gmt_create, gmt_update, is_deleted, member_number, platform_number, channel_number, 
     merchant_id, merchant_number, defrayal_channel, defrayal_type, merchant_name, status, 
     single_trade_amount_min, single_trade_amount_max, trade_limit, trade_limit_time, 
-    trade_risk, trade_risk_time
+    trade_risk, trade_risk_time,trade_interval_time,last_trade_timestamp,last_trade_suc_timestamp
   </sql>
   <select id="selectMemberTradableRoute" resultType="com.pay.api.client.model.TradeRouteDO">
-
     select
     <include refid="Base_Column_List" />
     from trade_route
@@ -49,8 +52,28 @@
     <if test="merchantNumber != null and merchantNumber != ''">
       and merchant_number = #{merchantNumber,jdbc=VARCHAR}
     </if>
-    and single_trade_amount_min <![CDATA[  <= ]]> #{tradeAmount,jdbcType=DECIMAL}
-    and single_trade_amount_max <![CDATA[  > ]]> #{tradeAmount,jdbcType=DECIMAL}
+  </select>
+  <select id="selectTradeRoute" resultType="com.pay.api.client.model.TradeRouteDO">
+    select
+    <include refid="Base_Column_List" />
+    from trade_route
+    where is_deleted = 0
+    and member_number = #{memberNumber,jdbcType=VARCHAR}
+    <if test="defrayalChannel != null and defrayalChannel != ''">
+      and defrayal_channel = #{defrayalChannel,jdbcType=VARCHAR}
+    </if>
+    <if test="defrayalType != null and defrayalType != ''">
+      and defrayal_type = #{defrayalType,jdbc=VARCHAR}
+    </if>
+    <if test="platformNumber != null and platformNumber != ''">
+      and platform_number = #{platformNumber,jdbc=VARCHAR}
+    </if>
+    <if test="channelNumber != null and channelNumber != ''">
+      and channel_number = #{channelNumber,jdbc=VARCHAR}
+    </if>
+    <if test="merchantNumber != null and merchantNumber != ''">
+      and merchant_number = #{merchantNumber,jdbc=VARCHAR}
+    </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -69,14 +92,15 @@
       defrayal_channel, defrayal_type, merchant_name, 
       status, single_trade_amount_min, single_trade_amount_max, 
       trade_limit, trade_limit_time, trade_risk, 
-      trade_risk_time)
+      trade_risk_time,trade_interval_time)
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=BIT}, #{memberNumber,jdbcType=VARCHAR}, #{platformNumber,jdbcType=VARCHAR}, 
       #{channelNumber,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT}, #{merchantNumber,jdbcType=VARCHAR}, 
       #{defrayalChannel,jdbcType=VARCHAR}, #{defrayalType,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, 
       #{status,jdbcType=BIT}, #{singleTradeAmountMin,jdbcType=DECIMAL}, #{singleTradeAmountMax,jdbcType=DECIMAL}, 
       #{tradeLimit,jdbcType=BIT}, #{tradeLimitTime,jdbcType=TIMESTAMP}, #{tradeRisk,jdbcType=BIT}, 
-      #{tradeRiskTime,jdbcType=TIMESTAMP})
+      #{tradeRiskTime,jdbcType=TIMESTAMP},#{tradeIntervalTime,jdbcType=BIGINT},#{lastTradeTimestamp,jdbcType=BIGINT},
+      #{lastTradeSucTimestamp,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeRouteDO">
     insert into trade_route
@@ -138,6 +162,15 @@
       <if test="tradeRiskTime != null">
         trade_risk_time,
       </if>
+      <if test="tradeIntervalTime != null">
+        trade_interval_time,
+      </if>
+      <if test="lastTradeTimestamp != null">
+        last_trade_timestamp,
+      </if>
+      <if test="lastTradeSucTimestamp != null">
+        last_trade_suc_timestamp,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -197,7 +230,37 @@
       <if test="tradeRiskTime != null">
         #{tradeRiskTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="tradeIntervalTime != null">
+        #{tradeIntervalTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastTradeTimestamp != null">
+        #{lastTradeTimestamp,jdbcType=BIGINT},
+      </if>
+      <if test="lastTradeSucTimestamp != null">
+        #{lastTradeSucTimestamp,jdbcType=BIGINT},
+      </if>
     </trim>
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into trade_route (id, gmt_create, gmt_update,
+                             is_deleted, member_number, platform_number,
+                             channel_number, merchant_id, merchant_number,
+                             defrayal_channel, defrayal_type, merchant_name,
+                             status, single_trade_amount_min, single_trade_amount_max,
+                             trade_limit, trade_limit_time, trade_risk,
+                             trade_risk_time,trade_interval_time,last_trade_timestamp,last_trade_suc_timestamp)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=BIGINT}, #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtUpdate,jdbcType=TIMESTAMP},
+      #{item.isDeleted,jdbcType=BIT}, #{item.memberNumber,jdbcType=VARCHAR}, #{item.platformNumber,jdbcType=VARCHAR},
+      #{item.channelNumber,jdbcType=VARCHAR}, #{item.merchantId,jdbcType=BIGINT}, #{item.merchantNumber,jdbcType=VARCHAR},
+      #{item.defrayalChannel,jdbcType=VARCHAR}, #{item.defrayalType,jdbcType=VARCHAR}, #{item.merchantName,jdbcType=VARCHAR},
+      #{item.status,jdbcType=BIT}, #{item.singleTradeAmountMin,jdbcType=DECIMAL}, #{item.singleTradeAmountMax,jdbcType=DECIMAL},
+      #{item.tradeLimit,jdbcType=BIT}, #{item.tradeLimitTime,jdbcType=TIMESTAMP}, #{item.tradeRisk,jdbcType=BIT},
+      #{item.tradeRiskTime,jdbcType=TIMESTAMP},#{item.tradeIntervalTime,jdbcType=BIGINT},#{item.lastTradeTimestamp,jdbcType=BIGINT},
+      #{item.lastTradeSucTimestamp,jdbcType=BIGINT})
+    </foreach>
+
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.pay.api.client.model.TradeRouteDO">
     update trade_route
@@ -256,6 +319,15 @@
       <if test="tradeRiskTime != null">
         trade_risk_time = #{tradeRiskTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="tradeIntervalTime != null">
+        trade_interval_time = #{tradeIntervalTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastTradeTimestamp != null">
+        last_trade_timestamp = #{lastTradeTimestamp,jdbcType=BIGINT},
+      </if>
+      <if test="lastTradeSucTimestamp != null">
+        last_trade_suc_timestamp = #{lastTradeSucTimestamp,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -278,7 +350,50 @@
       trade_limit = #{tradeLimit,jdbcType=BIT},
       trade_limit_time = #{tradeLimitTime,jdbcType=TIMESTAMP},
       trade_risk = #{tradeRisk,jdbcType=BIT},
-      trade_risk_time = #{tradeRiskTime,jdbcType=TIMESTAMP}
+      trade_risk_time = #{tradeRiskTime,jdbcType=TIMESTAMP},
+      trade_interval_time = #{tradeIntervalTime,jdbcType=BIGINT},
+      last_trade_timestamp = #{lastTradeTimestamp,jdbcType=BIGINT},
+      last_trade_suc_timestamp = #{lastTradeSucTimestamp,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateTradeRouteStatus">
+    update trade_route
+    set
+        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+        <if test="status != null">
+          status = #{status,jdbcType=BIT},
+        </if>
+        <if test="tradeLimit != null">
+          trade_limit = #{tradeLimit,jdbcType=BIT},
+        </if>
+        <if test="tradeLimitTime != null">
+          trade_limit_time = #{tradeLimitTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="tradeRisk != null">
+          trade_risk = #{tradeRisk,jdbcType=BIT},
+        </if>
+        <if test="tradeRiskTime != null">
+          trade_risk_time = #{tradeRiskTime,jdbcType=TIMESTAMP}
+        </if>
+    where is_deleted = 0
+    <if test="memberNumber != null and memberNumber != ''">
+      and member_number = #{memberNumber,jdbcType=VARCHAR}
+    </if>
+    <if test="platformNumber != null and platformNumber != ''">
+      and platform_number = #{platformNumber,jdbcType=VARCHAR}
+    </if>
+    <if test="channelNumber != null and channelNumber != ''">
+      and channel_number = #{channelNumber,jdbcType=VARCHAR}
+    </if>
+    <if test="merchantNumber != null and merchantNumber != ''">
+      and merchant_number = #{merchantNumber,jdbcType=VARCHAR}
+    </if>
+    <if test="defrayalChannel != null and defrayalChannel != ''">
+      and defrayal_channel = #{defrayalChannel,jdbcType=VARCHAR}
+    </if>
+    <if test="defrayalType != null and defrayalType != ''">
+      and defrayal_type = #{defrayalType,jdbcType=VARCHAR}
+    </if>
   </update>
 </mapper>

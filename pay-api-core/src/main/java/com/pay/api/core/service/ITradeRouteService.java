@@ -1,11 +1,13 @@
 package com.pay.api.core.service;
 
+import com.pay.api.client.constants.TradeRouteRuleEnum;
 import com.pay.api.client.dto.TradeRouteCreateDTO;
 import com.pay.api.client.dto.TradeRouteDTO;
 import com.pay.api.client.dto.TradeRouteMerchantDTO;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 交易路由服务
@@ -19,19 +21,20 @@ public interface ITradeRouteService {
     /**
      * 新增路由
      *
-     * @param tradeRouteCreateDTO 新增路由参数
+     * @param tradeRouteCreateDTOS 新增路由
      * @return 但且仅当新增成功返回true
      */
-    Boolean create(TradeRouteCreateDTO tradeRouteCreateDTO);
+    Boolean create(List<TradeRouteCreateDTO> tradeRouteCreateDTOS);
 
     /**
      * 交易路由
      *
      * @param tradeRouteDTO 路由参数
+     * @param tradeRouteRule 交易路由规则
      * @param tradeAmount   交易金额
      * @return
      */
-    TradeRouteMerchantDTO route(TradeRouteDTO tradeRouteDTO, BigDecimal tradeAmount);
+    TradeRouteMerchantDTO route(TradeRouteDTO tradeRouteDTO, TradeRouteRuleEnum tradeRouteRule, BigDecimal tradeAmount);
 
     /**
      * 路由风控
