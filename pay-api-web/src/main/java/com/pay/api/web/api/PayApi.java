@@ -53,7 +53,7 @@ public class PayApi {
 
             //1.公共参数校验
             ApiPayParamsCheckResultDTO paramsCheckResultDTO = payApiGatewayService.publicParamsCheck(apiPayDTO);
-            if (Boolean.TRUE.equals(paramsCheckResultDTO.getPass())) {
+            if (Boolean.FALSE.equals(paramsCheckResultDTO.getPass())) {
                 apiPayResultDTO.setSubCode(paramsCheckResultDTO.getType());
                 apiPayResultDTO.setSubMsg(paramsCheckResultDTO.getMsg());
                 return gatewayError(apiPayDTO, apiPayResultDTO, ApiPayGatewayResultEnum.PUBLIC_PARAMS_ERROR);

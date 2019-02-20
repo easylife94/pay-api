@@ -74,7 +74,7 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
         //2.3 version
         String version = apiPayDTO.getVersion();
         ApiPayGatewayVersionEnum versionEnum = ApiPayGatewayVersionEnum.get(version);
-        if (versionEnum != null) {
+        if (versionEnum == null) {
             return paramsError(apiPayParamsCheckDTO, "version", ApiPayGatewayPublicParamsErrorEnum.VERSION_ERROR);
         }
 
@@ -122,9 +122,8 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
             try {
                 switch (signTypeEnum) {
                     case RSA:
-                        return SignUtils.verifyRsa(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
                     case RSA2:
-                        return SignUtils.verifyRsa2(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
+                        return SignUtils.verifyRsa(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
                     default:
                         logger.error("暂不支持签名算法类型:{}", signType);
                 }
@@ -147,10 +146,8 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
             try {
                 switch (signTypeEnum) {
                     case RSA:
-                        apiPayResultDTO.setSign(SignUtils.signRsa(contentStr, memberDTO.getSysPriKey()));
-                        return Boolean.TRUE;
                     case RSA2:
-                        apiPayResultDTO.setSign(SignUtils.signRsa2(contentStr, memberDTO.getSysPriKey()));
+                        apiPayResultDTO.setSign(SignUtils.signRsa(contentStr, memberDTO.getSysPriKey()));
                         return Boolean.TRUE;
                     default:
                         logger.error("暂不支持签名算法类型:{}", signType);

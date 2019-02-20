@@ -21,11 +21,6 @@ public class RsaUtils {
     public static final String SIGN_TYPE_RSA = "RSA";
 
     /**
-     * RSA2加密算法
-     */
-    public static final String SIGN_TYPE_RSA2 = "RSA2";
-
-    /**
      * SHA1WithRSA签名算法
      */
     public static final String SIGN_SHA1RSA_ALGORITHMS = "SHA1WithRSA";
@@ -68,7 +63,7 @@ public class RsaUtils {
      */
     public static PublicKey getPublicKey(String algorithm, String publicKey)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
-        byte[] keyBytes = Base64.getDecoder().decode(publicKey);
+        byte[] keyBytes = Base64.getDecoder().decode(publicKey.replaceAll("\r\n", ""));
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory factory = KeyFactory.getInstance(algorithm);
         return factory.generatePublic(x509EncodedKeySpec);
