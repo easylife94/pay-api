@@ -1,5 +1,6 @@
 package com.pay.api.core.method;
 
+import com.pay.api.client.constants.ApiPayMethodResultEnum;
 import com.pay.api.client.dto.ApiPayMethodParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayMethodResultDTO;
 import com.pay.center.client.dto.service.MemberDTO;
@@ -45,8 +46,9 @@ public abstract class AbstractPayApiMethod<T> implements IPayApiMethod {
         ApiPayMethodParamsCheckResultDTO<T> paramsCheckResultDTO = checkParams(content);
         if (!Boolean.TRUE.equals(paramsCheckResultDTO.getPass())) {
             ApiPayMethodResultDTO apiPayMethodResultDTO = new ApiPayMethodResultDTO();
-            apiPayMethodResultDTO.setSubCode(paramsCheckResultDTO.getType());
+            apiPayMethodResultDTO.setSubCode();
             apiPayMethodResultDTO.setSubMsg(paramsCheckResultDTO.getMsg());
+            apiPayMethodResultDTO.setResult(ApiPayMethodResultEnum.FAIL);
             return apiPayMethodResultDTO;
         }
         return realOperate(paramsCheckResultDTO.getData(), memberDTO);

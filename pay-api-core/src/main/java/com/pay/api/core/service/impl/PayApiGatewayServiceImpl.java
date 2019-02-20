@@ -123,7 +123,7 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
                 switch (signTypeEnum) {
                     case RSA:
                     case RSA2:
-                        return SignUtils.verifyRsa(apiPayDTO.getContent(), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
+                        return SignUtils.verifyRsa(SignUtils.formatStr(apiPayDTO.getContent()), memberDTO.getMemberPubKey(), apiPayDTO.getSign());
                     default:
                         logger.error("暂不支持签名算法类型:{}", signType);
                 }

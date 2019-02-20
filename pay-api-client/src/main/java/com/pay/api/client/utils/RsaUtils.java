@@ -46,7 +46,7 @@ public class RsaUtils {
      */
     public static PrivateKey getPrivateKey(String algorithm, String privateKey)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        byte[] keyBytes = Base64.getDecoder().decode(privateKey);
+        byte[] keyBytes = Base64.getDecoder().decode(privateKey.replaceAll("\r|\n", ""));
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory factory = KeyFactory.getInstance(algorithm);
         return factory.generatePrivate(pkcs8EncodedKeySpec);
@@ -63,7 +63,7 @@ public class RsaUtils {
      */
     public static PublicKey getPublicKey(String algorithm, String publicKey)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
-        byte[] keyBytes = Base64.getDecoder().decode(publicKey.replaceAll("\r\n", ""));
+        byte[] keyBytes = Base64.getDecoder().decode(publicKey.replaceAll("\r|\n", ""));
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory factory = KeyFactory.getInstance(algorithm);
         return factory.generatePublic(x509EncodedKeySpec);

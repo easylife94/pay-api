@@ -31,7 +31,7 @@ public enum ApiPayGatewayResultEnum {
     /**
      * 方法执行失败
      */
-    METHOD_FAIL("40001","方法执行失败"),
+    METHOD_FAIL("40001", "方法执行失败"),
 
     /**
      * 公共参数错误
@@ -42,7 +42,6 @@ public enum ApiPayGatewayResultEnum {
      * 签名错误
      */
     SIGN_ERROR("60000", "签名错误"),
-
     //add new enum above
 
     /**

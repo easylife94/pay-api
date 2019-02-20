@@ -1,6 +1,7 @@
 package com.pay.api.client.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.*;
@@ -56,6 +57,28 @@ public final class SignUtils {
     }
 
     /**
+     * 格式化字符串json
+     *
+     * @param content
+     * @return
+     */
+    public static String formatStr(String content) {
+        StringBuilder str = new StringBuilder();
+        JSONObject json = JSONObject.parseObject(content);
+        SortedSet<String> sortedKeys = new TreeSet<>(json.keySet());
+        for (String key : sortedKeys) {
+            if(StringUtils.isNotBlank(json.getString(key))){
+                str.append(json.getString(key));
+                str.append(SPLIT);
+            }
+        }
+        //移除最后一个&
+        str.deleteCharAt(str.length() - 1);
+        System.out.println(str);
+        return str.toString();
+    }
+
+    /**
      * 将对象转为字符串
      * 如果是String类型直接返回
      *
@@ -70,9 +93,14 @@ public final class SignUtils {
             JSONObject json = (JSONObject) JSONObject.toJSON(content);
             SortedSet<String> sortedKeys = new TreeSet<>(json.keySet());
             for (String key : sortedKeys) {
-                str.append(json.getString(key));
-                str.append(SPLIT);
+                if(StringUtils.isNotBlank(json.getString(key))){
+                    str.append(json.getString(key));
+                    str.append(SPLIT);
+                }
             }
+
+            //移除最后一个&
+            str.deleteCharAt(str.length() - 1);
         }
         return str.toString();
     }
