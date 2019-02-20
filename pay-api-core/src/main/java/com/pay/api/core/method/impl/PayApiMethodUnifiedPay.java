@@ -8,6 +8,7 @@ import com.pay.api.client.dto.method.ApiPayUnifiedPayResultDTO;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.client.utils.DateUtils;
 import com.pay.api.core.method.AbstractPayApiMethod;
+import com.pay.api.core.rabbit.RabbitMqSender;
 import com.pay.api.core.service.ITradeOrderService;
 import com.pay.api.core.service.ITradeRiskControlService;
 import com.pay.api.core.service.ITradeRouteService;
@@ -41,17 +42,17 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     private final ITradeOrderService tradeOrderService;
     private final ITradeService tradeService;
     private final ITradeRiskControlService tradeRiskService;
-    private final IPayCenterFeignServiceClient payCenterFeignServiceClient;
+    private final RabbitMqSender rabbitMqSender;
 
     @Autowired
     public PayApiMethodUnifiedPay(ITradeOrderService tradeOrderService, ITradeRouteService tradeRouteService,
                                   ITradeService tradeService, ITradeRiskControlService tradeRiskService,
-                                  IPayCenterFeignServiceClient payCenterFeignServiceClient) {
+                                  RabbitMqSender rabbitMqSender) {
         this.tradeOrderService = tradeOrderService;
         this.tradeRouteService = tradeRouteService;
         this.tradeService = tradeService;
         this.tradeRiskService = tradeRiskService;
-        this.payCenterFeignServiceClient = payCenterFeignServiceClient;
+        this.rabbitMqSender = rabbitMqSender;
     }
 
     @Override
@@ -214,6 +215,10 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
                 tradeOrder.getPayAmount().toString(), tradeOrder.getServiceFee().toString(), tradeOrder.getPayContent());
         apiPayMethodResultDTO.setResult(ApiPayMethodResultEnum.SUCCESS);
         apiPayMethodResultDTO.setData(unifiedPayResultDTO);
+
+        //8.下单异步任务
+
+
 
         return apiPayMethodResultDTO;
     }

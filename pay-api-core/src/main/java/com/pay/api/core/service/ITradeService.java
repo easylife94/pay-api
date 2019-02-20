@@ -2,6 +2,7 @@ package com.pay.api.core.service;
 
 import com.pay.api.client.dto.TradeHandleDTO;
 import com.pay.api.client.dto.TradeHandleResultDTO;
+import com.pay.api.client.dto.async.UnifiedPayFinishMessageDTO;
 
 /**
  * 交易服务接口
@@ -18,6 +19,4 @@ public interface ITradeService {
      * @return 交易处理返回结果
      */
     TradeHandleResultDTO tradeHandle(TradeHandleDTO tradeHandleDTO);
-
-
 }
