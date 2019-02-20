@@ -1,5 +1,6 @@
 package com.pay.api.core.method;
 
+import com.pay.api.client.constants.ApiPayMethodErrorEnum;
 import com.pay.api.client.constants.ApiPayMethodResultEnum;
 import com.pay.api.client.dto.ApiPayMethodParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayMethodResultDTO;
@@ -15,22 +16,22 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractPayApiMethod<T> implements IPayApiMethod {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractPayApiMethod.class);
 
     /**
      * 定义参数校验方法
      *
-     * @param content
-     * @return
+     * @param content   请求参数json字符串
+     * @param memberDTO 会员参数
+     * @return 返回ApiPayMethodParamsCheckResultDTO对象。对象的data字段为转化后请求参数
      */
-    public abstract ApiPayMethodParamsCheckResultDTO<T> checkParams(String content);
+    public abstract ApiPayMethodParamsCheckResultDTO<T> checkParams(String content, MemberDTO memberDTO);
 
     /**
      * 定义方法实际执行
      *
-     * @param content
-     * @param memberDTO
-     * @return
+     * @param content   请求参数对象
+     * @param memberDTO 会员参数
+     * @return 返回方法执行结果
      */
     public abstract ApiPayMethodResultDTO realOperate(T content, MemberDTO memberDTO);
 
@@ -43,11 +44,12 @@ public abstract class AbstractPayApiMethod<T> implements IPayApiMethod {
      */
     @Override
     public final ApiPayMethodResultDTO operate(String content, MemberDTO memberDTO) {
-        ApiPayMethodParamsCheckResultDTO<T> paramsCheckResultDTO = checkParams(content);
+        ApiPayMethodParamsCheckResultDTO<T> paramsCheckResultDTO = checkParams(content, memberDTO);
         if (!Boolean.TRUE.equals(paramsCheckResultDTO.getPass())) {
             ApiPayMethodResultDTO apiPayMethodResultDTO = new ApiPayMethodResultDTO();
-            apiPayMethodResultDTO.setSubCode();
-            apiPayMethodResultDTO.setSubMsg(paramsCheckResultDTO.getMsg());
+            apiPayMethodResultDTO.setSubCode(ApiPayMethodErrorEnum.CHECK_FAIL.getCode());
+            apiPayMethodResultDTO.setSubMsg(ApiPayMethodErrorEnum.CHECK_FAIL.getMsg() + ":" +
+                    paramsCheckResultDTO.getMsg());
             apiPayMethodResultDTO.setResult(ApiPayMethodResultEnum.FAIL);
             return apiPayMethodResultDTO;
         }

@@ -39,18 +39,18 @@
     where is_deleted = 0
     and member_number = #{memberNumber,jdbcType=VARCHAR}
     and defrayal_channel = #{defrayalChannel,jdbcType=VARCHAR}
-    and defrayal_type = #{defrayalType,jdbc=VARCHAR}
+    and defrayal_type = #{defrayalType,jdbcType=VARCHAR}
     and status = 0
     and trade_limit = 0
     and trade_risk = 0
     <if test="platformNumber != null and platformNumber != ''">
-      and platform_number = #{platformNumber,jdbc=VARCHAR}
+      and platform_number = #{platformNumber,jdbcType=VARCHAR}
     </if>
     <if test="channelNumber != null and channelNumber != ''">
-      and channel_number = #{channelNumber,jdbc=VARCHAR}
+      and channel_number = #{channelNumber,jdbcType=VARCHAR}
     </if>
     <if test="merchantNumber != null and merchantNumber != ''">
-      and merchant_number = #{merchantNumber,jdbc=VARCHAR}
+      and merchant_number = #{merchantNumber,jdbcType=VARCHAR}
     </if>
   </select>
   <select id="selectTradeRoute" resultType="com.pay.api.client.model.TradeRouteDO">
@@ -63,16 +63,16 @@
       and defrayal_channel = #{defrayalChannel,jdbcType=VARCHAR}
     </if>
     <if test="defrayalType != null and defrayalType != ''">
-      and defrayal_type = #{defrayalType,jdbc=VARCHAR}
+      and defrayal_type = #{defrayalType,jdbcType=VARCHAR}
     </if>
     <if test="platformNumber != null and platformNumber != ''">
-      and platform_number = #{platformNumber,jdbc=VARCHAR}
+      and platform_number = #{platformNumber,jdbcType=VARCHAR}
     </if>
     <if test="channelNumber != null and channelNumber != ''">
-      and channel_number = #{channelNumber,jdbc=VARCHAR}
+      and channel_number = #{channelNumber,jdbcType=VARCHAR}
     </if>
     <if test="merchantNumber != null and merchantNumber != ''">
-      and merchant_number = #{merchantNumber,jdbc=VARCHAR}
+      and merchant_number = #{merchantNumber,jdbcType=VARCHAR}
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

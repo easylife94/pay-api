@@ -8,6 +8,7 @@ import com.pay.api.client.dto.ApiPayResultDTO;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
+import com.pay.center.client.constants.ApiResultEnum;
 import com.pay.center.client.dto.service.MemberDTO;
 import com.pay.center.client.service.client.IPayCenterFeignServiceClient;
 import org.slf4j.Logger;
@@ -82,6 +83,19 @@ public class PayApi {
             switch (resultDTO.getResult()) {
                 case SUCCESS:
                     apiPayResultDTO.setContent(resultDTO.getData());
+                    //5.参数签名
+                    if (!Boolean.TRUE.equals(payApiGatewayService.sign(apiPayDTO, apiPayResultDTO, memberDTO))) {
+                        return gatewayError(apiPayDTO, apiPayResultDTO, ApiPayGatewayResultEnum.SIGN_ERROR);
+                    }
+
+                    //6.是否要加密
+                    if (Boolean.TRUE.equals(apiPayDTO.getEncrypt())) {
+                        String encryptContent = payApiGatewayService.encrypt(apiPayDTO.getContent(), memberDTO);
+                        apiPayDTO.setContent(encryptContent);
+                    }
+
+                    apiPayResultDTO.setCode(ApiPayGatewayResultEnum.SUCCESS.getCode());
+                    apiPayResultDTO.setMsg(ApiPayGatewayResultEnum.SUCCESS.getMsg());
                     break;
                 case FAIL:
                     apiPayResultDTO.setCode(ApiPayGatewayResultEnum.METHOD_FAIL.getCode());
@@ -93,19 +107,7 @@ public class PayApi {
                     throw new PayApiException("不支持方法执行返回结果类型：" + resultDTO.getResult());
             }
 
-            //5.参数签名
-            if (!Boolean.TRUE.equals(payApiGatewayService.sign(apiPayDTO, apiPayResultDTO, memberDTO))) {
-                return gatewayError(apiPayDTO, apiPayResultDTO, ApiPayGatewayResultEnum.SIGN_ERROR);
-            }
 
-            //6.是否要加密
-            if (Boolean.TRUE.equals(apiPayDTO.getEncrypt())) {
-                String encryptContent = payApiGatewayService.encrypt(apiPayDTO.getContent(), memberDTO);
-                apiPayDTO.setContent(encryptContent);
-            }
-
-            apiPayResultDTO.setCode(ApiPayGatewayResultEnum.SUCCESS.getCode());
-            apiPayResultDTO.setMsg(ApiPayGatewayResultEnum.SUCCESS.getMsg());
 
             logger.info("支付接口网关，返回成功，请求参数:{}，返回参数:{}", apiPayDTO, apiPayResultDTO);
         } catch (Exception e) {

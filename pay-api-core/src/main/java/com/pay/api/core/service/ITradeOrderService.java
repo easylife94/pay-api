@@ -29,4 +29,14 @@ public interface ITradeOrderService {
      */
     boolean updateTradeOrder(TradeOrderDO tradeOrderDO);
 
+    /**
+     * 查找唯一订单
+     *
+     * @param sysOrderNumber    系统订单号
+     * @param memberNumber      会员编号
+     * @param memberOrderNumber 会员订单号（在会员编号参数不为空时生效）
+     * @return 返回唯一订单
+     */
+    TradeOrderDO findOneOrder(String sysOrderNumber, String memberNumber, String memberOrderNumber);
+
 }

@@ -23,6 +23,8 @@ public enum ApiPayMethodParamsErrorEnum {
      */
     INVALID("INVALID","参数值无效"),
 
+
+
     ;
 
 

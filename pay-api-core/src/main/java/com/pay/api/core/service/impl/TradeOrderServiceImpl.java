@@ -9,6 +9,7 @@ import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.core.dao.TradeOrderDao;
 import com.pay.api.core.service.IIdService;
 import com.pay.api.core.service.ITradeOrderService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +76,16 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
     @Override
     public boolean updateTradeOrder(TradeOrderDO tradeOrderDO) {
         return tradeOrderDao.updateByPrimaryKeySelective(tradeOrderDO) > 0;
+    }
+
+    @Override
+    public TradeOrderDO findOneOrder(String sysOrderNumber, String memberNumber, String memberOrderNumber) {
+        TradeOrderDO tradeOrderDO;
+        if (StringUtils.isNotBlank(memberNumber)) {
+            tradeOrderDO = tradeOrderDao.selectByMemberOrderNumber(memberNumber, memberOrderNumber);
+        } else {
+            tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(sysOrderNumber);
+        }
+        return tradeOrderDO;
     }
 }

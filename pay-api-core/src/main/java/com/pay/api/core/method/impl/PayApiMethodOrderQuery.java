@@ -13,6 +13,7 @@ import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.client.utils.DateUtils;
 import com.pay.api.core.dao.TradeOrderDao;
 import com.pay.api.core.method.AbstractPayApiMethod;
+import com.pay.api.core.service.ITradeOrderService;
 import com.pay.center.client.dto.service.MemberDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,15 +32,15 @@ public class PayApiMethodOrderQuery extends AbstractPayApiMethod<ApiPayOrderQuer
 
     private static final Logger logger = LoggerFactory.getLogger(PayApiMethodOrderQuery.class);
 
-    private final TradeOrderDao tradeOrderDao;
+    private final ITradeOrderService tradeOrderService;
 
     @Autowired
-    public PayApiMethodOrderQuery(TradeOrderDao tradeOrderDao) {
-        this.tradeOrderDao = tradeOrderDao;
+    public PayApiMethodOrderQuery(ITradeOrderService tradeOrderService) {
+        this.tradeOrderService = tradeOrderService;
     }
 
     @Override
-    public ApiPayMethodParamsCheckResultDTO<ApiPayOrderQueryDTO> checkParams(String content) {
+    public ApiPayMethodParamsCheckResultDTO<ApiPayOrderQueryDTO> checkParams(String content, MemberDTO memberDTO) {
         ApiPayMethodParamsCheckResultDTO<ApiPayOrderQueryDTO> checkResultDTO = new ApiPayMethodParamsCheckResultDTO<>();
         JSONObject jsonObject = JSONObject.parseObject(content);
         ApiPayOrderQueryDTO data = jsonObject.toJavaObject(ApiPayOrderQueryDTO.class);
@@ -56,12 +57,7 @@ public class PayApiMethodOrderQuery extends AbstractPayApiMethod<ApiPayOrderQuer
     @Override
     public ApiPayMethodResultDTO realOperate(ApiPayOrderQueryDTO content, MemberDTO memberDTO) {
         ApiPayMethodResultDTO<ApiPayOrderQueryResultDTO> apiPayMethodResultDTO = new ApiPayMethodResultDTO<>();
-        TradeOrderDO tradeOrderDO;
-        if (StringUtils.isNotBlank(content.getMemberOrderNumber())) {
-            tradeOrderDO = tradeOrderDao.selectByMemberOrderNumber(memberDTO.getMemberNumber(), content.getMemberOrderNumber());
-        } else {
-            tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(content.getSysOrderNumber());
-        }
+        TradeOrderDO tradeOrderDO = tradeOrderService.findOneOrder(content.getSysOrderNumber(), memberDTO.getMemberNumber(), content.getMemberOrderNumber());
 
         if (tradeOrderDO != null) {
             ApiPayOrderQueryResultDTO orderQueryResultDTO = new ApiPayOrderQueryResultDTO(tradeOrderDO.getMemberOrderNumber(),

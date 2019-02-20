@@ -55,7 +55,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     }
 
     @Override
-    public ApiPayMethodParamsCheckResultDTO<ApiPayUnifiedPayDTO> checkParams(String content) {
+    public ApiPayMethodParamsCheckResultDTO<ApiPayUnifiedPayDTO> checkParams(String content, MemberDTO memberDTO) {
         ApiPayMethodParamsCheckResultDTO<ApiPayUnifiedPayDTO> checkResultDTO = new ApiPayMethodParamsCheckResultDTO<>();
         JSONObject jsonObject = JSONObject.parseObject(content);
         ApiPayUnifiedPayDTO data = jsonObject.toJavaObject(ApiPayUnifiedPayDTO.class);
@@ -69,6 +69,13 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             checkResultDTO.setPass(false);
             checkResultDTO.setMsg("[memberOrderNumber]不能为空");
             return checkResultDTO;
+        } else {
+            TradeOrderDO oneOrder = tradeOrderService.findOneOrder(null, memberDTO.getMemberNumber(), data.getMemberOrderNumber());
+            if (oneOrder != null) {
+                checkResultDTO.setPass(false);
+                checkResultDTO.setMsg("[memberOrderNumber]会员订单号：" + data.getMemberOrderNumber() + "已存在！");
+                return checkResultDTO;
+            }
         }
 
         if (StringUtils.isBlank(data.getTradeAmount())) {
