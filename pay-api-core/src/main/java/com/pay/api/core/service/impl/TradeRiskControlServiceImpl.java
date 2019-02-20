@@ -13,11 +13,11 @@ public class TradeRiskControlServiceImpl implements ITradeRiskControlService {
 
     @Override
     public void merchantRiskControl(TradeMerchantRiskControlDTO tradeMerchantRiskControlDTO) {
-
+        //TODO 商户风控
     }
 
     @Override
     public void merchantRiskControlWarn(TradeMerchantRiskControlDTO tradeMerchantRiskControlDTO) {
-
+        //TODO 商户风控预警
     }
 }

@@ -1,5 +1,6 @@
 package com.pay.api.core.method.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.*;
 import com.pay.api.client.dto.*;
 import com.pay.api.client.dto.method.ApiPayUnifiedPayDTO;
@@ -15,13 +16,13 @@ import com.pay.center.client.constants.DefrayalChannelEnum;
 import com.pay.center.client.constants.DefrayalTypeEnum;
 import com.pay.center.client.dto.service.MemberDTO;
 import com.pay.center.client.service.client.IPayCenterFeignServiceClient;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * 统一支付方法
@@ -33,6 +34,8 @@ import java.util.List;
 public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPayDTO> {
 
     private static Logger logger = LoggerFactory.getLogger(PayApiMethodUnifiedPay.class);
+
+    private static BigDecimal minTradeAmount = new BigDecimal("0.01");
 
     private final ITradeRouteService tradeRouteService;
     private final ITradeOrderService tradeOrderService;
@@ -53,7 +56,89 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
 
     @Override
     public ApiPayMethodParamsCheckResultDTO<ApiPayUnifiedPayDTO> checkParams(String content) {
-        return null;
+        ApiPayMethodParamsCheckResultDTO<ApiPayUnifiedPayDTO> checkResultDTO = new ApiPayMethodParamsCheckResultDTO<>();
+        JSONObject jsonObject = JSONObject.parseObject(content);
+        ApiPayUnifiedPayDTO data = jsonObject.toJavaObject(ApiPayUnifiedPayDTO.class);
+        if (StringUtils.isAllBlank(data.getPlatformNumber(), data.getChannelNumber(), data.getMerchantNumber())) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[platformNumber]、[channelNumber]和[merchantNumber]不能都为空");
+            return checkResultDTO;
+        }
+
+        if (StringUtils.isBlank(data.getMemberOrderNumber())) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[memberOrderNumber]不能为空");
+            return checkResultDTO;
+        }
+
+        if (StringUtils.isBlank(data.getTradeAmount())) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[tradeAmount]不能为空");
+            return checkResultDTO;
+        } else if (new BigDecimal(data.getTradeAmount()).compareTo(minTradeAmount) < 0) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[tradeAmount]不能小于" + minTradeAmount);
+            return checkResultDTO;
+        }
+
+        if (StringUtils.isBlank(data.getCurrency())) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[currency]不能为空");
+            return checkResultDTO;
+        } else {
+            TradeOrderCurrencyEnum currencyEnum = TradeOrderCurrencyEnum.valueOf(data.getCurrency());
+            if (currencyEnum == null) {
+                checkResultDTO.setPass(false);
+                checkResultDTO.setMsg("[currency]值‘" + data.getCurrency() + "’错误");
+                return checkResultDTO;
+            }
+        }
+
+        if (StringUtils.isBlank(data.getDefrayalChannel())) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[defrayalChanel]不能为空");
+            return checkResultDTO;
+        } else {
+            DefrayalChannelEnum defrayalChannelEnum = DefrayalChannelEnum.valueOf(data.getDefrayalChannel());
+            if (defrayalChannelEnum == null) {
+                checkResultDTO.setPass(false);
+                checkResultDTO.setMsg("[defrayalChanel]值‘" + data.getDefrayalChannel() + "’错误");
+                return checkResultDTO;
+            }
+        }
+
+        if (StringUtils.isBlank(data.getDefrayalType())) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[defrayalType]不能为空");
+            return checkResultDTO;
+        } else {
+            DefrayalTypeEnum defrayalTypeEnum = DefrayalTypeEnum.valueOf(data.getDefrayalType());
+            if (defrayalTypeEnum == null) {
+                checkResultDTO.setPass(false);
+                checkResultDTO.setMsg("[defrayalType]值‘" + data.getDefrayalChannel() + "’错误");
+                return checkResultDTO;
+            } else if (DefrayalTypeEnum.SCAN.equals(defrayalTypeEnum) && StringUtils.isBlank(data.getAuthCode())) {
+                checkResultDTO.setPass(false);
+                checkResultDTO.setMsg("[defrayalType]值为‘" + DefrayalTypeEnum.SCAN + "’时，[authCode]不能为空");
+                return checkResultDTO;
+            }
+        }
+
+        if (StringUtils.isBlank(data.getNotifyUrl())) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[notifyUrl]不能为空");
+            return checkResultDTO;
+        }
+
+        if (StringUtils.isBlank(data.getSubject())) {
+            checkResultDTO.setPass(false);
+            checkResultDTO.setMsg("[subject]不能为空");
+            return checkResultDTO;
+        }
+
+        checkResultDTO.setPass(true);
+        checkResultDTO.setData(data);
+        return checkResultDTO;
     }
 
     @Override
@@ -67,14 +152,15 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         //2.1.筛选商户，查询范围下正常商户（未风控商户）
         //2.2.交易限额，查询通道，商户的总交易金额，单笔金额限制，最大累计金额限制（并发）
         //2.3.轮循规则，平均（降低风控），可用（最近可用，不推荐）（并发）
-        TradeRouteDTO tradeRouteDTO = new TradeRouteDTO(apiPayUnifiedPayDTO.getMemberNumber(), apiPayUnifiedPayDTO.getPlatformNumber(),
+        TradeRouteDTO tradeRouteDTO = new TradeRouteDTO(memberDTO.getMemberNumber(), apiPayUnifiedPayDTO.getPlatformNumber(),
                 apiPayUnifiedPayDTO.getChannelNumber(), apiPayUnifiedPayDTO.getMerchantNumber(),
                 defrayalChannel.getType(), defrayalType.getType());
         TradeRouteMerchantDTO routeMerchant = tradeRouteService.route(tradeRouteDTO, TradeRouteRuleEnum.ROUND_ROBIN, new BigDecimal(apiPayUnifiedPayDTO.getTradeAmount()));
         if (routeMerchant == null) {
             logger.error("交易路由，无交易路由。会员订单号：{}", apiPayUnifiedPayDTO.getMemberOrderNumber());
-            apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.NONE_MERCHANT_ROUTE.getType());
-            apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.NONE_MERCHANT_ROUTE.getError());
+            apiPayMethodResultDTO.setResult(ApiPayMethodResultEnum.FAIL);
+            apiPayMethodResultDTO.setSubCode(ApiPayUnifiedPayErrorEnum.NONE_MERCHANT_ROUTE.getCode());
+            apiPayMethodResultDTO.setSubMsg(ApiPayUnifiedPayErrorEnum.NONE_MERCHANT_ROUTE.getMsg());
             return apiPayMethodResultDTO;
         }
 
@@ -87,7 +173,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
 
         //4.交易处理
         //5.风控处理
-        TradeHandleDTO tradeHandleDTO = new TradeHandleDTO("",tradeOrder.getSysOrderNumber(),tradeOrder.getTradeAmount(),defrayalChannel,defrayalType);
+        TradeHandleDTO tradeHandleDTO = new TradeHandleDTO("", tradeOrder.getSysOrderNumber(), tradeOrder.getTradeAmount(), defrayalChannel, defrayalType);
         TradeHandleResultDTO tradeHandleResultDTO = tradeService.tradeHandle(tradeHandleDTO);
         switch (tradeHandleResultDTO.getStatus()) {
             case SUCCESS:
@@ -118,7 +204,8 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         ApiPayUnifiedPayResultDTO unifiedPayResultDTO = new ApiPayUnifiedPayResultDTO(tradeOrder.getSysOrderNumber(),
                 tradeOrder.getMemberOrderNumber(), DateUtils.nowTime2Str(), tradeOrder.getMemberNumber(),
                 tradeOrder.getMerchantNumber(), tradeOrder.getCurrency(), tradeOrder.getTradeStatus(),
-                tradeOrder.getPayAmount().toString(), tradeOrder.getServiceFee().toEngineeringString(), tradeOrder.getPayContent());
+                tradeOrder.getPayAmount().toString(), tradeOrder.getServiceFee().toString(), tradeOrder.getPayContent());
+        apiPayMethodResultDTO.setResult(ApiPayMethodResultEnum.SUCCESS);
         apiPayMethodResultDTO.setData(unifiedPayResultDTO);
 
         return apiPayMethodResultDTO;

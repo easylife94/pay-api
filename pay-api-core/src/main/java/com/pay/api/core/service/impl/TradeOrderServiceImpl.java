@@ -1,7 +1,7 @@
 package com.pay.api.core.service.impl;
 
 import com.pay.api.client.constants.TradeOrderCheckStatusEnum;
-import com.pay.api.client.constants.TradeOrderCurrenyEnum;
+import com.pay.api.client.constants.TradeOrderCurrencyEnum;
 import com.pay.api.client.constants.TradeOrderNotifyStatusEnum;
 import com.pay.api.client.constants.TradeOrderStatusEnum;
 import com.pay.api.client.dto.TradeOrderCreateDTO;
@@ -66,7 +66,7 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         tradeOrderDO.setSysOrderTime(orderTime.getTime());
 
         //币种
-        tradeOrderDO.setCurrency(TradeOrderCurrenyEnum.CNY.getType());
+        tradeOrderDO.setCurrency(TradeOrderCurrencyEnum.CNY.getType());
 
         tradeOrderDao.updateByPrimaryKeySelective(tradeOrderDO);
         return tradeOrderDO;
@@ -74,7 +74,6 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
 
     @Override
     public boolean updateTradeOrder(TradeOrderDO tradeOrderDO) {
-        //todo 更新订单
-        return false;
+        return tradeOrderDao.updateByPrimaryKeySelective(tradeOrderDO) > 0;
     }
 }

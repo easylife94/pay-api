@@ -3,7 +3,7 @@ package com.pay.api.core.platform.test;
 import com.pay.api.client.constants.TradeHandleStatusEnum;
 import com.pay.api.client.dto.TradeHandleDTO;
 import com.pay.api.client.dto.TradeHandleResultDTO;
-import com.pay.api.core.platform.AbstractPlatformTrade;
+import com.pay.api.core.platform.AbstractPlatformTradeHandle;
 import com.pay.api.core.service.ITradeOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
  * @date 2019/2/11 16:32
  */
 @Component("TEST")
-public class TestPlatformTrade extends AbstractPlatformTrade {
+public class TestPlatformTradeHandle extends AbstractPlatformTradeHandle {
 
     private final ITradeOrderService tradeOrderService;
 
     @Autowired
-    public TestPlatformTrade(ITradeOrderService tradeOrderService) {
+    public TestPlatformTradeHandle(ITradeOrderService tradeOrderService) {
         this.tradeOrderService = tradeOrderService;
     }
 
@@ -67,8 +67,8 @@ public class TestPlatformTrade extends AbstractPlatformTrade {
         return testTrade(tradeHandleDTO);
     }
 
-    private TradeHandleResultDTO testTrade(TradeHandleDTO tradeHandleDTO){
-        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS,"","",System.currentTimeMillis() + "");
+    private TradeHandleResultDTO testTrade(TradeHandleDTO tradeHandleDTO) {
+        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, "", "测试下单成功", System.currentTimeMillis() + "");
         return tradeHandleResultDTO;
     }
 

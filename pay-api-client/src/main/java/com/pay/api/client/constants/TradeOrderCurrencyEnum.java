@@ -6,7 +6,7 @@ package com.pay.api.client.constants;
  * @author chenwei
  * @date 2019/1/30 14:57
  */
-public enum TradeOrderCurrenyEnum {
+public enum TradeOrderCurrencyEnum {
 
     /**
      * 人民币
@@ -33,7 +33,8 @@ public enum TradeOrderCurrenyEnum {
         this.name = name;
     }
 
-    TradeOrderCurrenyEnum(String type, String name) {
+    TradeOrderCurrencyEnum(String type, String name) {
         this.type = type;
         this.name = name;
-    }}
+    }
+}

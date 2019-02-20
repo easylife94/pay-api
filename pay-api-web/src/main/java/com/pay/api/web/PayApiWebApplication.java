@@ -1,6 +1,5 @@
 package com.pay.api.web;
 
-import com.pay.api.web.listener.ApplicationStartupListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +17,6 @@ public class PayApiWebApplication {
 
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(PayApiWebApplication .class);
-//        springApplication.addListeners(new ApplicationStartupListener());
         springApplication.run(args);
     }
 

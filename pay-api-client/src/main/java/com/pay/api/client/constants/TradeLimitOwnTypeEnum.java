@@ -8,8 +8,14 @@ package com.pay.api.client.constants;
  */
 public enum TradeLimitOwnTypeEnum {
 
+    /**
+     * 商户
+     */
     MERCHANT,
 
+    /**
+     * 通道
+     */
     CHANNEL,
 
     ;

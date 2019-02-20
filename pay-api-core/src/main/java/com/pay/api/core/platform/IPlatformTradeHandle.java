@@ -9,7 +9,7 @@ import com.pay.api.client.dto.TradeHandleResultDTO;
  * @author chenwei
  * @date 2019/2/11 16:32
  */
-public interface IPlatformTrade {
+public interface IPlatformTradeHandle {
 
     /**
      * 下单接口

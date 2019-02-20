@@ -5,6 +5,7 @@ import com.pay.api.client.dto.ApiPayDTO;
 import com.pay.api.client.dto.ApiPayMethodResultDTO;
 import com.pay.api.client.dto.ApiPayParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayResultDTO;
+import com.pay.api.client.exception.PayApiException;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
 import com.pay.center.client.dto.service.MemberDTO;
@@ -78,9 +79,19 @@ public class PayApi {
 
             //4.2 执行方法
             ApiPayMethodResultDTO resultDTO = apiMethod.operate(apiPayDTO.getContent(), memberDTO);
-            apiPayResultDTO.setSubCode(resultDTO.getSubCode());
-            apiPayResultDTO.setSubMsg(resultDTO.getSubMsg());
-            apiPayResultDTO.setContent(resultDTO.getData());
+            switch (resultDTO.getResult()) {
+                case SUCCESS:
+                    apiPayResultDTO.setContent(resultDTO.getData());
+                    break;
+                case FAIL:
+                    apiPayResultDTO.setCode(ApiPayGatewayResultEnum.METHOD_FAIL.getCode());
+                    apiPayResultDTO.setMsg(ApiPayGatewayResultEnum.METHOD_FAIL.getMsg());
+                    apiPayResultDTO.setSubCode(resultDTO.getSubCode());
+                    apiPayResultDTO.setSubMsg(resultDTO.getSubMsg());
+                    break;
+                default:
+                    throw new PayApiException("不支持方法执行返回结果类型：" + resultDTO.getResult());
+            }
 
             //5.参数签名
             if (!Boolean.TRUE.equals(payApiGatewayService.sign(apiPayDTO, apiPayResultDTO, memberDTO))) {

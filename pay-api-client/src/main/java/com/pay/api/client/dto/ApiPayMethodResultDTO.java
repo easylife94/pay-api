@@ -1,5 +1,7 @@
 package com.pay.api.client.dto;
 
+import com.pay.api.client.constants.ApiPayMethodResultEnum;
+
 import java.util.StringJoiner;
 
 /**
@@ -10,9 +12,33 @@ import java.util.StringJoiner;
  */
 public class ApiPayMethodResultDTO<T> {
 
+    /**
+     *
+     */
+    private ApiPayMethodResultEnum result;
+
+    /**
+     * 实际业务代码
+     */
     private String subCode;
+
+    /**
+     * 实际业务提示信息
+     */
     private String subMsg;
+
+    /**
+     *
+     */
     private T data;
+
+    public ApiPayMethodResultEnum getResult() {
+        return result;
+    }
+
+    public void setResult(ApiPayMethodResultEnum result) {
+        this.result = result;
+    }
 
     public String getSubCode() {
         return subCode;
@@ -40,9 +66,11 @@ public class ApiPayMethodResultDTO<T> {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", ApiPayMethodResultDTO.class.getSimpleName() + "[", "]")
-                .add("subCode='" + subCode + "'")
-                .add("subMsg='" + subMsg + "'")
+        return new StringJoiner(", ",
+                ApiPayMethodResultDTO.class.getSimpleName() + "{", "}")
+                .add("result=" + result)
+                .add("subCode=" + subCode)
+                .add("subMsg=" + subMsg)
                 .add("data=" + data)
                 .toString();
     }

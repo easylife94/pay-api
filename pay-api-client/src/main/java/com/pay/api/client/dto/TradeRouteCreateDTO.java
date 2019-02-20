@@ -1,6 +1,7 @@
 package com.pay.api.client.dto;
 
 import java.math.BigDecimal;
+import java.util.StringJoiner;
 
 /**
  * 路由新增dto
@@ -181,5 +182,24 @@ public class TradeRouteCreateDTO {
 
     public void setTradeIntervalTime(Long tradeIntervalTime) {
         this.tradeIntervalTime = tradeIntervalTime;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ",
+                TradeRouteCreateDTO.class.getSimpleName() + "{", "}")
+                .add("memberNumber=" + memberNumber)
+                .add("platformNumber=" + platformNumber)
+                .add("channelNumber=" + channelNumber)
+                .add("merchantId=" + merchantId)
+                .add("merchantNumber=" + merchantNumber)
+                .add("merchantName=" + merchantName)
+                .add("defrayalChannel=" + defrayalChannel)
+                .add("defrayalType=" + defrayalType)
+                .add("status=" + status)
+                .add("singleTradeAmountMin=" + singleTradeAmountMin)
+                .add("singleTradeAmountMax=" + singleTradeAmountMax)
+                .add("tradeIntervalTime=" + tradeIntervalTime)
+                .toString();
     }
 }

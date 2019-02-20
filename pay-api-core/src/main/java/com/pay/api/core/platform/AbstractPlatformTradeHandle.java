@@ -6,10 +6,12 @@ import com.pay.api.client.dto.TradeHandleResultDTO;
 import com.pay.api.client.exception.PayApiException;
 
 /**
+ * 抽象平台交易处理器
+ *
  * @author chenwei
  * @date 2019/2/14 14:37
  */
-public abstract class AbstractPlatformTrade implements IPlatformTrade, IDefrayalChannelTrade, IDefrayalTypeTrade {
+public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandle, IDefrayalChannelTrade, IDefrayalTypeTrade {
 
     @Override
     final public TradeHandleResultDTO trade(TradeHandleDTO tradeHandleDTO) {

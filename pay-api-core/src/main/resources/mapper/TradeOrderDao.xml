@@ -70,6 +70,19 @@
     from trade_order
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectBySysOrderNumber" resultType="com.pay.api.client.model.TradeOrderDO">
+    select
+    <include refid="Base_Column_List" />
+    from trade_order
+    where member_order_number = #{sysOrderNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByMemberOrderNumber" resultType="com.pay.api.client.model.TradeOrderDO">
+    select
+    <include refid="Base_Column_List" />
+    from trade_order
+    where member_number = #{memberNumber,jdbcType=VARCHAR}
+    and member_order_number = #{memberOrderNumber,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from trade_order
     where id = #{id,jdbcType=BIGINT}

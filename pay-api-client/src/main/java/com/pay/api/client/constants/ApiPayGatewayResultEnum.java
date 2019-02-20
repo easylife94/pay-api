@@ -29,6 +29,11 @@ public enum ApiPayGatewayResultEnum {
     METHOD_NOT_EXIST("40000", "方法不存在"),
 
     /**
+     * 方法执行失败
+     */
+    METHOD_FAIL("40001","方法执行失败"),
+
+    /**
      * 公共参数错误
      */
     PUBLIC_PARAMS_ERROR("50000", "公共参数错误"),

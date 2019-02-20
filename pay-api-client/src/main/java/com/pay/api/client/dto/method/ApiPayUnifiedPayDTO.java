@@ -1,6 +1,6 @@
 package com.pay.api.client.dto.method;
 
-import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.StringJoiner;
 
 /**
@@ -9,13 +9,9 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/1/17 11:27
  */
-public class ApiPayUnifiedPayDTO {
+public class ApiPayUnifiedPayDTO implements Serializable {
 
-    /**
-     * 会员编号
-     * 必填
-     */
-    private String memberNumber;
+    private static final long serialVersionUID = 5217325927937399604L;
 
     /**
      * 平台编号，不为空则轮循平台下商户
@@ -25,6 +21,7 @@ public class ApiPayUnifiedPayDTO {
 
     /**
      * 通道编号，不为空则轮循通道下商户
+     * 非必填
      */
     private String channelNumber;
 
@@ -96,16 +93,9 @@ public class ApiPayUnifiedPayDTO {
 
     /**
      * 附加信息，通知和查询时原值返回
+     * 非必填
      */
     private String attach;
-
-    public String getMemberNumber() {
-        return memberNumber;
-    }
-
-    public void setMemberNumber(String memberNumber) {
-        this.memberNumber = memberNumber;
-    }
 
     public String getPlatformNumber() {
         return platformNumber;
@@ -222,7 +212,6 @@ public class ApiPayUnifiedPayDTO {
     @Override
     public String toString() {
         return new StringJoiner(", ", ApiPayUnifiedPayDTO.class.getSimpleName() + "[", "]")
-                .add("memberNumber='" + memberNumber + "'")
                 .add("platformNumber='" + platformNumber + "'")
                 .add("channelNumber='" + channelNumber + "'")
                 .add("merchantNumber='" + merchantNumber + "'")

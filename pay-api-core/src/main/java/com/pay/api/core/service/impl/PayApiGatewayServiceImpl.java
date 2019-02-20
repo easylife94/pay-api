@@ -114,15 +114,6 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
         return m.matches();
     }
 
-    public static void main(String[] args) {
-        long l = System.currentTimeMillis();
-        PayApiGatewayServiceImpl payApiGatewayService = new PayApiGatewayServiceImpl();
-        for(int i = 0 ; i < 1000000;i++){
-            System.out.println(payApiGatewayService.checkTimestampFormat("1199-01-01 23:59:12"));
-        }
-        System.out.println(System.currentTimeMillis() - l);
-    }
-
     @Override
     public Boolean verifySign(ApiPayDTO apiPayDTO, MemberDTO memberDTO) {
         String signType = apiPayDTO.getSignType().toUpperCase();

@@ -1,5 +1,6 @@
 package com.pay.api.client.dto;
 
+import java.io.Serializable;
 import java.util.StringJoiner;
 
 /**
@@ -8,8 +9,9 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/1/14 11:04
  */
-public class ApiPayDTO {
+public class ApiPayDTO implements Serializable {
 
+    private static final long serialVersionUID = -8049979341516231218L;
     /**
      * 会员编号
      * 必填

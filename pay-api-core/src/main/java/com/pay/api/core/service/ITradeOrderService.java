@@ -15,6 +15,7 @@ public interface ITradeOrderService {
     /**
      * 创建订单记录
      * 会员订单号不能重复
+     *
      * @param tradeOrderCreateDTO 创建订单参数
      * @return 订单DO
      */
@@ -23,7 +24,7 @@ public interface ITradeOrderService {
     /**
      * 更新订单记录ØØ
      *
-     * @param tradeOrderDO
+     * @param tradeOrderDO 订单
      * @return 保存成功返回true
      */
     boolean updateTradeOrder(TradeOrderDO tradeOrderDO);

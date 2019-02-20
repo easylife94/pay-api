@@ -1,21 +1,26 @@
 package com.pay.api.client.constants;
 
 /**
- * 支付接口 - 统一支付错误枚举
+ * 订单查询错误枚举
  *
  * @author chenwei
- * @date 2019-01-29
+ * @date 2019/2/20 11:27
  */
-public enum ApiPayUnifiedPayErrorEnum {
+public enum ApiPayOrderQueryErrorEnum {
 
     /**
-     * 无商户交易路由
+     * 订单不存在
      */
-    NONE_MERCHANT_ROUTE("NONE_MERCHANT_ROUTE", "无商户交易路由"),
+    ORDER_NOT_EXIST("ORDER_NOT_EXIST","订单不存在"),
     ;
 
     private String code;
     private String msg;
+
+    ApiPayOrderQueryErrorEnum(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
 
     public String getCode() {
         return code;
@@ -30,11 +35,6 @@ public enum ApiPayUnifiedPayErrorEnum {
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    ApiPayUnifiedPayErrorEnum(String code, String msg) {
-        this.code = code;
         this.msg = msg;
     }
 }

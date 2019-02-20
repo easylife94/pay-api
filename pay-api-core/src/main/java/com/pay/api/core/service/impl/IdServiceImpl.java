@@ -2,6 +2,7 @@ package com.pay.api.core.service.impl;
 
 import com.pay.api.client.utils.SnowflakeIdWorker;
 import com.pay.api.core.service.IIdService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +14,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class IdServiceImpl implements IIdService {
 
+    private SnowflakeIdWorker snowflakeIdWorker;
+
     @Value("${order.trade.number-prefix}")
     private String orderNumberPreFix;
 
-    public IdServiceImpl() {
+
+    @Autowired
+    public IdServiceImpl(@Value("${snowflake.data-center-id}") Long dataCenterId) {
         snowflakeIdWorker = new SnowflakeIdWorker(1L,dataCenterId);
     }
-
-
-    @Value("${snowflake.data-center-id}")
-    private Long dataCenterId;
-
-    private SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
     public Long generateId() {
