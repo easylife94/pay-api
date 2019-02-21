@@ -39,6 +39,11 @@ public class TradeHandleDTO {
      */
     private DefrayalTypeEnum defrayalType;
 
+    /**
+     * 微信openId或支付宝buyer id
+     */
+    private String userId;
+
     public TradeHandleDTO(String platformMapped, String sysOrderNumber, BigDecimal tradeAmount,
                           DefrayalChannelEnum defrayalChannel, DefrayalTypeEnum defrayalType) {
         this.platformMapped = platformMapped;
@@ -88,6 +93,14 @@ public class TradeHandleDTO {
         this.defrayalType = defrayalType;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ",
@@ -97,6 +110,7 @@ public class TradeHandleDTO {
                 .add("tradeAmount=" + tradeAmount)
                 .add("defrayalChannel=" + defrayalChannel)
                 .add("defrayalType=" + defrayalType)
+                .add("userId=" + userId)
                 .toString();
     }
 }

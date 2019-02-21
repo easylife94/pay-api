@@ -1,7 +1,5 @@
 package com.pay.api.web.controller;
 
-import com.pay.api.client.constants.TradeOrderStatusEnum;
-import com.pay.api.client.dto.TradeHandleResultDTO;
 import com.pay.api.core.service.ITradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,22 +28,15 @@ public class TradeController {
     public String preOrder(@PathVariable("code") String code) {
         byte[] decode = Base64.getDecoder().decode(code.getBytes());
         String sysOrderNumber = new String(decode);
-        TradeHandleResultDTO tradeHandleResultDTO = tradeService.preOrderTrade(sysOrderNumber);
-        switch (tradeHandleResultDTO.getStatus()) {
-            case SUCCESS:
-                break;
-            case UNKNOWN:
-                break;
-            case RISK:
-                //5.1.上游返回明确商户被风控
-                break;
-            case ERROR:
-                //5.2.下单失败，系统内部风控预警
-                break;
-            default:
-                //当做未知处理
-        }
+
+
+
+
         return null;
     }
+
+
+
+
 
 }

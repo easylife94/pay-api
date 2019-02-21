@@ -4,9 +4,9 @@ import com.pay.api.client.constants.*;
 import com.pay.api.client.dto.*;
 import com.pay.api.client.dto.async.TradeCreateMessageDTO;
 import com.pay.api.client.model.TradeOrderDO;
+import com.pay.api.core.dao.TradeOrderDao;
 import com.pay.api.core.platform.IPlatformTradeHandle;
 import com.pay.api.core.rabbit.RabbitMqSender;
-import com.pay.api.core.service.ITradeRouteService;
 import com.pay.api.core.service.ITradeService;
 import com.pay.api.core.utils.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,12 @@ import org.springframework.stereotype.Service;
 public class TradeServiceImpl implements ITradeService {
 
     private final RabbitMqSender rabbitMqSender;
+    private final TradeOrderDao tradeOrderDao;
 
     @Autowired
-    public TradeServiceImpl(RabbitMqSender rabbitMqSender) {
+    public TradeServiceImpl(RabbitMqSender rabbitMqSender, TradeOrderDao tradeOrderDao) {
         this.rabbitMqSender = rabbitMqSender;
+        this.tradeOrderDao = tradeOrderDao;
     }
 
 
@@ -43,5 +45,23 @@ public class TradeServiceImpl implements ITradeService {
         TradeCreateMessageDTO tradeCreateMessageDTO = new TradeCreateMessageDTO(tradeOrderDO.getSysOrderNumber(),tradeOrderCreateAfterDTO.getTradeRouteId(),
                 tradeOrderCreateAfterDTO.getTradeRisk(),tradeOrderCreateAfterDTO.getTradeWarn(),tradeOrderDO.getGmtCreate().getTime());
         rabbitMqSender.sendTradeCreateMessage(tradeCreateMessageDTO);
+    }
+
+    @Override
+    public TradeHandleResultDTO preOrderTrade(String sysOrderNumber) {
+        TradeOrderDO tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(sysOrderNumber);
+
+
+        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO();
+        return tradeHandleResultDTO;
+    }
+
+    @Override
+    public String buildJsapiUrl(String sysOrderNumber) {
+        TradeOrderDO tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(sysOrderNumber);
+
+
+
+        return null;
     }
 }

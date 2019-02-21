@@ -37,4 +37,12 @@ public interface ITradeService {
      */
     TradeHandleResultDTO preOrderTrade(String sysOrderNumber);
 
+    /**
+     * 构建原生jsapi支付url
+     *
+     * @param sysOrderNumber
+     * @return
+     */
+    String buildJsapiUrl(String sysOrderNumber);
+
 }

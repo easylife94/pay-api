@@ -1,17 +1,11 @@
 package com.pay.api.core.platform;
 
-import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.TradeHandleStatusEnum;
 import com.pay.api.client.dto.TradeHandleDTO;
 import com.pay.api.client.dto.TradeHandleResultDTO;
 import com.pay.api.client.exception.PayApiException;
-import com.pay.api.core.platform.test.TestPlatformTradeHandle;
-import com.pay.api.core.service.impl.TradeOrderServiceImpl;
-import com.pay.center.client.constants.DefrayalChannelEnum;
-import com.pay.center.client.constants.DefrayalTypeEnum;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.math.BigDecimal;
 import java.util.Base64;
 
 /**
@@ -45,6 +39,11 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
             default:
                 throw new PayApiException("不支持支付渠道");
         }
+    }
+
+    @Override
+    public TradeHandleResultDTO preOrderTrade(TradeHandleDTO tradeHandleDTO) {
+        throw new PayApiException("不支预下单支付方式");
     }
 
     @Override
@@ -192,4 +191,5 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
         TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, null, preOrderUrl + base64, null);
         return tradeHandleResultDTO;
     }
+
 }

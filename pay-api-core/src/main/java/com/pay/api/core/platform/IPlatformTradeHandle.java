@@ -19,5 +19,13 @@ public interface IPlatformTradeHandle {
      */
     TradeHandleResultDTO trade(TradeHandleDTO tradeHandleDTO);
 
+    /**
+     * 预下单交易
+     *
+     * @param tradeHandleDTO
+     * @return
+     */
+    TradeHandleResultDTO preOrderTrade(TradeHandleDTO tradeHandleDTO);
 
+    String buildJsapiUrl
 }
