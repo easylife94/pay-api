@@ -39,7 +39,6 @@ public class RabbitMqReceiver {
         this.tradeRouteDao = tradeRouteDao;
     }
 
-
     @RabbitListener(queues = PayApiMessageQueueNames.QUEUE_TRADE_CREATE)
     public void tradeCreate(TradeCreateMessageDTO tradeCreateMessageDTO) {
         try {
@@ -56,12 +55,14 @@ public class RabbitMqReceiver {
                     tradeRouteDO.setTradeRisk(true);
                 }
 
+                //交易预警
                 if(Boolean.TRUE.equals(tradeCreateMessageDTO.getTradeWarn())){
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date lastTradeWarnDate = tradeRouteDO.getTradeWarnDate();
                     Date today = new Date();
                     Integer warnTimes = 0;
 
+                    //当天预警次数加一，最近一次预警不是当天则置为1
                     if(StringUtils.equals(sdf.format(lastTradeWarnDate),sdf.format(today))){
                         warnTimes ++;
                     } else {
@@ -70,8 +71,10 @@ public class RabbitMqReceiver {
 
                     tradeRouteDO.setTradeWarnTimes(warnTimes);
                     //判断连续预警次数是都达到风控线
-                    if(warnTimes > warnTimesMax){
+                    if(warnTimes >= warnTimesMax){
                         tradeRouteDO.setTradeRisk(true);
+                        logger.info("交易路由预警达到最大次数，触发系统风控。sysOrderNumber:{}，tradeRouteId：{}",
+                                tradeCreateMessageDTO.getSysOrderNumber(), tradeCreateMessageDTO.getTradeRouteId());
                     }
                 }
                 tradeRouteDao.updateByPrimaryKey(tradeRouteDO);

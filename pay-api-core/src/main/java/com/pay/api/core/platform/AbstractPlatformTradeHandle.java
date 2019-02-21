@@ -1,9 +1,18 @@
 package com.pay.api.core.platform;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.TradeHandleStatusEnum;
 import com.pay.api.client.dto.TradeHandleDTO;
 import com.pay.api.client.dto.TradeHandleResultDTO;
 import com.pay.api.client.exception.PayApiException;
+import com.pay.api.core.platform.test.TestPlatformTradeHandle;
+import com.pay.api.core.service.impl.TradeOrderServiceImpl;
+import com.pay.center.client.constants.DefrayalChannelEnum;
+import com.pay.center.client.constants.DefrayalTypeEnum;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.math.BigDecimal;
+import java.util.Base64;
 
 /**
  * 抽象平台交易处理器
@@ -12,6 +21,9 @@ import com.pay.api.client.exception.PayApiException;
  * @date 2019/2/14 14:37
  */
 public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandle, IDefrayalChannelTrade, IDefrayalTypeTrade {
+
+    @Value("${trade.pre-order-url}")
+    private String preOrderUrl;
 
     @Override
     final public TradeHandleResultDTO trade(TradeHandleDTO tradeHandleDTO) {
@@ -176,9 +188,8 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
      * @return
      */
     public TradeHandleResultDTO jsapiPreorder(TradeHandleDTO tradeHandleDTO) {
-        //TODO 预下单
-        String content = "";
-        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, null, content, null);
+        String base64 = Base64.getEncoder().encodeToString(tradeHandleDTO.getSysOrderNumber().getBytes());
+        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, null, preOrderUrl + base64, null);
         return tradeHandleResultDTO;
     }
 }

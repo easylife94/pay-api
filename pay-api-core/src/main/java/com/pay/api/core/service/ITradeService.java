@@ -28,4 +28,13 @@ public interface ITradeService {
      * @param tradeOrderCreateAfterDTO 交易创建后参数
      */
     void afterTradeCreate(TradeOrderDO tradeOrderDO, TradeCreateAfterDTO tradeOrderCreateAfterDTO);
+
+    /**
+     * 预下单交易
+     *
+     * @param sysOrderNumber 系统订单号
+     * @return
+     */
+    TradeHandleResultDTO preOrderTrade(String sysOrderNumber);
+
 }

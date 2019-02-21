@@ -29,10 +29,6 @@ feign:
   hystrix:
     enabled: true
 
-
-
-
-
 ################################################自定义################################################
 snowflake:
   data-center-id: 2
@@ -43,5 +39,7 @@ order:
 
 #交易相关配置
 trade:
+  #预下单url
+  pre-order-url: http://pay-api:8081/trade/preOrder/
   #最大预警次数
   warn-times-max: 10
