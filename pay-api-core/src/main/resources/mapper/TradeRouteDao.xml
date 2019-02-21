@@ -22,15 +22,20 @@
     <result column="trade_limit_time" jdbcType="TIMESTAMP" property="tradeLimitTime" />
     <result column="trade_risk" jdbcType="BIT" property="tradeRisk" />
     <result column="trade_risk_time" jdbcType="TIMESTAMP" property="tradeRiskTime" />
+    <result column="trade_warn_date" jdbcType="TIMESTAMP" property="tradeWarnDate" />
+    <result column="trade_warn_times" jdbcType="INTEGER" property="tradeWarnTimes" />
     <result column="trade_interval_time" jdbcType="BIGINT" property="tradeIntervalTime" />
     <result column="last_trade_timestamp" jdbcType="BIGINT" property="lastTradeTimestamp" />
     <result column="last_trade_suc_timestamp" jdbcType="BIGINT" property="lastTradeSucTimestamp" />
+    <result column="day_trade_suc_amount_total" jdbcType="DECIMAL" property="dayTradeSucAmountTotal" />
+    <result column="month_trade_suc_amount_total" jdbcType="DECIMAL" property="monthTradeSucAmountTotal" />
   </resultMap>
   <sql id="Base_Column_List">
     id, gmt_create, gmt_update, is_deleted, member_number, platform_number, channel_number, 
     merchant_id, merchant_number, defrayal_channel, defrayal_type, merchant_name, status, 
     single_trade_amount_min, single_trade_amount_max, trade_limit, trade_limit_time, 
-    trade_risk, trade_risk_time,trade_interval_time,last_trade_timestamp,last_trade_suc_timestamp
+    trade_risk, trade_risk_time,trade_warn_date,trade_warn_times,trade_interval_time,last_trade_timestamp,
+    last_trade_suc_timestamp,day_trade_suc_amount_total,month_trade_suc_amount_total
   </sql>
   <select id="selectMemberTradableRoute" resultType="com.pay.api.client.model.TradeRouteDO">
     select
@@ -92,15 +97,19 @@
       defrayal_channel, defrayal_type, merchant_name, 
       status, single_trade_amount_min, single_trade_amount_max, 
       trade_limit, trade_limit_time, trade_risk, 
-      trade_risk_time,trade_interval_time)
+      trade_risk_time,trade_warn_date,trade_warn_times,trade_interval_time,
+      last_trade_timestamp,last_trade_suc_timestamp,day_trade_suc_amount_total,
+      month_trade_suc_amount_total)
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=BIT}, #{memberNumber,jdbcType=VARCHAR}, #{platformNumber,jdbcType=VARCHAR}, 
       #{channelNumber,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT}, #{merchantNumber,jdbcType=VARCHAR}, 
       #{defrayalChannel,jdbcType=VARCHAR}, #{defrayalType,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, 
       #{status,jdbcType=BIT}, #{singleTradeAmountMin,jdbcType=DECIMAL}, #{singleTradeAmountMax,jdbcType=DECIMAL}, 
       #{tradeLimit,jdbcType=BIT}, #{tradeLimitTime,jdbcType=TIMESTAMP}, #{tradeRisk,jdbcType=BIT}, 
-      #{tradeRiskTime,jdbcType=TIMESTAMP},#{tradeIntervalTime,jdbcType=BIGINT},#{lastTradeTimestamp,jdbcType=BIGINT},
-      #{lastTradeSucTimestamp,jdbcType=BIGINT})
+      #{tradeRiskTime,jdbcType=TIMESTAMP},#{tradeIntervalTime,jdbcType=BIGINT},
+      #{tradeWarnDate,jdbcType=TIMESTAMP},#{tradeWarnTimes,jdbcType=INTEGER},
+      #{lastTradeSucTimestamp,jdbcType=BIGINT},#{dayTradeSucAmountTotal,jdbcType=DECIMAL},
+      #{monthTradeSucAmountTotal,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeRouteDO">
     insert into trade_route
@@ -162,6 +171,12 @@
       <if test="tradeRiskTime != null">
         trade_risk_time,
       </if>
+      <if test="tradeWarnDate != null">
+        trade_warn_date,
+      </if>
+      <if test="tradeWarnTimes != null">
+        trade_warn_times,
+      </if>
       <if test="tradeIntervalTime != null">
         trade_interval_time,
       </if>
@@ -170,6 +185,12 @@
       </if>
       <if test="lastTradeSucTimestamp != null">
         last_trade_suc_timestamp,
+      </if>
+      <if test="dayTradeSucAmountTotal != null">
+        day_trade_suc_amount_total,
+      </if>
+      <if test="monthTradeSucAmountTotal != null">
+        month_trade_suc_amount_total,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -230,6 +251,12 @@
       <if test="tradeRiskTime != null">
         #{tradeRiskTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="tradeWarnDate != null">
+        #{tradeWarnDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWarnTimes != null">
+        #{tradeWarnTimes,jdbcType=INTEGER},
+      </if>
       <if test="tradeIntervalTime != null">
         #{tradeIntervalTime,jdbcType=BIGINT},
       </if>
@@ -239,16 +266,24 @@
       <if test="lastTradeSucTimestamp != null">
         #{lastTradeSucTimestamp,jdbcType=BIGINT},
       </if>
+      <if test="dayTradeSucAmountTotal != null">
+        #{dayTradeSucAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="monthTradeSucAmountTotal != null">
+        #{monthTradeSucAmountTotal,jdbcType=DECIMAL},
+      </if>
     </trim>
   </insert>
   <insert id="insertBatch" parameterType="java.util.List">
     insert into trade_route (id, gmt_create, gmt_update,
-                             is_deleted, member_number, platform_number,
-                             channel_number, merchant_id, merchant_number,
-                             defrayal_channel, defrayal_type, merchant_name,
-                             status, single_trade_amount_min, single_trade_amount_max,
-                             trade_limit, trade_limit_time, trade_risk,
-                             trade_risk_time,trade_interval_time,last_trade_timestamp,last_trade_suc_timestamp)
+      is_deleted, member_number, platform_number,
+      channel_number, merchant_id, merchant_number,
+      defrayal_channel, defrayal_type, merchant_name,
+      status, single_trade_amount_min, single_trade_amount_max,
+      trade_limit, trade_limit_time, trade_risk,
+      trade_risk_time,trade_warn_date,trade_warn_times,trade_interval_time,
+      last_trade_timestamp,last_trade_suc_timestamp,day_trade_suc_amount_total,
+      month_trade_suc_amount_total)
     values
     <foreach collection="list" item="item" index="index" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtUpdate,jdbcType=TIMESTAMP},
@@ -257,8 +292,9 @@
       #{item.defrayalChannel,jdbcType=VARCHAR}, #{item.defrayalType,jdbcType=VARCHAR}, #{item.merchantName,jdbcType=VARCHAR},
       #{item.status,jdbcType=BIT}, #{item.singleTradeAmountMin,jdbcType=DECIMAL}, #{item.singleTradeAmountMax,jdbcType=DECIMAL},
       #{item.tradeLimit,jdbcType=BIT}, #{item.tradeLimitTime,jdbcType=TIMESTAMP}, #{item.tradeRisk,jdbcType=BIT},
-      #{item.tradeRiskTime,jdbcType=TIMESTAMP},#{item.tradeIntervalTime,jdbcType=BIGINT},#{item.lastTradeTimestamp,jdbcType=BIGINT},
-      #{item.lastTradeSucTimestamp,jdbcType=BIGINT})
+      #{item.tradeRiskTime,jdbcType=TIMESTAMP}, #{item.tradeWarnDate,jdbcType=TIMESTAMP},#{item.tradeWarnTimes,jdbcType=INTEGER},
+      #{item.tradeIntervalTime,jdbcType=BIGINT},#{item.lastTradeTimestamp,jdbcType=BIGINT}, #{item.lastTradeSucTimestamp,jdbcType=BIGINT},
+      #{item.dayTradeSucAmountTotal,jdbcType=DECIMAL},#{item.monthTradeSucAmountTotal,jdbcType=DECIMAL})
     </foreach>
 
   </insert>
@@ -319,6 +355,12 @@
       <if test="tradeRiskTime != null">
         trade_risk_time = #{tradeRiskTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="tradeWarnDate != null">
+        trade_warn_date = #{tradeWarnDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeWarnTimes != null">
+        trade_warn_times = #{tradeWarnTimes,jdbcType=INTEGER},
+      </if>
       <if test="tradeIntervalTime != null">
         trade_interval_time = #{tradeIntervalTime,jdbcType=BIGINT},
       </if>
@@ -327,6 +369,12 @@
       </if>
       <if test="lastTradeSucTimestamp != null">
         last_trade_suc_timestamp = #{lastTradeSucTimestamp,jdbcType=BIGINT},
+      </if>
+      <if test="dayTradeSucAmountTotal != null">
+        day_trade_suc_amount_total = #{dayTradeSucAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="monthTradeSucAmountTotal != null">
+        month_trade_suc_amount_total = #{monthTradeSucAmountTotal,jdbcType=DECIMAL},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -351,9 +399,13 @@
       trade_limit_time = #{tradeLimitTime,jdbcType=TIMESTAMP},
       trade_risk = #{tradeRisk,jdbcType=BIT},
       trade_risk_time = #{tradeRiskTime,jdbcType=TIMESTAMP},
+      trade_warn_date = #{tradeWarnDate,jdbcType=TIMESTAMP},
+      trade_warn_times = #{tradeWarnTimes,jdbcType=INTEGER},
       trade_interval_time = #{tradeIntervalTime,jdbcType=BIGINT},
       last_trade_timestamp = #{lastTradeTimestamp,jdbcType=BIGINT},
-      last_trade_suc_timestamp = #{lastTradeSucTimestamp,jdbcType=BIGINT}
+      last_trade_suc_timestamp = #{lastTradeSucTimestamp,jdbcType=BIGINT},
+      day_trade_suc_amount_total = #{dayTradeSucAmountTotal,jdbcType=DECIMAL},
+      month_trade_suc_amount_total = #{monthTradeSucAmountTotal,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 

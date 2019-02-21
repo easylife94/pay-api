@@ -10,11 +10,21 @@ import java.util.StringJoiner;
  */
 public class TradeRouteMerchantDTO {
 
+    private String platformMapped;
+
     private String platformNumber;
 
     private String channelNumber;
 
     private String merchantNumber;
+
+    public String getPlatformMapped() {
+        return platformMapped;
+    }
+
+    public void setPlatformMapped(String platformMapped) {
+        this.platformMapped = platformMapped;
+    }
 
     public String getPlatformNumber() {
         return platformNumber;
@@ -40,7 +50,8 @@ public class TradeRouteMerchantDTO {
         this.merchantNumber = merchantNumber;
     }
 
-    public TradeRouteMerchantDTO(String platformNumber, String channelNumber, String merchantNumber) {
+    public TradeRouteMerchantDTO(String platformMapped, String platformNumber, String channelNumber, String merchantNumber) {
+        this.platformMapped = platformMapped;
         this.platformNumber = platformNumber;
         this.channelNumber = channelNumber;
         this.merchantNumber = merchantNumber;
@@ -48,10 +59,12 @@ public class TradeRouteMerchantDTO {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", TradeRouteMerchantDTO.class.getSimpleName() + "[", "]")
-                .add("platformNumber='" + platformNumber + "'")
-                .add("channelNumber='" + channelNumber + "'")
-                .add("merchantNumber='" + merchantNumber + "'")
+        return new StringJoiner(", ",
+                TradeRouteMerchantDTO.class.getSimpleName() + "{", "}")
+                .add("platformMapped=" + platformMapped)
+                .add("platformNumber=" + platformNumber)
+                .add("channelNumber=" + channelNumber)
+                .add("merchantNumber=" + merchantNumber)
                 .toString();
     }
 }

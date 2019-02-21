@@ -24,4 +24,14 @@ public class RabbitConfig {
     public Queue testQueue() {
         return new Queue(PayApiMessageQueueNames.QUEUE_TEST);
     }
+
+    /**
+     * 订单创建队列
+     *
+     * @return
+     */
+    @Bean
+    public Queue tradeCreateQueue() {
+        return new Queue(PayApiMessageQueueNames.QUEUE_TRADE_CREATE);
+    }
 }

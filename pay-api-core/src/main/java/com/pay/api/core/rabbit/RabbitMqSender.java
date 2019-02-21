@@ -1,6 +1,7 @@
 package com.pay.api.core.rabbit;
 
-import com.pay.api.client.dto.async.UnifiedPayFinishMessageDTO;
+import com.pay.api.client.constants.PayApiMessageQueueNames;
+import com.pay.api.client.dto.async.TradeCreateMessageDTO;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,11 @@ public class RabbitMqSender {
     private AmqpTemplate amqpTemplate;
 
     /**
-     * 发送统一支付结束后异步消息
+     * 发送交易创建异步消息
      *
-     * @param unifiedPayFinishMessageDTO 异步消息
+     * @param tradeCreateMessageDTO 异步消息
      */
-    public void sendUnifiedPayFinishMessage(UnifiedPayFinishMessageDTO unifiedPayFinishMessageDTO) {
-        amqpTemplate.convertAndSend(unifiedPayFinishMessageDTO);
+    public void sendTradeCreateMessage(TradeCreateMessageDTO tradeCreateMessageDTO) {
+        amqpTemplate.convertAndSend(PayApiMessageQueueNames.QUEUE_TRADE_CREATE, tradeCreateMessageDTO);
     }
 }

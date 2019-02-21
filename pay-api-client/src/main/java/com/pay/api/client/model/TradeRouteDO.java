@@ -44,11 +44,19 @@ public class TradeRouteDO {
 
     private Date tradeRiskTime;
 
+    private Date tradeWarnDate;
+
+    private Integer tradeWarnTimes;
+
     private Long tradeIntervalTime;
 
     private Long lastTradeTimestamp;
 
     private Long lastTradeSucTimestamp;
+
+    private BigDecimal dayTradeSucAmountTotal;
+
+    private BigDecimal monthTradeSucAmountTotal;
 
     public Long getId() {
         return id;
@@ -232,5 +240,37 @@ public class TradeRouteDO {
 
     public void setLastTradeSucTimestamp(Long lastTradeSucTimestamp) {
         this.lastTradeSucTimestamp = lastTradeSucTimestamp;
+    }
+
+    public Date getTradeWarnDate() {
+        return tradeWarnDate;
+    }
+
+    public void setTradeWarnDate(Date tradeWarnDate) {
+        this.tradeWarnDate = tradeWarnDate;
+    }
+
+    public Integer getTradeWarnTimes() {
+        return tradeWarnTimes;
+    }
+
+    public void setTradeWarnTimes(Integer tradeWarnTimes) {
+        this.tradeWarnTimes = tradeWarnTimes;
+    }
+
+    public BigDecimal getDayTradeSucAmountTotal() {
+        return dayTradeSucAmountTotal;
+    }
+
+    public void setDayTradeSucAmountTotal(BigDecimal dayTradeSucAmountTotal) {
+        this.dayTradeSucAmountTotal = dayTradeSucAmountTotal;
+    }
+
+    public BigDecimal getMonthTradeSucAmountTotal() {
+        return monthTradeSucAmountTotal;
+    }
+
+    public void setMonthTradeSucAmountTotal(BigDecimal monthTradeSucAmountTotal) {
+        this.monthTradeSucAmountTotal = monthTradeSucAmountTotal;
     }
 }

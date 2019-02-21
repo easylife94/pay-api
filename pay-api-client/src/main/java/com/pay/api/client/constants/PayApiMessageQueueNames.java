@@ -20,4 +20,9 @@ public class PayApiMessageQueueNames {
      * 测试消息队列
      */
     public static final String QUEUE_TEST = QUEUE_PREFIX + "test";
+
+    /**
+     * 交易创建消息队列
+     */
+    public static final String QUEUE_TRADE_CREATE = QUEUE_PREFIX + "tradeCreate";
 }

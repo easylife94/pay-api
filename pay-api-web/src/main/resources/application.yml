@@ -29,9 +29,19 @@ feign:
   hystrix:
     enabled: true
 
+
+
+
+
+################################################自定义################################################
 snowflake:
   data-center-id: 2
 
 order:
   trade:
     number-prefix: TO
+
+#交易相关配置
+trade:
+  #最大预警次数
+  warn-times-max: 10

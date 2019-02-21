@@ -8,15 +8,12 @@ import com.pay.api.client.dto.method.ApiPayUnifiedPayResultDTO;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.client.utils.DateUtils;
 import com.pay.api.core.method.AbstractPayApiMethod;
-import com.pay.api.core.rabbit.RabbitMqSender;
 import com.pay.api.core.service.ITradeOrderService;
-import com.pay.api.core.service.ITradeRiskControlService;
 import com.pay.api.core.service.ITradeRouteService;
 import com.pay.api.core.service.ITradeService;
 import com.pay.center.client.constants.DefrayalChannelEnum;
 import com.pay.center.client.constants.DefrayalTypeEnum;
 import com.pay.center.client.dto.service.MemberDTO;
-import com.pay.center.client.service.client.IPayCenterFeignServiceClient;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,18 +38,12 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     private final ITradeRouteService tradeRouteService;
     private final ITradeOrderService tradeOrderService;
     private final ITradeService tradeService;
-    private final ITradeRiskControlService tradeRiskService;
-    private final RabbitMqSender rabbitMqSender;
 
     @Autowired
-    public PayApiMethodUnifiedPay(ITradeOrderService tradeOrderService, ITradeRouteService tradeRouteService,
-                                  ITradeService tradeService, ITradeRiskControlService tradeRiskService,
-                                  RabbitMqSender rabbitMqSender) {
+    public PayApiMethodUnifiedPay(ITradeOrderService tradeOrderService, ITradeRouteService tradeRouteService, ITradeService tradeService) {
         this.tradeOrderService = tradeOrderService;
         this.tradeRouteService = tradeRouteService;
         this.tradeService = tradeService;
-        this.tradeRiskService = tradeRiskService;
-        this.rabbitMqSender = rabbitMqSender;
     }
 
     @Override
@@ -152,6 +143,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     @Override
     public ApiPayMethodResultDTO realOperate(ApiPayUnifiedPayDTO apiPayUnifiedPayDTO, MemberDTO memberDTO) {
         ApiPayMethodResultDTO<ApiPayUnifiedPayResultDTO> apiPayMethodResultDTO = new ApiPayMethodResultDTO<>();
+        TradeCreateAfterDTO tradeCreateAfterDTO = new TradeCreateAfterDTO();
 
         DefrayalChannelEnum defrayalChannel = DefrayalChannelEnum.valueOf(apiPayUnifiedPayDTO.getDefrayalChannel());
         DefrayalTypeEnum defrayalType = DefrayalTypeEnum.valueOf(apiPayUnifiedPayDTO.getDefrayalType());
@@ -181,7 +173,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
 
         //4.交易处理
         //5.风控处理
-        TradeHandleDTO tradeHandleDTO = new TradeHandleDTO("", tradeOrder.getSysOrderNumber(), tradeOrder.getTradeAmount(), defrayalChannel, defrayalType);
+        TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(routeMerchant.getPlatformMapped(), tradeOrder.getSysOrderNumber(), tradeOrder.getTradeAmount(), defrayalChannel, defrayalType);
         TradeHandleResultDTO tradeHandleResultDTO = tradeService.tradeHandle(tradeHandleDTO);
         switch (tradeHandleResultDTO.getStatus()) {
             case SUCCESS:
@@ -194,12 +186,12 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             case RISK:
                 tradeOrder.setTradeStatus(TradeOrderStatusEnum.CLOSED.getType());
                 //5.1.上游返回明确商户被风控
-                tradeRiskService.merchantRiskControl(new TradeMerchantRiskControlDTO(routeMerchant.getMerchantNumber()));
+                tradeCreateAfterDTO.setTradeRisk(true);
                 break;
             case ERROR:
                 tradeOrder.setTradeStatus(TradeOrderStatusEnum.CLOSED.getType());
                 //5.2.下单失败，系统内部风控预警
-                tradeRiskService.merchantRiskControlWarn(new TradeMerchantRiskControlDTO(routeMerchant.getMerchantNumber()));
+                tradeCreateAfterDTO.setTradeWarn(true);
                 break;
             default:
                 //当做未知处理
@@ -216,9 +208,8 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         apiPayMethodResultDTO.setResult(ApiPayMethodResultEnum.SUCCESS);
         apiPayMethodResultDTO.setData(unifiedPayResultDTO);
 
-        //8.下单异步任务
-
-
+        //8.下单结束后待处理
+        tradeService.afterTradeCreate(tradeOrder, tradeCreateAfterDTO);
 
         return apiPayMethodResultDTO;
     }
