@@ -22,9 +22,9 @@ public class TestController {
     @ResponseBody
     @RequestMapping("/feign")
     public String testFeign(){
-
         return payCenterFeignServiceClient.test();
     }
+
     @ResponseBody
     @RequestMapping("/bean/{id}")
     public String getBean(@PathVariable("id") String id){

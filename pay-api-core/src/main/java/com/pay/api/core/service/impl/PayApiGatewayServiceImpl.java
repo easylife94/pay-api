@@ -79,7 +79,7 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
         }
 
         //2.4 timestamp
-        if(!Boolean.TRUE.equals(checkTimestampFormat(apiPayDTO.getTimestamp()))){
+        if (!Boolean.TRUE.equals(checkTimestampFormat(apiPayDTO.getTimestamp()))) {
             return paramsError(apiPayParamsCheckDTO, "timestamp", ApiPayGatewayPublicParamsErrorEnum.TIMESTAMP_ERROR);
         }
 
@@ -116,6 +116,7 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
 
     @Override
     public Boolean verifySign(ApiPayDTO apiPayDTO, MemberDTO memberDTO) {
+        //TODO 改为从trade_member表获取验签信息
         String signType = apiPayDTO.getSignType().toUpperCase();
         ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
         if (signType != null) {

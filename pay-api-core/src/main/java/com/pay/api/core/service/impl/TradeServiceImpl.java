@@ -49,10 +49,10 @@ public class TradeServiceImpl implements ITradeService {
 
     @Override
     public TradeHandleResultDTO preOrderTrade(String sysOrderNumber) {
+        //todo 预下单
         TradeOrderDO tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(sysOrderNumber);
-
-
-        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO();
+        String content = null;
+        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS,null,content,null);
         return tradeHandleResultDTO;
     }
 
