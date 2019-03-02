@@ -8,7 +8,6 @@ import com.pay.api.client.dto.ApiPayResultDTO;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
-import com.pay.center.client.constants.ApiResultEnum;
 import com.pay.center.client.dto.service.MemberDTO;
 import com.pay.center.client.service.client.IPayCenterFeignServiceClient;
 import org.slf4j.Logger;
@@ -98,8 +97,8 @@ public class PayApi {
                     apiPayResultDTO.setMsg(ApiPayGatewayResultEnum.SUCCESS.getMsg());
                     break;
                 case FAIL:
-                    apiPayResultDTO.setCode(ApiPayGatewayResultEnum.METHOD_FAIL.getCode());
-                    apiPayResultDTO.setMsg(ApiPayGatewayResultEnum.METHOD_FAIL.getMsg());
+                    apiPayResultDTO.setCode(ApiPayGatewayResultEnum.BUSINESS_FAIL.getCode());
+                    apiPayResultDTO.setMsg(ApiPayGatewayResultEnum.BUSINESS_FAIL.getMsg());
                     apiPayResultDTO.setSubCode(resultDTO.getSubCode());
                     apiPayResultDTO.setSubMsg(resultDTO.getSubMsg());
                     break;
