@@ -4,6 +4,7 @@ import com.pay.api.client.constants.ApiPayMethodErrorEnum;
 import com.pay.api.client.constants.ApiPayMethodResultEnum;
 import com.pay.api.client.dto.ApiPayMethodParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayMethodResultDTO;
+import com.pay.api.client.dto.TradeMemberDTO;
 import com.pay.center.client.dto.service.MemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public abstract class AbstractPayApiMethod<T> implements IPayApiMethod {
      * @param memberDTO 会员参数
      * @return 返回ApiPayMethodParamsCheckResultDTO对象。对象的data字段为转化后请求参数
      */
-    public abstract ApiPayMethodParamsCheckResultDTO<T> checkParams(String content, MemberDTO memberDTO);
+    public abstract ApiPayMethodParamsCheckResultDTO<T> checkParams(String content, TradeMemberDTO memberDTO);
 
     /**
      * 定义方法实际执行
@@ -33,7 +34,7 @@ public abstract class AbstractPayApiMethod<T> implements IPayApiMethod {
      * @param memberDTO 会员参数
      * @return 返回方法执行结果
      */
-    public abstract ApiPayMethodResultDTO realOperate(T content, MemberDTO memberDTO);
+    public abstract ApiPayMethodResultDTO realOperate(T content, TradeMemberDTO memberDTO);
 
     /**
      * 先执行参数校验,在实际执行方法
@@ -43,7 +44,7 @@ public abstract class AbstractPayApiMethod<T> implements IPayApiMethod {
      * @return 返回方法执行结果
      */
     @Override
-    public final ApiPayMethodResultDTO operate(String content, MemberDTO memberDTO) {
+    public final ApiPayMethodResultDTO operate(String content, TradeMemberDTO memberDTO) {
         ApiPayMethodParamsCheckResultDTO<T> paramsCheckResultDTO = checkParams(content, memberDTO);
         if (!Boolean.TRUE.equals(paramsCheckResultDTO.getPass())) {
             ApiPayMethodResultDTO apiPayMethodResultDTO = new ApiPayMethodResultDTO();

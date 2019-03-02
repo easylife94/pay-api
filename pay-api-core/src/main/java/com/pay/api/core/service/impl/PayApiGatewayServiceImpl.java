@@ -4,11 +4,11 @@ import com.pay.api.client.constants.*;
 import com.pay.api.client.dto.ApiPayDTO;
 import com.pay.api.client.dto.ApiPayParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayResultDTO;
+import com.pay.api.client.dto.TradeMemberDTO;
 import com.pay.api.client.utils.SignUtils;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
 import com.pay.api.core.utils.SpringContextUtil;
-import com.pay.center.client.dto.service.MemberDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +115,7 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
     }
 
     @Override
-    public Boolean verifySign(ApiPayDTO apiPayDTO, MemberDTO memberDTO) {
+    public Boolean verifySign(ApiPayDTO apiPayDTO, TradeMemberDTO memberDTO) {
         //TODO 改为从trade_member表获取验签信息
         String signType = apiPayDTO.getSignType().toUpperCase();
         ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
@@ -139,7 +139,7 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
     }
 
     @Override
-    public Boolean sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, MemberDTO memberDTO) {
+    public Boolean sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, TradeMemberDTO memberDTO) {
         String contentStr = SignUtils.str(apiPayResultDTO.getContent());
         String signType = apiPayDTO.getSignType().toUpperCase();
         ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
@@ -164,8 +164,8 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
     }
 
     @Override
-    public String encrypt(String content, MemberDTO memberDTO) {
-
+    public String encrypt(String content, TradeMemberDTO memberDTO) {
+        //todo 加密
         return null;
     }
 

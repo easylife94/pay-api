@@ -1,7 +1,7 @@
 package com.pay.api.core.method;
 
 import com.pay.api.client.dto.ApiPayMethodResultDTO;
-import com.pay.center.client.dto.service.MemberDTO;
+import com.pay.api.client.dto.TradeMemberDTO;
 
 /**
  * 支付方法接口，实现类使用Component注解，实例名称前缀<code>PAY.</code>
@@ -19,6 +19,6 @@ public interface IPayApiMethod<T> {
      * @param memberDTO 会员
      * @return
      */
-    ApiPayMethodResultDTO<T> operate(String content,MemberDTO memberDTO);
+    ApiPayMethodResultDTO<T> operate(String content, TradeMemberDTO memberDTO);
 
 }

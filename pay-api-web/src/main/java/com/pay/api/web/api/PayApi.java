@@ -1,13 +1,11 @@
 package com.pay.api.web.api;
 
 import com.pay.api.client.constants.ApiPayGatewayResultEnum;
-import com.pay.api.client.dto.ApiPayDTO;
-import com.pay.api.client.dto.ApiPayMethodResultDTO;
-import com.pay.api.client.dto.ApiPayParamsCheckResultDTO;
-import com.pay.api.client.dto.ApiPayResultDTO;
+import com.pay.api.client.dto.*;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
+import com.pay.api.core.service.ITradeMemberService;
 import com.pay.center.client.dto.service.MemberDTO;
 import com.pay.center.client.service.client.IPayCenterFeignServiceClient;
 import org.slf4j.Logger;
@@ -31,12 +29,13 @@ public class PayApi {
     private static final Logger logger = LoggerFactory.getLogger(PayApi.class);
 
     private final IPayApiGatewayService payApiGatewayService;
-    private final IPayCenterFeignServiceClient payCenterFeignServiceClient;
+    private final ITradeMemberService tradeMemberService;
 
     @Autowired
-    public PayApi(IPayApiGatewayService payApiGatewayService, IPayCenterFeignServiceClient payCenterFeignServiceClient) {
+    public PayApi(IPayApiGatewayService payApiGatewayService, ITradeMemberService tradeMemberService) {
         this.payApiGatewayService = payApiGatewayService;
-        this.payCenterFeignServiceClient = payCenterFeignServiceClient;
+        this.tradeMemberService = tradeMemberService;
+
     }
 
     /**
@@ -60,7 +59,7 @@ public class PayApi {
             }
 
             //2.获取会员
-            MemberDTO memberDTO = payCenterFeignServiceClient.getMember(apiPayDTO.getMember());
+            TradeMemberDTO memberDTO = tradeMemberService.getMember(apiPayDTO.getMember());
             if (memberDTO == null) {
                 return gatewayError(apiPayDTO, apiPayResultDTO, ApiPayGatewayResultEnum.MEMBER_NOT_EXIST);
             }
@@ -105,7 +104,6 @@ public class PayApi {
                 default:
                     throw new PayApiException("不支持方法执行返回结果类型：" + resultDTO.getResult());
             }
-
 
 
             logger.info("支付接口网关，返回成功，请求参数:{}，返回参数:{}", apiPayDTO, apiPayResultDTO);

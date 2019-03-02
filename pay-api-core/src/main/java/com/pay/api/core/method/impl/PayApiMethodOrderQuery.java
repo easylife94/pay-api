@@ -7,6 +7,7 @@ import com.pay.api.client.constants.ApiPayOrderQueryErrorEnum;
 import com.pay.api.client.constants.PayApiBeanPrefix;
 import com.pay.api.client.dto.ApiPayMethodParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayMethodResultDTO;
+import com.pay.api.client.dto.TradeMemberDTO;
 import com.pay.api.client.dto.method.ApiPayOrderQueryDTO;
 import com.pay.api.client.dto.method.ApiPayOrderQueryResultDTO;
 import com.pay.api.client.model.TradeOrderDO;
@@ -40,7 +41,7 @@ public class PayApiMethodOrderQuery extends AbstractPayApiMethod<ApiPayOrderQuer
     }
 
     @Override
-    public ApiPayMethodParamsCheckResultDTO<ApiPayOrderQueryDTO> checkParams(String content, MemberDTO memberDTO) {
+    public ApiPayMethodParamsCheckResultDTO<ApiPayOrderQueryDTO> checkParams(String content, TradeMemberDTO memberDTO) {
         ApiPayMethodParamsCheckResultDTO<ApiPayOrderQueryDTO> checkResultDTO = new ApiPayMethodParamsCheckResultDTO<>();
         JSONObject jsonObject = JSONObject.parseObject(content);
         ApiPayOrderQueryDTO data = jsonObject.toJavaObject(ApiPayOrderQueryDTO.class);
@@ -55,7 +56,7 @@ public class PayApiMethodOrderQuery extends AbstractPayApiMethod<ApiPayOrderQuer
 
 
     @Override
-    public ApiPayMethodResultDTO realOperate(ApiPayOrderQueryDTO content, MemberDTO memberDTO) {
+    public ApiPayMethodResultDTO realOperate(ApiPayOrderQueryDTO content, TradeMemberDTO memberDTO) {
         ApiPayMethodResultDTO<ApiPayOrderQueryResultDTO> apiPayMethodResultDTO = new ApiPayMethodResultDTO<>();
         TradeOrderDO tradeOrderDO = tradeOrderService.findOneOrder(content.getSysOrderNumber(), memberDTO.getMemberNumber(), content.getMemberOrderNumber());
 

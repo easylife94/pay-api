@@ -3,8 +3,8 @@ package com.pay.api.core.service;
 import com.pay.api.client.dto.ApiPayDTO;
 import com.pay.api.client.dto.ApiPayParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayResultDTO;
+import com.pay.api.client.dto.TradeMemberDTO;
 import com.pay.api.core.method.IPayApiMethod;
-import com.pay.center.client.dto.service.MemberDTO;
 
 /**
  * 支付网关服务接口
@@ -30,7 +30,7 @@ public interface IPayApiGatewayService {
      * @param memberDTO 会员
      * @return 当且仅当验签通过返回false
      */
-    Boolean verifySign(ApiPayDTO apiPayDTO, MemberDTO memberDTO);
+    Boolean verifySign(ApiPayDTO apiPayDTO, TradeMemberDTO memberDTO);
 
     /**
      * 加密
@@ -39,7 +39,7 @@ public interface IPayApiGatewayService {
      * @param memberDTO 会员
      * @return 返回加密后内容
      */
-    String encrypt(String content, MemberDTO memberDTO);
+    String encrypt(String content, TradeMemberDTO memberDTO);
 
     /**
      * 结果签名，apiPayResultDTO的sign字段会被设置
@@ -49,7 +49,7 @@ public interface IPayApiGatewayService {
      * @param memberDTO       会员
      * @return 当且仅当签名成功返回true
      */
-    Boolean sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, MemberDTO memberDTO);
+    Boolean sign(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, TradeMemberDTO memberDTO);
 
 
     /**
