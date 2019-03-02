@@ -10,6 +10,8 @@ import java.util.StringJoiner;
  */
 public class TradeRouteMerchantDTO {
 
+    private Long tradeRouteId;
+
     private String platformMapped;
 
     private String platformNumber;
@@ -17,6 +19,14 @@ public class TradeRouteMerchantDTO {
     private String channelNumber;
 
     private String merchantNumber;
+
+    public Long getTradeRouteId() {
+        return tradeRouteId;
+    }
+
+    public void setTradeRouteId(Long tradeRouteId) {
+        this.tradeRouteId = tradeRouteId;
+    }
 
     public String getPlatformMapped() {
         return platformMapped;
@@ -50,7 +60,8 @@ public class TradeRouteMerchantDTO {
         this.merchantNumber = merchantNumber;
     }
 
-    public TradeRouteMerchantDTO(String platformMapped, String platformNumber, String channelNumber, String merchantNumber) {
+    public TradeRouteMerchantDTO(Long tradeRouteId, String platformMapped, String platformNumber, String channelNumber, String merchantNumber) {
+        this.tradeRouteId = tradeRouteId;
         this.platformMapped = platformMapped;
         this.platformNumber = platformNumber;
         this.channelNumber = channelNumber;
@@ -61,6 +72,7 @@ public class TradeRouteMerchantDTO {
     public String toString() {
         return new StringJoiner(", ",
                 TradeRouteMerchantDTO.class.getSimpleName() + "{", "}")
+                .add("tradeRouteId=" + tradeRouteId)
                 .add("platformMapped=" + platformMapped)
                 .add("platformNumber=" + platformNumber)
                 .add("channelNumber=" + channelNumber)

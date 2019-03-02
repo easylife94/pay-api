@@ -143,7 +143,6 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     @Override
     public ApiPayMethodResultDTO realOperate(ApiPayUnifiedPayDTO apiPayUnifiedPayDTO, TradeMemberDTO memberDTO) {
         ApiPayMethodResultDTO<ApiPayUnifiedPayResultDTO> apiPayMethodResultDTO = new ApiPayMethodResultDTO<>();
-        TradeCreateAfterDTO tradeCreateAfterDTO = new TradeCreateAfterDTO();
 
         DefrayalChannelEnum defrayalChannel = DefrayalChannelEnum.valueOf(apiPayUnifiedPayDTO.getDefrayalChannel());
         DefrayalTypeEnum defrayalType = DefrayalTypeEnum.valueOf(apiPayUnifiedPayDTO.getDefrayalType());
@@ -164,6 +163,8 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             return apiPayMethodResultDTO;
         }
 
+        TradeCreateAfterDTO tradeCreateAfterDTO = new TradeCreateAfterDTO();
+        tradeCreateAfterDTO.setTradeRouteId(routeMerchant.getTradeRouteId());
 
         //3.生成订单
         TradeOrderCreateDTO tradeOrderCreateDTO = new TradeOrderCreateDTO(memberDTO.getMemberId(), memberDTO.getMemberNumber(),
