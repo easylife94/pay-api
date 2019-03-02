@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -69,7 +70,11 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         //币种
         tradeOrderDO.setCurrency(TradeOrderCurrencyEnum.CNY.getType());
 
-        tradeOrderDao.updateByPrimaryKeySelective(tradeOrderDO);
+        //todo 服务费,先暂时设置为0
+        tradeOrderDO.setServiceFee(new BigDecimal(0));
+        //创建订单时实际发起支付金额 = 交易金额
+        tradeOrderDO.setPayAmount(tradeOrderCreateDTO.getTradeAmount());
+        tradeOrderDao.insertSelective(tradeOrderDO);
         return tradeOrderDO;
     }
 

@@ -7,7 +7,7 @@
     <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
     <result column="member_number" jdbcType="VARCHAR" property="memberNumber" />
-    <result column="platform_mapped" jdbcType="VARCHAR" property="platformNumber" />
+    <result column="platform_mapped" jdbcType="VARCHAR" property="platformMapped" />
     <result column="platform_number" jdbcType="VARCHAR" property="platformNumber" />
     <result column="channel_number" jdbcType="VARCHAR" property="channelNumber" />
     <result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
@@ -31,7 +31,7 @@
     <result column="month_trade_suc_amount_total" jdbcType="DECIMAL" property="monthTradeSucAmountTotal" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, gmt_create, gmt_update, is_deleted, member_number, platform_number, channel_number, 
+    id, gmt_create, gmt_update, is_deleted, member_number, platform_number,platform_mapped, channel_number,
     merchant_id, merchant_number, defrayal_channel, defrayal_type, merchant_name, status, 
     single_trade_amount_min, single_trade_amount_max, trade_limit, trade_limit_time, 
     trade_risk, trade_risk_time,trade_warn_date,trade_warn_times,trade_interval_time,last_trade_timestamp,
@@ -45,7 +45,7 @@
     and member_number = #{memberNumber,jdbcType=VARCHAR}
     and defrayal_channel = #{defrayalChannel,jdbcType=VARCHAR}
     and defrayal_type = #{defrayalType,jdbcType=VARCHAR}
-    and status = 0
+    and status = 1
     and trade_limit = 0
     and trade_risk = 0
     <if test="platformNumber != null and platformNumber != ''">
@@ -92,7 +92,7 @@
   </delete>
   <insert id="insert" parameterType="com.pay.api.client.model.TradeRouteDO">
     insert into trade_route (id, gmt_create, gmt_update, 
-      is_deleted, member_number, platform_number, 
+      is_deleted, member_number,platform_mapped, platform_number,
       channel_number, merchant_id, merchant_number, 
       defrayal_channel, defrayal_type, merchant_name, 
       status, single_trade_amount_min, single_trade_amount_max, 
@@ -101,7 +101,7 @@
       last_trade_timestamp,last_trade_suc_timestamp,day_trade_suc_amount_total,
       month_trade_suc_amount_total)
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=BIT}, #{memberNumber,jdbcType=VARCHAR}, #{platformNumber,jdbcType=VARCHAR}, 
+      #{isDeleted,jdbcType=BIT}, #{memberNumber,jdbcType=VARCHAR}, #{platformMapped,jdbcType=VARCHAR}, #{platformNumber,jdbcType=VARCHAR},
       #{channelNumber,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT}, #{merchantNumber,jdbcType=VARCHAR}, 
       #{defrayalChannel,jdbcType=VARCHAR}, #{defrayalType,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, 
       #{status,jdbcType=BIT}, #{singleTradeAmountMin,jdbcType=DECIMAL}, #{singleTradeAmountMax,jdbcType=DECIMAL}, 
@@ -128,6 +128,9 @@
       </if>
       <if test="memberNumber != null">
         member_number,
+      </if>
+      <if test="platformMapped != null">
+        platform_mapped,
       </if>
       <if test="platformNumber != null">
         platform_number,
@@ -209,6 +212,9 @@
       <if test="memberNumber != null">
         #{memberNumber,jdbcType=VARCHAR},
       </if>
+      <if test="platformMapped != null">
+        #{platformMapped,jdbcType=VARCHAR},
+      </if>
       <if test="platformNumber != null">
         #{platformNumber,jdbcType=VARCHAR},
       </if>
@@ -276,7 +282,7 @@
   </insert>
   <insert id="insertBatch" parameterType="java.util.List">
     insert into trade_route (id, gmt_create, gmt_update,
-      is_deleted, member_number, platform_number,
+      is_deleted, member_number,platform_mapped, platform_number,
       channel_number, merchant_id, merchant_number,
       defrayal_channel, defrayal_type, merchant_name,
       status, single_trade_amount_min, single_trade_amount_max,
@@ -287,7 +293,7 @@
     values
     <foreach collection="list" item="item" index="index" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtUpdate,jdbcType=TIMESTAMP},
-      #{item.isDeleted,jdbcType=BIT}, #{item.memberNumber,jdbcType=VARCHAR}, #{item.platformNumber,jdbcType=VARCHAR},
+      #{item.isDeleted,jdbcType=BIT}, #{item.memberNumber,jdbcType=VARCHAR}, #{item.platformMapped,jdbcType=VARCHAR}, #{item.platformNumber,jdbcType=VARCHAR},
       #{item.channelNumber,jdbcType=VARCHAR}, #{item.merchantId,jdbcType=BIGINT}, #{item.merchantNumber,jdbcType=VARCHAR},
       #{item.defrayalChannel,jdbcType=VARCHAR}, #{item.defrayalType,jdbcType=VARCHAR}, #{item.merchantName,jdbcType=VARCHAR},
       #{item.status,jdbcType=BIT}, #{item.singleTradeAmountMin,jdbcType=DECIMAL}, #{item.singleTradeAmountMax,jdbcType=DECIMAL},
@@ -312,6 +318,9 @@
       </if>
       <if test="memberNumber != null">
         member_number = #{memberNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platformMapped != null">
+        platform_mapped = #{platformMapped,jdbcType=VARCHAR},
       </if>
       <if test="platformNumber != null">
         platform_number = #{platformNumber,jdbcType=VARCHAR},
@@ -385,6 +394,7 @@
       gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=BIT},
       member_number = #{memberNumber,jdbcType=VARCHAR},
+      platform_mapped = #{platformMapped,jdbcType=VARCHAR},
       platform_number = #{platformNumber,jdbcType=VARCHAR},
       channel_number = #{channelNumber,jdbcType=VARCHAR},
       merchant_id = #{merchantId,jdbcType=BIGINT},

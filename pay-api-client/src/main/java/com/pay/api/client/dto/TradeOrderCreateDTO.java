@@ -1,5 +1,6 @@
 package com.pay.api.client.dto;
 
+import java.math.BigDecimal;
 import java.util.StringJoiner;
 
 /**
@@ -18,10 +19,11 @@ public class TradeOrderCreateDTO {
     private String defrayalChannel;
     private String defrayalType;
     private String memberOrderNumber;
+    private BigDecimal tradeAmount;
 
     public TradeOrderCreateDTO(Long memberId, String memberNumber, String memberName, Long agentId, String agentNumber,
                                String agentName, String agentLevel, String defrayalChannel, String defrayalType,
-                               String memberOrderNumber) {
+                               String memberOrderNumber,BigDecimal tradeAmount) {
         this.memberId = memberId;
         this.memberNumber = memberNumber;
         this.memberName = memberName;
@@ -32,6 +34,7 @@ public class TradeOrderCreateDTO {
         this.defrayalChannel = defrayalChannel;
         this.defrayalType = defrayalType;
         this.memberOrderNumber = memberOrderNumber;
+        this.tradeAmount = tradeAmount;
     }
 
     public Long getMemberId() {
@@ -114,6 +117,14 @@ public class TradeOrderCreateDTO {
         this.memberOrderNumber = memberOrderNumber;
     }
 
+    public BigDecimal getTradeAmount() {
+        return tradeAmount;
+    }
+
+    public void setTradeAmount(BigDecimal tradeAmount) {
+        this.tradeAmount = tradeAmount;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ",
@@ -128,6 +139,7 @@ public class TradeOrderCreateDTO {
                 .add("defrayalChannel=" + defrayalChannel)
                 .add("defrayalType=" + defrayalType)
                 .add("memberOrderNumber=" + memberOrderNumber)
+                .add("tradeAmount=" + tradeAmount)
                 .toString();
     }
 }

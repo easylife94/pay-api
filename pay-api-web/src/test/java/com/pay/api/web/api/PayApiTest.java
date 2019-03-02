@@ -67,7 +67,7 @@ public class PayApiTest extends PayApiWebApplicationTests {
         ApiPayDTO apiPayDTO = new ApiPayDTO();
         apiPayDTO.setEncrypt(false);
         apiPayDTO.setFormat("JSON");
-        apiPayDTO.setMember("1");
+        apiPayDTO.setMember("A00001");
         apiPayDTO.setMethod("UNIFIED_PAY");
         apiPayDTO.setSignType("RSA");
         apiPayDTO.setTimestamp(DateUtils.nowTime2Str());
@@ -76,7 +76,6 @@ public class PayApiTest extends PayApiWebApplicationTests {
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
         apiPayUnifiedPayDTO.setSubject("测试下单");
-        apiPayUnifiedPayDTO.setChannelNumber("C000001");
         apiPayUnifiedPayDTO.setDefrayalChannel("ALI");
         apiPayUnifiedPayDTO.setDefrayalType("NATIVE");
         apiPayUnifiedPayDTO.setCurrency("CNY");

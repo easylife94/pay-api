@@ -51,11 +51,11 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         ApiPayMethodParamsCheckResultDTO<ApiPayUnifiedPayDTO> checkResultDTO = new ApiPayMethodParamsCheckResultDTO<>();
         JSONObject jsonObject = JSONObject.parseObject(content);
         ApiPayUnifiedPayDTO data = jsonObject.toJavaObject(ApiPayUnifiedPayDTO.class);
-        if (StringUtils.isAllBlank(data.getPlatformNumber(), data.getChannelNumber(), data.getMerchantNumber())) {
-            checkResultDTO.setPass(false);
-            checkResultDTO.setMsg("[platformNumber]、[channelNumber]和[merchantNumber]不能都为空");
-            return checkResultDTO;
-        }
+//        if (StringUtils.isAllBlank(data.getPlatformNumber(), data.getChannelNumber(), data.getMerchantNumber())) {
+//            checkResultDTO.setPass(false);
+//            checkResultDTO.setMsg("[platformNumber]、[channelNumber]和[merchantNumber]不能都为空");
+//            return checkResultDTO;
+//        }
 
         if (StringUtils.isBlank(data.getMemberOrderNumber())) {
             checkResultDTO.setPass(false);
@@ -168,7 +168,8 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         //3.生成订单
         TradeOrderCreateDTO tradeOrderCreateDTO = new TradeOrderCreateDTO(memberDTO.getMemberId(), memberDTO.getMemberNumber(),
                 memberDTO.getMemberName(), memberDTO.getAgentId(), memberDTO.getAgentNumber(), memberDTO.getAgentName(), memberDTO.getAgentLevel(),
-                apiPayUnifiedPayDTO.getDefrayalChannel(), apiPayUnifiedPayDTO.getDefrayalType(), apiPayUnifiedPayDTO.getMemberOrderNumber());
+                apiPayUnifiedPayDTO.getDefrayalChannel(), apiPayUnifiedPayDTO.getDefrayalType(), apiPayUnifiedPayDTO.getMemberOrderNumber(),
+                new BigDecimal(apiPayUnifiedPayDTO.getTradeAmount()));
         TradeOrderDO tradeOrder = tradeOrderService.createTradeOrder(tradeOrderCreateDTO);
 
         //4.交易处理
