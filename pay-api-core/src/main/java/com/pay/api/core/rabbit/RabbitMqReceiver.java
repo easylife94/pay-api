@@ -53,6 +53,7 @@ public class RabbitMqReceiver {
                 //明确交易风控
                 if(Boolean.TRUE.equals(tradeCreateMessageDTO.getTradeRisk())){
                     tradeRouteDO.setTradeRisk(true);
+                    tradeRouteDO.setTradeRiskTime(new Date());
                 }
 
                 //交易预警
@@ -63,20 +64,23 @@ public class RabbitMqReceiver {
                     Integer warnTimes = 0;
 
                     //当天预警次数加一，最近一次预警不是当天则置为1
-                    if(StringUtils.equals(sdf.format(lastTradeWarnDate),sdf.format(today))){
-                        warnTimes ++;
+                    if(lastTradeWarnDate != null && StringUtils.equals(sdf.format(lastTradeWarnDate),sdf.format(today))){
+                        warnTimes = tradeRouteDO.getTradeWarnTimes() + 1;
                     } else {
                         warnTimes = 1;
                     }
 
                     tradeRouteDO.setTradeWarnTimes(warnTimes);
+                    tradeRouteDO.setTradeWarnDate(new Date());
                     //判断连续预警次数是都达到风控线
                     if(warnTimes >= warnTimesMax){
                         tradeRouteDO.setTradeRisk(true);
+                        tradeRouteDO.setTradeRiskTime(new Date());
                         logger.info("交易路由预警达到最大次数，触发系统风控。sysOrderNumber:{}，tradeRouteId：{}",
                                 tradeCreateMessageDTO.getSysOrderNumber(), tradeCreateMessageDTO.getTradeRouteId());
                     }
                 }
+                tradeRouteDO.setGmtUpdate(new Date());
                 tradeRouteDao.updateByPrimaryKey(tradeRouteDO);
             } else {
                 logger.error("交易路由更新失败，路由不存在，sysOrderNumber:{}，tradeRouteId：{}",
