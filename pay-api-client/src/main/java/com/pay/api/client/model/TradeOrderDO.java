@@ -108,6 +108,10 @@ public class TradeOrderDO {
 
     private String payContent;
 
+    private String closeCause;
+
+    private String closeType;
+
     public Long getId() {
         return id;
     }
@@ -522,5 +526,21 @@ public class TradeOrderDO {
 
     public void setPayContent(String payContent) {
         this.payContent = payContent;
+    }
+
+    public String getCloseCause() {
+        return closeCause;
+    }
+
+    public void setCloseCause(String closeCause) {
+        this.closeCause = closeCause;
+    }
+
+    public String getCloseType() {
+        return closeType;
+    }
+
+    public void setCloseType(String closeType) {
+        this.closeType = closeType;
     }
 }

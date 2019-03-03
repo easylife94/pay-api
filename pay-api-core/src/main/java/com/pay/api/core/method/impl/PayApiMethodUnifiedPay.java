@@ -187,11 +187,15 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
                 break;
             case RISK:
                 tradeOrder.setTradeStatus(TradeOrderStatusEnum.CLOSED.getType());
+                tradeOrder.setCloseType(TradeOrderCloseTypeEnum.ORDER_ERROR.getType());
+                tradeOrder.setCloseCause("下单失败，命中风控。上游返回信息：" + tradeHandleResultDTO.getErrorMsg());
                 //5.1.上游返回明确商户被风控
                 tradeCreateAfterDTO.setTradeRisk(true);
                 break;
             case ERROR:
                 tradeOrder.setTradeStatus(TradeOrderStatusEnum.CLOSED.getType());
+                tradeOrder.setCloseType(TradeOrderCloseTypeEnum.ORDER_ERROR.getType());
+                tradeOrder.setCloseCause("下单失败。上游返回信息：" + tradeHandleResultDTO.getErrorMsg());
                 //5.2.下单失败，系统内部风控预警
                 tradeCreateAfterDTO.setTradeWarn(true);
                 break;

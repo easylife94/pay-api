@@ -52,6 +52,8 @@
     <result column="service_fee" jdbcType="DECIMAL" property="serviceFee" />
     <result column="sys_service_profit" jdbcType="DECIMAL" property="sysServiceProfit" />
     <result column="agent_service_profit" jdbcType="DECIMAL" property="agentServiceProfit" />
+    <result column="close_cause" jdbcType="VARCHAR" property="closeCause" />
+    <result column="close_type" jdbcType="VARCHAR" property="closeType" />
   </resultMap>
   <sql id="Base_Column_List">
     id, gmt_create, gmt_update, is_deleted, sys_order_number, member_order_number, platform_order_number, 
@@ -62,7 +64,7 @@
     channel_id, channel_number, channel_name, merchant_id, merchant_number, merchant_name, 
     trade_amount, pay_amount, privilege_amount, refund_amount, check_amount, channel_fee, 
     channel_platform_fee, channel_profit, sys_channel_profit, agent_channel_profit, service_fee, 
-    sys_service_profit, agent_service_profit
+    sys_service_profit, agent_service_profit,close_cause,close_type
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -104,7 +106,8 @@
       pay_amount, privilege_amount, refund_amount, 
       check_amount, channel_fee, channel_platform_fee, 
       channel_profit, sys_channel_profit, agent_channel_profit, 
-      service_fee, sys_service_profit, agent_service_profit
+      service_fee, sys_service_profit, agent_service_profit,
+      close_cause,close_type
       )
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=BIT}, #{sysOrderNumber,jdbcType=VARCHAR}, #{memberOrderNumber,jdbcType=VARCHAR}, 
@@ -122,7 +125,8 @@
       #{payAmount,jdbcType=DECIMAL}, #{privilegeAmount,jdbcType=DECIMAL}, #{refundAmount,jdbcType=DECIMAL}, 
       #{checkAmount,jdbcType=DECIMAL}, #{channelFee,jdbcType=DECIMAL}, #{channelPlatformFee,jdbcType=DECIMAL}, 
       #{channelProfit,jdbcType=DECIMAL}, #{sysChannelProfit,jdbcType=DECIMAL}, #{agentChannelProfit,jdbcType=DECIMAL}, 
-      #{serviceFee,jdbcType=DECIMAL}, #{sysServiceProfit,jdbcType=DECIMAL}, #{agentServiceProfit,jdbcType=DECIMAL}
+      #{serviceFee,jdbcType=DECIMAL}, #{sysServiceProfit,jdbcType=DECIMAL}, #{agentServiceProfit,jdbcType=DECIMAL},
+      #{closeCause,jdbcType=VARCHAR}, #{closeType,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeOrderDO">
@@ -278,6 +282,12 @@
       <if test="agentServiceProfit != null">
         agent_service_profit,
       </if>
+      <if test="closeCause != null">
+        close_cause,
+      </if>
+      <if test="closeType != null">
+        close_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -429,6 +439,12 @@
       </if>
       <if test="agentServiceProfit != null">
         #{agentServiceProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="closeCause != null">
+        #{closeCause,jdbcType=VARCHAR},
+      </if>
+      <if test="closeType != null">
+        #{closeType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -582,6 +598,12 @@
       <if test="agentServiceProfit != null">
         agent_service_profit = #{agentServiceProfit,jdbcType=DECIMAL},
       </if>
+      <if test="closeCause != null">
+        close_cause = #{closeCause,jdbcType=VARCHAR},
+      </if>
+      <if test="closeType != null">
+        close_type = #{closeType,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -635,7 +657,9 @@
       agent_channel_profit = #{agentChannelProfit,jdbcType=DECIMAL},
       service_fee = #{serviceFee,jdbcType=DECIMAL},
       sys_service_profit = #{sysServiceProfit,jdbcType=DECIMAL},
-      agent_service_profit = #{agentServiceProfit,jdbcType=DECIMAL}
+      agent_service_profit = #{agentServiceProfit,jdbcType=DECIMAL},
+      close_cause = #{closeCause,jdbcType=VARCHAR},
+      close_type = #{closeType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
