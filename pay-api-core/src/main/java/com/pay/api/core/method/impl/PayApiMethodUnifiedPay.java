@@ -13,7 +13,6 @@ import com.pay.api.core.service.ITradeRouteService;
 import com.pay.api.core.service.ITradeService;
 import com.pay.center.client.constants.DefrayalChannelEnum;
 import com.pay.center.client.constants.DefrayalTypeEnum;
-import com.pay.center.client.dto.service.MemberDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
