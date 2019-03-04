@@ -20,22 +20,16 @@ public class TradeOrderCreateDTO {
     private String defrayalType;
     private String memberOrderNumber;
     private BigDecimal tradeAmount;
+    private Long merchantId;
+    private String merchantNumber;
+    private String merchantName;
+    private Long platformId;
+    private String platformNumber;
+    private String platformName;
+    private Long channelId;
+    private String channelNumber;
+    private String channelName;
 
-    public TradeOrderCreateDTO(Long memberId, String memberNumber, String memberName, Long agentId, String agentNumber,
-                               String agentName, String agentLevel, String defrayalChannel, String defrayalType,
-                               String memberOrderNumber,BigDecimal tradeAmount) {
-        this.memberId = memberId;
-        this.memberNumber = memberNumber;
-        this.memberName = memberName;
-        this.agentId = agentId;
-        this.agentNumber = agentNumber;
-        this.agentName = agentName;
-        this.agentLevel = agentLevel;
-        this.defrayalChannel = defrayalChannel;
-        this.defrayalType = defrayalType;
-        this.memberOrderNumber = memberOrderNumber;
-        this.tradeAmount = tradeAmount;
-    }
 
     public Long getMemberId() {
         return memberId;
@@ -117,12 +111,110 @@ public class TradeOrderCreateDTO {
         this.memberOrderNumber = memberOrderNumber;
     }
 
+
+    public TradeOrderCreateDTO(Long memberId, String memberNumber, String memberName, Long agentId, String agentNumber, String agentName, String agentLevel, String defrayalChannel,
+                               String defrayalType, String memberOrderNumber, BigDecimal tradeAmount, Long merchantId, String merchantNumber, String merchantName, Long platformId,
+                               String platformNumber, String platformName, Long channelId, String channelNumber, String channelName) {
+        this.memberId = memberId;
+        this.memberNumber = memberNumber;
+        this.memberName = memberName;
+        this.agentId = agentId;
+        this.agentNumber = agentNumber;
+        this.agentName = agentName;
+        this.agentLevel = agentLevel;
+        this.defrayalChannel = defrayalChannel;
+        this.defrayalType = defrayalType;
+        this.memberOrderNumber = memberOrderNumber;
+        this.tradeAmount = tradeAmount;
+        this.merchantId = merchantId;
+        this.merchantNumber = merchantNumber;
+        this.merchantName = merchantName;
+        this.platformId = platformId;
+        this.platformNumber = platformNumber;
+        this.platformName = platformName;
+        this.channelId = channelId;
+        this.channelNumber = channelNumber;
+        this.channelName = channelName;
+    }
+
     public BigDecimal getTradeAmount() {
         return tradeAmount;
     }
 
     public void setTradeAmount(BigDecimal tradeAmount) {
         this.tradeAmount = tradeAmount;
+    }
+
+    public Long getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(Long merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public String getMerchantNumber() {
+        return merchantNumber;
+    }
+
+    public void setMerchantNumber(String merchantNumber) {
+        this.merchantNumber = merchantNumber;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
+
+    public Long getPlatformId() {
+        return platformId;
+    }
+
+    public void setPlatformId(Long platformId) {
+        this.platformId = platformId;
+    }
+
+    public String getPlatformNumber() {
+        return platformNumber;
+    }
+
+    public void setPlatformNumber(String platformNumber) {
+        this.platformNumber = platformNumber;
+    }
+
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getChannelNumber() {
+        return channelNumber;
+    }
+
+    public void setChannelNumber(String channelNumber) {
+        this.channelNumber = channelNumber;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
     @Override
@@ -140,6 +232,15 @@ public class TradeOrderCreateDTO {
                 .add("defrayalType=" + defrayalType)
                 .add("memberOrderNumber=" + memberOrderNumber)
                 .add("tradeAmount=" + tradeAmount)
+                .add("merchantId=" + merchantId)
+                .add("merchantNumber=" + merchantNumber)
+                .add("merchantName=" + merchantName)
+                .add("platformId=" + platformId)
+                .add("platformNumber=" + platformNumber)
+                .add("platformName=" + platformName)
+                .add("channelId=" + channelId)
+                .add("channelNumber=" + channelNumber)
+                .add("channelName=" + channelName)
                 .toString();
     }
 }

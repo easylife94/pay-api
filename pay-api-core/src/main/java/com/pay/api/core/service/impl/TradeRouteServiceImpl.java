@@ -82,8 +82,9 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
         }
 
         if (finalTradeRoute != null) {
-            tradeRouteMerchantDTO = new TradeRouteMerchantDTO(finalTradeRoute.getId(), finalTradeRoute.getPlatformMapped(), finalTradeRoute.getPlatformNumber(),
-                    finalTradeRoute.getChannelNumber(), finalTradeRoute.getMerchantNumber());
+            tradeRouteMerchantDTO = new TradeRouteMerchantDTO(finalTradeRoute.getId(),finalTradeRoute.getPlatformMapped(),finalTradeRoute.getPlatformId(),finalTradeRoute.getPlatformNumber(),
+                    finalTradeRoute.getPlatformName(),finalTradeRoute.getChannelId(),finalTradeRoute.getChannelNumber(),finalTradeRoute.getChannelName(),finalTradeRoute.getMerchantId(),
+                    finalTradeRoute.getMerchantNumber(),finalTradeRoute.getMerchantName());
         }
 
         return tradeRouteMerchantDTO;

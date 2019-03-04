@@ -63,6 +63,21 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         tradeOrderDO.setAgentName(tradeOrderCreateDTO.getAgentName());
         tradeOrderDO.setAgentNumber(tradeOrderCreateDTO.getAgentNumber());
 
+        //商户信息
+        tradeOrderDO.setMerchantId(tradeOrderCreateDTO.getMerchantId());
+        tradeOrderDO.setMerchantName(tradeOrderCreateDTO.getMerchantName());
+        tradeOrderDO.setMerchantNumber(tradeOrderCreateDTO.getMerchantNumber());
+
+        //平台信息
+        tradeOrderDO.setPlatformId(tradeOrderCreateDTO.getPlatformId());
+        tradeOrderDO.setPlatformNumber(tradeOrderCreateDTO.getPlatformNumber());
+        tradeOrderDO.setPlatformName(tradeOrderCreateDTO.getPlatformName());
+
+        //通道信息
+        tradeOrderDO.setChannelId(tradeOrderCreateDTO.getChannelId());
+        tradeOrderDO.setChannelNumber(tradeOrderCreateDTO.getChannelNumber());
+        tradeOrderDO.setChannelName(tradeOrderCreateDTO.getChannelName());
+
         //系统订单信息
         tradeOrderDO.setSysOrderNumber(idService.generateTradeOrderNumber());
         tradeOrderDO.setSysOrderTime(orderTime.getTime());
@@ -74,6 +89,7 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         tradeOrderDO.setServiceFee(new BigDecimal(0));
         //创建订单时实际发起支付金额 = 交易金额
         tradeOrderDO.setPayAmount(tradeOrderCreateDTO.getTradeAmount());
+        tradeOrderDO.setTradeAmount(tradeOrderCreateDTO.getTradeAmount());
         tradeOrderDao.insertSelective(tradeOrderDO);
         return tradeOrderDO;
     }
@@ -86,7 +102,7 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
     @Override
     public TradeOrderDO findOneOrder(String sysOrderNumber, String memberNumber, String memberOrderNumber) {
         TradeOrderDO tradeOrderDO;
-        if (StringUtils.isNotBlank(memberNumber)) {
+        if (StringUtils.isNotBlank(memberNumber) && StringUtils.isNotBlank(memberOrderNumber)) {
             tradeOrderDO = tradeOrderDao.selectByMemberOrderNumber(memberNumber, memberOrderNumber);
         } else {
             tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(sysOrderNumber);

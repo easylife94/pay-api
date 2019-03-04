@@ -8,8 +8,12 @@
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
     <result column="member_number" jdbcType="VARCHAR" property="memberNumber" />
     <result column="platform_mapped" jdbcType="VARCHAR" property="platformMapped" />
+    <result column="platform_id" jdbcType="BIGINT" property="platformId" />
     <result column="platform_number" jdbcType="VARCHAR" property="platformNumber" />
+    <result column="platform_name" jdbcType="VARCHAR" property="platformName" />
+    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
     <result column="channel_number" jdbcType="VARCHAR" property="channelNumber" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
     <result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
     <result column="merchant_number" jdbcType="VARCHAR" property="merchantNumber" />
     <result column="defrayal_channel" jdbcType="VARCHAR" property="defrayalChannel" />
@@ -31,9 +35,9 @@
     <result column="month_trade_suc_amount_total" jdbcType="DECIMAL" property="monthTradeSucAmountTotal" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, gmt_create, gmt_update, is_deleted, member_number, platform_number,platform_mapped, channel_number,
-    merchant_id, merchant_number, defrayal_channel, defrayal_type, merchant_name, status, 
-    single_trade_amount_min, single_trade_amount_max, trade_limit, trade_limit_time, 
+    id, gmt_create, gmt_update, is_deleted, member_number, platform_id,platform_number,platform_name,
+    platform_mapped,channel_id, channel_number,channel_name ,merchant_id, merchant_number, defrayal_channel,
+    defrayal_type, merchant_name, status, single_trade_amount_min, single_trade_amount_max, trade_limit, trade_limit_time,
     trade_risk, trade_risk_time,trade_warn_date,trade_warn_times,trade_interval_time,last_trade_timestamp,
     last_trade_suc_timestamp,day_trade_suc_amount_total,month_trade_suc_amount_total
   </sql>
@@ -81,7 +85,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from trade_route
     where id = #{id,jdbcType=BIGINT}
@@ -91,23 +95,22 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.pay.api.client.model.TradeRouteDO">
-    insert into trade_route (id, gmt_create, gmt_update, 
-      is_deleted, member_number,platform_mapped, platform_number,
-      channel_number, merchant_id, merchant_number, 
-      defrayal_channel, defrayal_type, merchant_name, 
-      status, single_trade_amount_min, single_trade_amount_max, 
-      trade_limit, trade_limit_time, trade_risk, 
+    insert into trade_route (id, gmt_create, gmt_update,
+      is_deleted, member_number,platform_mapped, platform_id,platform_number,platform_name,
+      channel_id,channel_number,channel_name, merchant_id, merchant_number,
+      defrayal_channel, defrayal_type, merchant_name,
+      status, single_trade_amount_min, single_trade_amount_max,
+      trade_limit, trade_limit_time, trade_risk,
       trade_risk_time,trade_warn_date,trade_warn_times,trade_interval_time,
       last_trade_timestamp,last_trade_suc_timestamp,day_trade_suc_amount_total,
       month_trade_suc_amount_total)
-    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=BIT}, #{memberNumber,jdbcType=VARCHAR}, #{platformMapped,jdbcType=VARCHAR}, #{platformNumber,jdbcType=VARCHAR},
-      #{channelNumber,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT}, #{merchantNumber,jdbcType=VARCHAR}, 
-      #{defrayalChannel,jdbcType=VARCHAR}, #{defrayalType,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, 
-      #{status,jdbcType=BIT}, #{singleTradeAmountMin,jdbcType=DECIMAL}, #{singleTradeAmountMax,jdbcType=DECIMAL}, 
-      #{tradeLimit,jdbcType=BIT}, #{tradeLimitTime,jdbcType=TIMESTAMP}, #{tradeRisk,jdbcType=BIT}, 
-      #{tradeRiskTime,jdbcType=TIMESTAMP},#{tradeIntervalTime,jdbcType=BIGINT},
-      #{tradeWarnDate,jdbcType=TIMESTAMP},#{tradeWarnTimes,jdbcType=INTEGER},
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP},
+      #{isDeleted,jdbcType=BIT}, #{memberNumber,jdbcType=VARCHAR}, #{platformMapped,jdbcType=VARCHAR}, #{platformId,jdbcType=BIGINT},
+      #{platformNumber,jdbcType=VARCHAR}, #{platformName,jdbcType=VARCHAR},#{channelId,jdbcType=BIGINT}, #{channelNumber,jdbcType=VARCHAR},
+      #{channelName,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT}, #{merchantNumber,jdbcType=VARCHAR}, #{defrayalChannel,jdbcType=VARCHAR},
+      #{defrayalType,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, #{singleTradeAmountMin,jdbcType=DECIMAL},
+      #{singleTradeAmountMax,jdbcType=DECIMAL},#{tradeLimit,jdbcType=BIT}, #{tradeLimitTime,jdbcType=TIMESTAMP}, #{tradeRisk,jdbcType=BIT},
+      #{tradeRiskTime,jdbcType=TIMESTAMP},#{tradeIntervalTime,jdbcType=BIGINT}, #{tradeWarnDate,jdbcType=TIMESTAMP},#{tradeWarnTimes,jdbcType=INTEGER},
       #{lastTradeSucTimestamp,jdbcType=BIGINT},#{dayTradeSucAmountTotal,jdbcType=DECIMAL},
       #{monthTradeSucAmountTotal,jdbcType=DECIMAL})
   </insert>
@@ -132,11 +135,23 @@
       <if test="platformMapped != null">
         platform_mapped,
       </if>
+      <if test="platformId != null">
+        platform_id,
+      </if>
       <if test="platformNumber != null">
         platform_number,
       </if>
+      <if test="platformName != null">
+        platform_name,
+      </if>
+      <if test="channelId != null">
+        channel_id,
+      </if>
       <if test="channelNumber != null">
         channel_number,
+      </if>
+      <if test="channelName != null">
+        channel_name,
       </if>
       <if test="merchantId != null">
         merchant_id,
@@ -215,11 +230,23 @@
       <if test="platformMapped != null">
         #{platformMapped,jdbcType=VARCHAR},
       </if>
+      <if test="platformId != null">
+        #{platformId,jdbcType=BIGINT},
+      </if>
       <if test="platformNumber != null">
         #{platformNumber,jdbcType=VARCHAR},
       </if>
+      <if test="platformName != null">
+        #{platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=BIGINT},
+      </if>
       <if test="channelNumber != null">
         #{channelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null">
+        #{channelName,jdbcType=VARCHAR},
       </if>
       <if test="merchantId != null">
         #{merchantId,jdbcType=BIGINT},
@@ -282,8 +309,8 @@
   </insert>
   <insert id="insertBatch" parameterType="java.util.List">
     insert into trade_route (id, gmt_create, gmt_update,
-      is_deleted, member_number,platform_mapped, platform_number,
-      channel_number, merchant_id, merchant_number,
+      is_deleted, member_number,platform_mapped,platform_id, platform_number,platform_name,
+      channel_id,channel_number,channel_name, merchant_id, merchant_number,
       defrayal_channel, defrayal_type, merchant_name,
       status, single_trade_amount_min, single_trade_amount_max,
       trade_limit, trade_limit_time, trade_risk,
@@ -293,8 +320,9 @@
     values
     <foreach collection="list" item="item" index="index" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtUpdate,jdbcType=TIMESTAMP},
-      #{item.isDeleted,jdbcType=BIT}, #{item.memberNumber,jdbcType=VARCHAR}, #{item.platformMapped,jdbcType=VARCHAR}, #{item.platformNumber,jdbcType=VARCHAR},
-      #{item.channelNumber,jdbcType=VARCHAR}, #{item.merchantId,jdbcType=BIGINT}, #{item.merchantNumber,jdbcType=VARCHAR},
+      #{item.isDeleted,jdbcType=BIT}, #{item.memberNumber,jdbcType=VARCHAR}, #{item.platformMapped,jdbcType=VARCHAR}, #{item.platformId,jdbcType=BIGINT},
+      #{item.platformNumber,jdbcType=VARCHAR},#{item.platformName,jdbcType=VARCHAR},#{item.channelId,jdbcType=BIGINT},
+      #{item.channelNumber,jdbcType=VARCHAR},#{item.channelName,jdbcType=VARCHAR}, #{item.merchantId,jdbcType=BIGINT}, #{item.merchantNumber,jdbcType=VARCHAR},
       #{item.defrayalChannel,jdbcType=VARCHAR}, #{item.defrayalType,jdbcType=VARCHAR}, #{item.merchantName,jdbcType=VARCHAR},
       #{item.status,jdbcType=BIT}, #{item.singleTradeAmountMin,jdbcType=DECIMAL}, #{item.singleTradeAmountMax,jdbcType=DECIMAL},
       #{item.tradeLimit,jdbcType=BIT}, #{item.tradeLimitTime,jdbcType=TIMESTAMP}, #{item.tradeRisk,jdbcType=BIT},
@@ -322,11 +350,23 @@
       <if test="platformMapped != null">
         platform_mapped = #{platformMapped,jdbcType=VARCHAR},
       </if>
+      <if test="platformId != null">
+        platform_id = #{platformId,jdbcType=BIGINT},
+      </if>
       <if test="platformNumber != null">
         platform_number = #{platformNumber,jdbcType=VARCHAR},
       </if>
+      <if test="platformName != null">
+        platform_name = #{platformName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null">
+        channel_id = #{channelId,jdbcType=BIGINT},
+      </if>
       <if test="channelNumber != null">
         channel_number = #{channelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null">
+        channel_name = #{channelName,jdbcType=VARCHAR},
       </if>
       <if test="merchantId != null">
         merchant_id = #{merchantId,jdbcType=BIGINT},
@@ -395,8 +435,12 @@
       is_deleted = #{isDeleted,jdbcType=BIT},
       member_number = #{memberNumber,jdbcType=VARCHAR},
       platform_mapped = #{platformMapped,jdbcType=VARCHAR},
+      platform_id = #{platformId,jdbcType=BIGINT},
       platform_number = #{platformNumber,jdbcType=VARCHAR},
+      platform_name = #{platformName,jdbcType=VARCHAR},
+      channel_id = #{channelId,jdbcType=BIGINT},
       channel_number = #{channelNumber,jdbcType=VARCHAR},
+      channel_name = #{channelName,jdbcType=VARCHAR},
       merchant_id = #{merchantId,jdbcType=BIGINT},
       merchant_number = #{merchantNumber,jdbcType=VARCHAR},
       defrayal_channel = #{defrayalChannel,jdbcType=VARCHAR},

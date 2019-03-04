@@ -16,9 +16,17 @@ public class TradeRouteDO {
 
     private String platformMapped;
 
+    private Long platformId;
+
     private String platformNumber;
 
+    private String platformName;
+
+    private Long channelId;
+
     private String channelNumber;
+
+    private String channelName;
 
     private Long merchantId;
 
@@ -272,5 +280,37 @@ public class TradeRouteDO {
 
     public void setMonthTradeSucAmountTotal(BigDecimal monthTradeSucAmountTotal) {
         this.monthTradeSucAmountTotal = monthTradeSucAmountTotal;
+    }
+
+    public Long getPlatformId() {
+        return platformId;
+    }
+
+    public void setPlatformId(Long platformId) {
+        this.platformId = platformId;
+    }
+
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }
