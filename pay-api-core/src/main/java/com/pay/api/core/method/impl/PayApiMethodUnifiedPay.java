@@ -123,9 +123,9 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             return checkResultDTO;
         }
 
-        if (StringUtils.isBlank(data.getSubject())) {
+        if (StringUtils.isBlank(data.getTitle())) {
             checkResultDTO.setPass(false);
-            checkResultDTO.setMsg("[subject]不能为空");
+            checkResultDTO.setMsg("[title]不能为空");
             return checkResultDTO;
         }
 
@@ -165,7 +165,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
                 memberDTO.getAgentName(), memberDTO.getAgentLevel(),apiPayUnifiedPayDTO.getDefrayalChannel(),apiPayUnifiedPayDTO.getDefrayalType(), apiPayUnifiedPayDTO.getMemberOrderNumber(),
                 new BigDecimal(apiPayUnifiedPayDTO.getTradeAmount()),routeMerchant.getMerchantId(),routeMerchant.getMerchantNumber(), routeMerchant.getMerchantName(),routeMerchant.getPlatformId(),
                 routeMerchant.getPlatformNumber(),routeMerchant.getPlatformName(),routeMerchant.getChannelId(),
-                routeMerchant.getChannelNumber(),routeMerchant.getChannelName());
+                routeMerchant.getChannelNumber(),routeMerchant.getChannelName(),apiPayUnifiedPayDTO.getTitle(),apiPayUnifiedPayDTO.getBody(),apiPayUnifiedPayDTO.getAttach());
         TradeOrderDO tradeOrder = tradeOrderService.createTradeOrder(tradeOrderCreateDTO);
 
         //4.交易处理

@@ -106,11 +106,18 @@ public class TradeOrderDO {
 
     private String currency;
 
-    private String payContent;
-
     private String closeCause;
 
     private String closeType;
+
+    private String title;
+
+    private String body;
+
+    private String attach;
+
+    private String payContent;
+
 
     public Long getId() {
         return id;
@@ -542,5 +549,29 @@ public class TradeOrderDO {
 
     public void setCloseType(String closeType) {
         this.closeType = closeType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach;
     }
 }

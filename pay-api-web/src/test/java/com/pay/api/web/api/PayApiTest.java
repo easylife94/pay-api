@@ -89,7 +89,9 @@ public class PayApiTest extends PayApiWebApplicationTests {
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
-        apiPayUnifiedPayDTO.setSubject("测试下单");
+        apiPayUnifiedPayDTO.setTitle("测试下单");
+        apiPayUnifiedPayDTO.setBody("测试下单详情，请看这里");
+        apiPayUnifiedPayDTO.setAttach("查询订单和回调会返回");
         apiPayUnifiedPayDTO.setDefrayalChannel("ALI");
         apiPayUnifiedPayDTO.setDefrayalType("NATIVE");
         apiPayUnifiedPayDTO.setCurrency("CNY");
@@ -163,7 +165,7 @@ public class PayApiTest extends PayApiWebApplicationTests {
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
-        apiPayUnifiedPayDTO.setSubject("测试触发预警下单");
+        apiPayUnifiedPayDTO.setTitle("测试触发预警下单");
         apiPayUnifiedPayDTO.setMerchantNumber(tradeRouteDO.getMerchantNumber());
         apiPayUnifiedPayDTO.setDefrayalChannel(tradeRouteDO.getDefrayalChannel());
         apiPayUnifiedPayDTO.setDefrayalType(tradeRouteDO.getDefrayalType());
@@ -193,7 +195,7 @@ public class PayApiTest extends PayApiWebApplicationTests {
         apiPayDTO.setVersion("1.0");
 
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
-        apiPayUnifiedPayDTO.setSubject("测试达到预警次数下单");
+        apiPayUnifiedPayDTO.setTitle("测试达到预警次数下单");
         apiPayUnifiedPayDTO.setMerchantNumber(tradeRouteDO.getMerchantNumber());
         apiPayUnifiedPayDTO.setDefrayalChannel(tradeRouteDO.getDefrayalChannel());
         apiPayUnifiedPayDTO.setDefrayalType(tradeRouteDO.getDefrayalType());
@@ -265,7 +267,7 @@ public class PayApiTest extends PayApiWebApplicationTests {
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
-        apiPayUnifiedPayDTO.setSubject("测试触发风控下单");
+        apiPayUnifiedPayDTO.setTitle("测试触发风控下单");
         apiPayUnifiedPayDTO.setMerchantNumber(tradeRouteDO.getMerchantNumber());
         apiPayUnifiedPayDTO.setDefrayalChannel(tradeRouteDO.getDefrayalChannel());
         apiPayUnifiedPayDTO.setDefrayalType(tradeRouteDO.getDefrayalType());
@@ -295,7 +297,7 @@ public class PayApiTest extends PayApiWebApplicationTests {
         apiPayDTO.setVersion("1.0");
 
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
-        apiPayUnifiedPayDTO.setSubject("测试触发风控下单");
+        apiPayUnifiedPayDTO.setTitle("测试触发风控下单");
         apiPayUnifiedPayDTO.setMerchantNumber(tradeRouteDO.getMerchantNumber());
         apiPayUnifiedPayDTO.setDefrayalChannel(tradeRouteDO.getDefrayalChannel());
         apiPayUnifiedPayDTO.setDefrayalType(tradeRouteDO.getDefrayalType());
@@ -353,7 +355,7 @@ public class PayApiTest extends PayApiWebApplicationTests {
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
-        apiPayUnifiedPayDTO.setSubject("测试下单");
+        apiPayUnifiedPayDTO.setTitle("测试下单");
         apiPayUnifiedPayDTO.setDefrayalChannel("ALI");
         apiPayUnifiedPayDTO.setDefrayalType("NATIVE");
         apiPayUnifiedPayDTO.setCurrency("CNY");

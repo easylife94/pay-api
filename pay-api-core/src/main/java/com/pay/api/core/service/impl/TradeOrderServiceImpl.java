@@ -81,6 +81,9 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         //系统订单信息
         tradeOrderDO.setSysOrderNumber(idService.generateTradeOrderNumber());
         tradeOrderDO.setSysOrderTime(orderTime.getTime());
+        tradeOrderDO.setTitle(tradeOrderCreateDTO.getTitle());
+        tradeOrderDO.setBody(tradeOrderCreateDTO.getBody());
+        tradeOrderDO.setAttach(tradeOrderCreateDTO.getAttach());
 
         //币种
         tradeOrderDO.setCurrency(TradeOrderCurrencyEnum.CNY.getType());

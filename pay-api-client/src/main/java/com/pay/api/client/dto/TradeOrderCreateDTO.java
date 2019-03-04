@@ -29,6 +29,9 @@ public class TradeOrderCreateDTO {
     private Long channelId;
     private String channelNumber;
     private String channelName;
+    private String title;
+    private String body;
+    private String attach;
 
 
     public Long getMemberId() {
@@ -112,9 +115,10 @@ public class TradeOrderCreateDTO {
     }
 
 
-    public TradeOrderCreateDTO(Long memberId, String memberNumber, String memberName, Long agentId, String agentNumber, String agentName, String agentLevel, String defrayalChannel,
-                               String defrayalType, String memberOrderNumber, BigDecimal tradeAmount, Long merchantId, String merchantNumber, String merchantName, Long platformId,
-                               String platformNumber, String platformName, Long channelId, String channelNumber, String channelName) {
+    public TradeOrderCreateDTO(Long memberId, String memberNumber, String memberName, Long agentId, String agentNumber, String agentName,
+                               String agentLevel, String defrayalChannel, String defrayalType, String memberOrderNumber, BigDecimal tradeAmount,
+                               Long merchantId, String merchantNumber, String merchantName, Long platformId, String platformNumber, String platformName,
+                               Long channelId, String channelNumber, String channelName, String title, String body, String attach) {
         this.memberId = memberId;
         this.memberNumber = memberNumber;
         this.memberName = memberName;
@@ -135,6 +139,9 @@ public class TradeOrderCreateDTO {
         this.channelId = channelId;
         this.channelNumber = channelNumber;
         this.channelName = channelName;
+        this.title = title;
+        this.body = body;
+        this.attach = attach;
     }
 
     public BigDecimal getTradeAmount() {
@@ -217,6 +224,30 @@ public class TradeOrderCreateDTO {
         this.channelName = channelName;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ",
@@ -241,6 +272,9 @@ public class TradeOrderCreateDTO {
                 .add("channelId=" + channelId)
                 .add("channelNumber=" + channelNumber)
                 .add("channelName=" + channelName)
+                .add("title=" + title)
+                .add("body=" + body)
+                .add("attach=" + attach)
                 .toString();
     }
 }

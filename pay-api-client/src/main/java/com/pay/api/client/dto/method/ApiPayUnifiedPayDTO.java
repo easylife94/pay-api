@@ -83,7 +83,7 @@ public class ApiPayUnifiedPayDTO implements Serializable {
      * 订单标题
      * 必填
      */
-    private String subject;
+    private String title;
 
     /**
      * 订单描述
@@ -185,12 +185,12 @@ public class ApiPayUnifiedPayDTO implements Serializable {
         this.notifyUrl = notifyUrl;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getBody() {
@@ -223,7 +223,7 @@ public class ApiPayUnifiedPayDTO implements Serializable {
                 .add("defrayalType='" + defrayalType + "'")
                 .add("returnUrl='" + returnUrl + "'")
                 .add("notifyUrl='" + notifyUrl + "'")
-                .add("subject='" + subject + "'")
+                .add("title='" + title + "'")
                 .add("body='" + body + "'")
                 .add("attach='" + attach + "'")
                 .toString();
