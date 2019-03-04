@@ -1,5 +1,11 @@
 package com.pay.api.client.utils;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -16,9 +22,9 @@ import java.util.Base64;
 public class RsaUtils {
 
     /**
-     * RSA加密算法
+     * RSA算法
      */
-    public static final String SIGN_TYPE_RSA = "RSA";
+    public static final String ALGORITHM_RSA = "RSA";
 
     /**
      * SHA1WithRSA签名算法
@@ -112,5 +118,82 @@ public class RsaUtils {
         return signature.verify(Base64.getDecoder().decode(sign));
     }
 
+    /**
+     * 加密，加密后二进制数组转为base64字符串
+     *
+     * @param data   待加密数据
+     * @param pubKey 公钥
+     * @return 返回加密后数据
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     * @throws NoSuchPaddingException
+     * @throws BadPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws InvalidKeyException
+     */
+    public static String encrypt(String data, PublicKey pubKey) throws NoSuchAlgorithmException, IOException,
+            NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException {
+        byte[] bytes = data.getBytes(CHARSET);
+        Cipher cipher = Cipher.getInstance(ALGORITHM_RSA);
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey);
+        int inputLen = bytes.length;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int offSet = 0;
+
+        for (int i = 0; inputLen - offSet > 0; offSet = i * 117) {
+            byte[] cache;
+            if (inputLen - offSet > 117) {
+                cache = cipher.doFinal(bytes, offSet, 117);
+            } else {
+                cache = cipher.doFinal(bytes, offSet, inputLen - offSet);
+            }
+
+            out.write(cache, 0, cache.length);
+            ++i;
+        }
+
+        byte[] encryptedData = out.toByteArray();
+        out.close();
+        return Base64.getEncoder().encodeToString(encryptedData);
+    }
+
+    /**
+     * 解密，base64字符串转为二进制数组后进行解密
+     *
+     * @param data   待解密数据
+     * @param priKey 私钥
+     * @return 返回解密后数据
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     * @throws NoSuchPaddingException
+     * @throws BadPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws InvalidKeyException
+     */
+    public static String decrypt(String data, PrivateKey priKey) throws NoSuchAlgorithmException, IOException,
+            NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException {
+        byte[] bytes = Base64.getDecoder().decode(data.getBytes(CHARSET));
+        Cipher cipher = Cipher.getInstance(ALGORITHM_RSA);
+        cipher.init(Cipher.DECRYPT_MODE, priKey);
+        int inputLen = bytes.length;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int offSet = 0;
+
+        for (int i = 0; inputLen - offSet > 0; offSet = i * 128) {
+            byte[] cache;
+            if (inputLen - offSet > 128) {
+                cache = cipher.doFinal(bytes, offSet, 128);
+            } else {
+                cache = cipher.doFinal(bytes, offSet, inputLen - offSet);
+            }
+
+            out.write(cache, 0, cache.length);
+            ++i;
+        }
+
+        byte[] decryptedData = out.toByteArray();
+        out.close();
+        return new String(decryptedData, CHARSET);
+    }
 
 }

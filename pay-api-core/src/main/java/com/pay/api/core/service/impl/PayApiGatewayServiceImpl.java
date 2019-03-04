@@ -1,10 +1,12 @@
 package com.pay.api.core.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.*;
 import com.pay.api.client.dto.ApiPayDTO;
 import com.pay.api.client.dto.ApiPayParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayResultDTO;
 import com.pay.api.client.dto.TradeMemberDTO;
+import com.pay.api.client.utils.EncryptUtils;
 import com.pay.api.client.utils.SignUtils;
 import com.pay.api.core.method.IPayApiMethod;
 import com.pay.api.core.service.IPayApiGatewayService;
@@ -116,7 +118,6 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
 
     @Override
     public Boolean verifySign(ApiPayDTO apiPayDTO, TradeMemberDTO memberDTO) {
-        //TODO 改为从trade_member表获取验签信息
         String signType = apiPayDTO.getSignType().toUpperCase();
         ApiPayGatewaySignTypeEnum signTypeEnum = ApiPayGatewaySignTypeEnum.getByType(signType);
         if (signType != null) {
@@ -164,9 +165,23 @@ public class PayApiGatewayServiceImpl implements IPayApiGatewayService {
     }
 
     @Override
-    public String encrypt(String content, TradeMemberDTO memberDTO) {
-        //todo 加密
-        return null;
+    public Boolean encrypt(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, TradeMemberDTO memberDTO) {
+        String contentStr;
+        Object content = apiPayResultDTO.getContent();
+        if (content != null) {
+            if (content instanceof String) {
+                contentStr = content.toString();
+            } else {
+                contentStr = JSONObject.toJSONString(content);
+            }
+            try {
+                String encryptContent = EncryptUtils.encryptRsa(contentStr, memberDTO.getMemberPubKey());
+                apiPayResultDTO.setContent(encryptContent);
+            } catch (Exception e) {
+                return Boolean.FALSE;
+            }
+        }
+        return Boolean.TRUE;
     }
 
     @Override

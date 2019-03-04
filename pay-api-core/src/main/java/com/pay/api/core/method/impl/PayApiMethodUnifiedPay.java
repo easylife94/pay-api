@@ -50,11 +50,6 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         ApiPayMethodParamsCheckResultDTO<ApiPayUnifiedPayDTO> checkResultDTO = new ApiPayMethodParamsCheckResultDTO<>();
         JSONObject jsonObject = JSONObject.parseObject(content);
         ApiPayUnifiedPayDTO data = jsonObject.toJavaObject(ApiPayUnifiedPayDTO.class);
-//        if (StringUtils.isAllBlank(data.getPlatformNumber(), data.getChannelNumber(), data.getMerchantNumber())) {
-//            checkResultDTO.setPass(false);
-//            checkResultDTO.setMsg("[platformNumber]、[channelNumber]和[merchantNumber]不能都为空");
-//            return checkResultDTO;
-//        }
 
         if (StringUtils.isBlank(data.getMemberOrderNumber())) {
             checkResultDTO.setPass(false);

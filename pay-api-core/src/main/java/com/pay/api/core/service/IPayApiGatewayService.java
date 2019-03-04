@@ -35,11 +35,12 @@ public interface IPayApiGatewayService {
     /**
      * 加密
      *
-     * @param content   待加密内容
-     * @param memberDTO 会员
-     * @return 返回加密后内容
+     * @param apiPayDTO       请求参数
+     * @param apiPayResultDTO 返回结果参数
+     * @param memberDTO       会员
+     * @return 当且仅当加密成功返回true
      */
-    String encrypt(String content, TradeMemberDTO memberDTO);
+    Boolean encrypt(ApiPayDTO apiPayDTO, ApiPayResultDTO apiPayResultDTO, TradeMemberDTO memberDTO);
 
     /**
      * 结果签名，apiPayResultDTO的sign字段会被设置

@@ -83,6 +83,9 @@ public class PayApiTest extends PayApiWebApplicationTests {
         apiPayDTO.setTimestamp(DateUtils.nowTime2Str());
         apiPayDTO.setVersion("1.0");
 
+        //设置返回结果加密
+        apiPayDTO.setEncrypt(true);
+
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
         apiPayUnifiedPayDTO.setSubject("测试下单");
@@ -102,6 +105,8 @@ public class PayApiTest extends PayApiWebApplicationTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
+
+        //尝试解密
     }
 
     @Test

@@ -33,7 +33,7 @@ public final class SignUtils {
      */
     public static String signRsa(String content, String priKey)
             throws SignatureException, NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, InvalidKeySpecException {
-        PrivateKey privateKey = RsaUtils.getPrivateKey(RsaUtils.SIGN_TYPE_RSA, priKey);
+        PrivateKey privateKey = RsaUtils.getPrivateKey(RsaUtils.ALGORITHM_RSA, priKey);
         return RsaUtils.sign(content, privateKey, RsaUtils.SIGN_SHA256RSA_ALGORITHMS);
     }
 
@@ -52,7 +52,7 @@ public final class SignUtils {
      */
     public static boolean verifyRsa(String content, String pubKey, String sign)
             throws InvalidKeySpecException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, SignatureException {
-        PublicKey publicKey = RsaUtils.getPublicKey(RsaUtils.SIGN_TYPE_RSA, pubKey);
+        PublicKey publicKey = RsaUtils.getPublicKey(RsaUtils.ALGORITHM_RSA, pubKey);
         return RsaUtils.verify(content, sign, publicKey, RsaUtils.SIGN_SHA256RSA_ALGORITHMS);
     }
 
@@ -67,7 +67,7 @@ public final class SignUtils {
         JSONObject json = JSONObject.parseObject(content);
         SortedSet<String> sortedKeys = new TreeSet<>(json.keySet());
         for (String key : sortedKeys) {
-            if(StringUtils.isNotBlank(json.getString(key))){
+            if (StringUtils.isNotBlank(json.getString(key))) {
                 str.append(json.getString(key));
                 str.append(SPLIT);
             }
@@ -80,10 +80,11 @@ public final class SignUtils {
 
     /**
      * 将对象转为字符串
-     * 如果是String类型直接返回
+     * 如果是String类型直接返回。
+     * 如果是对象就按照k1=v1&k2=v2的格式组装成字符串，k1...kn按照字典排序
      *
-     * @param content 待转化对象
-     * @return
+     * @param content 待转化对象，不能为null
+     * @return 返回转换后字符串
      */
     public static String str(Object content) {
         StringBuilder str = new StringBuilder();
@@ -93,7 +94,7 @@ public final class SignUtils {
             JSONObject json = (JSONObject) JSONObject.toJSON(content);
             SortedSet<String> sortedKeys = new TreeSet<>(json.keySet());
             for (String key : sortedKeys) {
-                if(StringUtils.isNotBlank(json.getString(key))){
+                if (StringUtils.isNotBlank(json.getString(key))) {
                     str.append(json.getString(key));
                     str.append(SPLIT);
                 }

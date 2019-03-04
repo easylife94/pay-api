@@ -80,17 +80,24 @@ public class PayApi {
             ApiPayMethodResultDTO resultDTO = apiMethod.operate(apiPayDTO.getContent(), memberDTO);
             switch (resultDTO.getResult()) {
                 case SUCCESS:
-                    apiPayResultDTO.setContent(resultDTO.getData());
-                    //5.参数签名
+
+                    //方法返回数据为null时设置网关返回公共参数content为空字符串
+                    if(resultDTO.getData() != null){
+                        apiPayResultDTO.setContent(resultDTO.getData());
+                    } else {
+                        apiPayResultDTO.setContent("");
+                    }
+
+                    //5.是否要加密
+                    if (Boolean.TRUE.equals(apiPayDTO.getEncrypt())) {
+                        payApiGatewayService.encrypt(apiPayDTO, apiPayResultDTO, memberDTO);
+                    }
+
+                    //6.参数签名
                     if (!Boolean.TRUE.equals(payApiGatewayService.sign(apiPayDTO, apiPayResultDTO, memberDTO))) {
                         return gatewayError(apiPayDTO, apiPayResultDTO, ApiPayGatewayResultEnum.SIGN_ERROR);
                     }
 
-                    //6.是否要加密
-                    if (Boolean.TRUE.equals(apiPayDTO.getEncrypt())) {
-                        String encryptContent = payApiGatewayService.encrypt(apiPayDTO.getContent(), memberDTO);
-                        apiPayDTO.setContent(encryptContent);
-                    }
 
                     apiPayResultDTO.setCode(ApiPayGatewayResultEnum.SUCCESS.getCode());
                     apiPayResultDTO.setMsg(ApiPayGatewayResultEnum.SUCCESS.getMsg());
