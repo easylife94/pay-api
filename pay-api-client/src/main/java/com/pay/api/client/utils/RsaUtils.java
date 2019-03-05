@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -194,6 +196,49 @@ public class RsaUtils {
         byte[] decryptedData = out.toByteArray();
         out.close();
         return new String(decryptedData, CHARSET);
+    }
+
+
+    /**
+     * 生成秘钥对
+     *
+     * @param keySize
+     * @return
+     */
+    public static KeyPair generateKeyPair(int keySize) {
+        KeyPairGenerator keyPairGenerator = null;
+
+        try {
+            keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM_RSA);
+        } catch (NoSuchAlgorithmException var3) {
+            var3.printStackTrace();
+        }
+
+        keyPairGenerator.initialize(keySize);
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        return keyPair;
+    }
+
+    /**
+     * 获取私钥
+     *
+     * @param keyPair
+     * @return
+     */
+    public static String getPrivateKey(KeyPair keyPair) {
+        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        return Base64.getEncoder().encodeToString(privateKey.getEncoded());
+    }
+
+    /**
+     * 获取公钥
+     *
+     * @param keyPair
+     * @return
+     */
+    public static String getPublicKey(KeyPair keyPair) {
+        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        return Base64.getEncoder().encodeToString(publicKey.getEncoded());
     }
 
 }

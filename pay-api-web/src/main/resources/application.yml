@@ -33,6 +33,10 @@ feign:
 snowflake:
   data-center-id: 2
 
+security:
+  rsa:
+    key-size: 1024
+
 order:
   trade:
     number-prefix: TO
