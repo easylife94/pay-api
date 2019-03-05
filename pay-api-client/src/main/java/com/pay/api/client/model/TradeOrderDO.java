@@ -62,6 +62,8 @@ public class TradeOrderDO {
 
     private Long platformId;
 
+    private String platformMapped;
+
     private String platformNumber;
 
     private String platformName;
@@ -573,5 +575,13 @@ public class TradeOrderDO {
 
     public void setAttach(String attach) {
         this.attach = attach;
+    }
+
+    public String getPlatformMapped() {
+        return platformMapped;
+    }
+
+    public void setPlatformMapped(String platformMapped) {
+        this.platformMapped = platformMapped;
     }
 }

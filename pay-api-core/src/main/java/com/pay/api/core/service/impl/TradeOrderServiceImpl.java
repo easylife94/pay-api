@@ -70,6 +70,7 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
 
         //平台信息
         tradeOrderDO.setPlatformId(tradeOrderCreateDTO.getPlatformId());
+        tradeOrderDO.setPlatformMapped(tradeOrderCreateDTO.getPlatformMapped());
         tradeOrderDO.setPlatformNumber(tradeOrderCreateDTO.getPlatformNumber());
         tradeOrderDO.setPlatformName(tradeOrderCreateDTO.getPlatformName());
 

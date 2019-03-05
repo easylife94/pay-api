@@ -34,4 +34,13 @@ public class RabbitConfig {
     public Queue tradeCreateQueue() {
         return new Queue(PayApiMessageQueueNames.QUEUE_TRADE_CREATE);
     }
+
+    /**
+     * 交易风控或预警消息队列
+     * @return
+     */
+    @Bean
+    public Queue tradeRiskOrWarnQueue() {
+        return new Queue(PayApiMessageQueueNames.QUEUE_TRADE_RISK_OR_WARN);
+    }
 }

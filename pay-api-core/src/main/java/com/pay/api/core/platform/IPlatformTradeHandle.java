@@ -21,10 +21,9 @@ public interface IPlatformTradeHandle {
 
     /**
      * 预下单交易
-     * 预下单地址是固定的
      *
      * @param tradeHandleDTO 交易处理参数
-     * @return 返沪处理结果
+     * @return 返回处理结果
      */
     TradeHandleResultDTO preOrderTrade(TradeHandleDTO tradeHandleDTO);
 }

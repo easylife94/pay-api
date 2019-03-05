@@ -46,7 +46,7 @@ public class SignUtilsTest {
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
-        apiPayUnifiedPayDTO.setSubject("测试下单");
+        apiPayUnifiedPayDTO.setTitle( "测试下单");
 
         apiPayDTO.setContent(JSONObject.toJSONString(apiPayUnifiedPayDTO));
 

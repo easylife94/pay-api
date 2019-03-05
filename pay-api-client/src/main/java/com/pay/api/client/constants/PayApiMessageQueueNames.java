@@ -25,4 +25,11 @@ public class PayApiMessageQueueNames {
      * 交易创建消息队列
      */
     public static final String QUEUE_TRADE_CREATE = QUEUE_PREFIX + "tradeCreate";
+
+    /**
+     * 交易风控或预警消息队列
+     */
+    public static final String QUEUE_TRADE_RISK_OR_WARN = QUEUE_PREFIX + "tradeRiskOrWarn";
+
+
 }

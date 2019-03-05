@@ -35,7 +35,6 @@ public class PayApi {
     public PayApi(IPayApiGatewayService payApiGatewayService, ITradeMemberService tradeMemberService) {
         this.payApiGatewayService = payApiGatewayService;
         this.tradeMemberService = tradeMemberService;
-
     }
 
     /**

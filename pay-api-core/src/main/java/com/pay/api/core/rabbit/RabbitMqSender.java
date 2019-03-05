@@ -27,4 +27,11 @@ public class RabbitMqSender {
     public void sendTradeCreateMessage(TradeCreateMessageDTO tradeCreateMessageDTO) {
         amqpTemplate.convertAndSend(PayApiMessageQueueNames.QUEUE_TRADE_CREATE, tradeCreateMessageDTO);
     }
+
+    /**
+     * 发送交易风控或预警异步消息
+     */
+    public void sendTradeRiskOrWarnMessage(){
+
+    }
 }
