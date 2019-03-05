@@ -24,6 +24,7 @@ public class TradeOrderCreateDTO {
     private String merchantNumber;
     private String merchantName;
     private Long platformId;
+    private String platformMapped;
     private String platformNumber;
     private String platformName;
     private Long channelId;
@@ -111,10 +112,17 @@ public class TradeOrderCreateDTO {
         this.memberOrderNumber = memberOrderNumber;
     }
 
+    public String getPlatformMapped() {
+        return platformMapped;
+    }
+
+    public void setPlatformMapped(String platformMapped) {
+        this.platformMapped = platformMapped;
+    }
 
     public TradeOrderCreateDTO(Long memberId, String memberNumber, String memberName, Long agentId, String agentNumber, String agentName, String agentLevel, String defrayalChannel,
                                String defrayalType, String memberOrderNumber, BigDecimal tradeAmount, Long merchantId, String merchantNumber, String merchantName, Long platformId,
-                               String platformNumber, String platformName, Long channelId, String channelNumber, String channelName) {
+                               String platformMapped,String platformNumber, String platformName, Long channelId, String channelNumber, String channelName) {
         this.memberId = memberId;
         this.memberNumber = memberNumber;
         this.memberName = memberName;
@@ -130,6 +138,7 @@ public class TradeOrderCreateDTO {
         this.merchantNumber = merchantNumber;
         this.merchantName = merchantName;
         this.platformId = platformId;
+        this.platformMapped = platformMapped;
         this.platformNumber = platformNumber;
         this.platformName = platformName;
         this.channelId = channelId;

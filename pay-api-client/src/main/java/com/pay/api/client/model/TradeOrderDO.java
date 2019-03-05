@@ -62,6 +62,8 @@ public class TradeOrderDO {
 
     private Long platformId;
 
+    private String platformMapped;
+
     private String platformNumber;
 
     private String platformName;
@@ -542,5 +544,13 @@ public class TradeOrderDO {
 
     public void setCloseType(String closeType) {
         this.closeType = closeType;
+    }
+
+    public String getPlatformMapped() {
+        return platformMapped;
+    }
+
+    public void setPlatformMapped(String platformMapped) {
+        this.platformMapped = platformMapped;
     }
 }

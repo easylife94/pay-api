@@ -31,6 +31,7 @@
     <result column="agent_name" jdbcType="VARCHAR" property="agentName" />
     <result column="agent_level" jdbcType="INTEGER" property="agentLevel" />
     <result column="platform_id" jdbcType="BIGINT" property="platformId" />
+    <result column="platform_mapped" jdbcType="VARCHAR" property="platformMapped" />
     <result column="platform_number" jdbcType="VARCHAR" property="platformNumber" />
     <result column="platform_name" jdbcType="VARCHAR" property="platformName" />
     <result column="channel_id" jdbcType="BIGINT" property="channelId" />
@@ -61,7 +62,7 @@
     source_order_number, trade_type, sys_order_time, platform_order_time, pay_time, sys_check_time, 
     platform_check_time, sys_notify_time, platform_notify_time, trade_status, notify_status, 
     check_status, defrayal_channel, defrayal_type, member_id, member_number, member_name, 
-    agent_id, agent_number, agent_name, agent_level, platform_id, platform_number, platform_name, 
+    agent_id, agent_number, agent_name, agent_level, platform_id,platform_mapped, platform_number, platform_name,
     channel_id, channel_number, channel_name, merchant_id, merchant_number, merchant_name, 
     trade_amount, pay_amount, privilege_amount, refund_amount, check_amount, channel_fee, 
     channel_platform_fee, channel_profit, sys_channel_profit, agent_channel_profit, service_fee, 
@@ -100,7 +101,7 @@
       notify_status, check_status, defrayal_channel, 
       defrayal_type, member_id, member_number, 
       member_name, agent_id, agent_number, 
-      agent_name, agent_level, platform_id, 
+      agent_name, agent_level, platform_id, platform_mapped,
       platform_number, platform_name, channel_id, 
       channel_number, channel_name, merchant_id, 
       merchant_number, merchant_name, trade_amount, 
@@ -119,8 +120,8 @@
       #{notifyStatus,jdbcType=VARCHAR}, #{checkStatus,jdbcType=VARCHAR}, #{defrayalChannel,jdbcType=VARCHAR}, 
       #{defrayalType,jdbcType=VARCHAR}, #{memberId,jdbcType=BIGINT}, #{memberNumber,jdbcType=VARCHAR}, 
       #{memberName,jdbcType=VARCHAR}, #{agentId,jdbcType=BIGINT}, #{agentNumber,jdbcType=VARCHAR}, 
-      #{agentName,jdbcType=VARCHAR}, #{agentLevel,jdbcType=INTEGER}, #{platformId,jdbcType=BIGINT}, 
-      #{platformNumber,jdbcType=VARCHAR}, #{platformName,jdbcType=VARCHAR}, #{channelId,jdbcType=BIGINT}, 
+      #{agentName,jdbcType=VARCHAR}, #{agentLevel,jdbcType=INTEGER}, #{platformId,jdbcType=BIGINT}, #{platformMapped,jdbcType=VARCHAR},
+      #{platformNumber,jdbcType=VARCHAR}, #{platformName,jdbcType=VARCHAR}, #{channelId,jdbcType=BIGINT},
       #{channelNumber,jdbcType=VARCHAR}, #{channelName,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT}, 
       #{merchantNumber,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, #{tradeAmount,jdbcType=DECIMAL}, 
       #{payAmount,jdbcType=DECIMAL}, #{privilegeAmount,jdbcType=DECIMAL}, #{refundAmount,jdbcType=DECIMAL}, 
@@ -219,6 +220,9 @@
       </if>
       <if test="platformId != null">
         platform_id,
+      </if>
+      <if test="platformMapped != null">
+        platform_mapped,
       </if>
       <if test="platformNumber != null">
         platform_number,
@@ -381,6 +385,9 @@
       <if test="platformId != null">
         #{platformId,jdbcType=BIGINT},
       </if>
+      <if test="platformMapped != null">
+        #{platformMapped,jdbcType=VARCHAR},
+      </if>
       <if test="platformNumber != null">
         #{platformNumber,jdbcType=VARCHAR},
       </if>
@@ -542,6 +549,9 @@
       <if test="platformId != null">
         platform_id = #{platformId,jdbcType=BIGINT},
       </if>
+      <if test="platformMapped != null">
+        platform_mapped = #{platformMapped,jdbcType=VARCHAR},
+      </if>
       <if test="platformNumber != null">
         platform_number = #{platformNumber,jdbcType=VARCHAR},
       </if>
@@ -647,6 +657,7 @@
       agent_name = #{agentName,jdbcType=VARCHAR},
       agent_level = #{agentLevel,jdbcType=INTEGER},
       platform_id = #{platformId,jdbcType=BIGINT},
+      platform_mapped = #{platformMapped,jdbcType=VARCHAR},
       platform_number = #{platformNumber,jdbcType=VARCHAR},
       platform_name = #{platformName,jdbcType=VARCHAR},
       channel_id = #{channelId,jdbcType=BIGINT},

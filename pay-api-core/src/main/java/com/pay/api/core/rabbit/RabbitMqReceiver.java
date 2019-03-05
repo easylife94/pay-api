@@ -94,4 +94,7 @@ public class RabbitMqReceiver {
             logger.error("交易创建消息处理异常，消息内容:{}，异常：{}", tradeCreateMessageDTO, e.getMessage());
         }
     }
+
+
+
 }
