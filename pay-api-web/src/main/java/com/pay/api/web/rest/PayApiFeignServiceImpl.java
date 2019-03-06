@@ -52,8 +52,8 @@ public class PayApiFeignServiceImpl implements IPayApiFeignService {
     public TradeMemberCreateResultFeignDTO tradeMemberCreate(TradeMemberCreateFeignDTO tradeMemberCreateFeignDTO) {
         TradeMemberCreateResultFeignDTO resultFeignDTO = new TradeMemberCreateResultFeignDTO();
         //判断member number是否已经创建了交易会员
-        TradeMemberDO exsitTradeMemberDO = tradeMemberDao.selectByMemberNumber(tradeMemberCreateFeignDTO.getMemberNumber());
-        if (exsitTradeMemberDO == null) {
+        TradeMemberDO existTradeMemberDO = tradeMemberDao.selectByMemberNumber(tradeMemberCreateFeignDTO.getMemberNumber());
+        if (existTradeMemberDO == null) {
             //生成rsa公钥私钥
             //创建do，保存系统公钥私钥和会员公钥
             KeyPair keyPair = RsaUtils.generateKeyPair(keySize);
