@@ -4,6 +4,7 @@ import com.pay.api.client.dto.rest.TradeMemberCreateFeignDTO;
 import com.pay.api.client.dto.rest.TradeMemberCreateResultFeignDTO;
 import com.pay.api.client.dto.rest.TradeMemberUpdateFeignDTO;
 import com.pay.api.client.dto.rest.TradeMemberUpdateResultFeignDTO;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -28,7 +29,7 @@ public interface IPayApiFeignService {
      * @return 结果参数
      */
     @RequestMapping(value = "/service/tradeMember/create", method = RequestMethod.POST)
-    TradeMemberCreateResultFeignDTO tradeMemberCreate(TradeMemberCreateFeignDTO tradeMemberCreateFeignDTO);
+    TradeMemberCreateResultFeignDTO tradeMemberCreate(@RequestBody TradeMemberCreateFeignDTO tradeMemberCreateFeignDTO);
 
     /**
      * 更新交易会员
@@ -37,5 +38,5 @@ public interface IPayApiFeignService {
      * @return 结果参数
      */
     @RequestMapping(value = "/service/tradeMember/update", method = RequestMethod.POST)
-    TradeMemberUpdateResultFeignDTO tradeMemberUpdate(TradeMemberUpdateFeignDTO tradeMemberUpdateFeignDTO);
+    TradeMemberUpdateResultFeignDTO tradeMemberUpdate(@RequestBody TradeMemberUpdateFeignDTO tradeMemberUpdateFeignDTO);
 }
