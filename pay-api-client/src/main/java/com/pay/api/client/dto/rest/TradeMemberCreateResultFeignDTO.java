@@ -1,5 +1,7 @@
 package com.pay.api.client.dto.rest;
 
+import java.util.StringJoiner;
+
 /**
  * 交易会员创建结果DTO
  *
@@ -47,5 +49,16 @@ public class TradeMemberCreateResultFeignDTO extends BaseResultFeignDTO {
 
     public void setSysPriKey(String sysPriKey) {
         this.sysPriKey = sysPriKey;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ",
+                super.toString() +
+                        TradeMemberCreateResultFeignDTO.class.getSimpleName() + "{", "}")
+                .add("memberNumber=" + memberNumber)
+                .add("sysPubKey=" + sysPubKey)
+                .add("sysPriKey=" + sysPriKey)
+                .toString();
     }
 }
