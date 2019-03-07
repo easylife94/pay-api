@@ -65,7 +65,7 @@ public class TradeController {
                 IPlatformTradeHandle platformTrade = (IPlatformTradeHandle) bean;
                 DefrayalChannelEnum defrayalChannel = DefrayalChannelEnum.valueOf(oneOrder.getDefrayalChannel());
                 DefrayalTypeEnum defrayalType = DefrayalTypeEnum.valueOf(oneOrder.getDefrayalType());
-                TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(oneOrder.getPlatformMapped(), oneOrder.getSysOrderNumber(), oneOrder.getTradeAmount(), defrayalChannel, defrayalType);
+                TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(oneOrder.getPlatformMapped(), oneOrder.getChannelNumber(), oneOrder.getMerchantNumber(), oneOrder.getSysOrderNumber(), oneOrder.getTradeAmount(), defrayalChannel, defrayalType, null);
                 TradeHandleResultDTO tradeHandleResultDTO = platformTrade.preOrderTrade(tradeHandleDTO);
                 switch (tradeHandleResultDTO.getStatus()) {
                     case SUCCESS:

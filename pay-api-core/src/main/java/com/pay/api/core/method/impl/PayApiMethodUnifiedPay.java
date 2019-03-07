@@ -170,8 +170,8 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
 
         //4.交易处理
         //5.风控处理
-        TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(routeMerchant.getPlatformMapped(), routeMerchant.getChannelNumber(), tradeOrder.getSysOrderNumber(),
-                tradeOrder.getTradeAmount(), defrayalChannel, defrayalType,apiPayUnifiedPayDTO.getAuthCode());
+        TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(routeMerchant.getPlatformMapped(), routeMerchant.getChannelNumber(), routeMerchant.getMerchantNumber(),
+                tradeOrder.getSysOrderNumber(), tradeOrder.getTradeAmount(), defrayalChannel, defrayalType, apiPayUnifiedPayDTO.getAuthCode());
         TradeHandleResultDTO tradeHandleResultDTO = tradeService.tradeHandle(tradeHandleDTO);
         switch (tradeHandleResultDTO.getStatus()) {
             case SUCCESS:
