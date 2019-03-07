@@ -45,7 +45,7 @@ public class AliPaySupportController {
      * @return 重定向
      */
     @RequestMapping("/auth")
-    public String auth(@RequestParam(value = "app_auth_code", required = false) String appAuthCode, @RequestParam(value = "auth_code", required = false) String authCode, String state, Model model) {
+    public String auth(@RequestParam(value = "app_auth_code", required = false) String appAuthCode, @RequestParam(value = "auth_code", required = false) String authCode, String state) {
         String appAuthToken = null;
         String userId = null;
         AliPayAuthDTO aliPayAuthDTO = JSONObject.parseObject(state).toJavaObject(AliPayAuthDTO.class);
