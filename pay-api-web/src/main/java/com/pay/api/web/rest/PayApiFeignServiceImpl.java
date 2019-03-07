@@ -1,9 +1,6 @@
 package com.pay.api.web.rest;
 
-import com.pay.api.client.dto.rest.TradeMemberCreateFeignDTO;
-import com.pay.api.client.dto.rest.TradeMemberCreateResultFeignDTO;
-import com.pay.api.client.dto.rest.TradeMemberUpdateFeignDTO;
-import com.pay.api.client.dto.rest.TradeMemberUpdateResultFeignDTO;
+import com.pay.api.client.dto.rest.*;
 import com.pay.api.client.model.TradeMemberDO;
 import com.pay.api.client.service.IPayApiFeignService;
 import com.pay.api.client.utils.RsaUtils;
@@ -77,7 +74,7 @@ public class PayApiFeignServiceImpl implements IPayApiFeignService {
             resultFeignDTO.setSysPriKey(tradeMemberDO.getSysPriKey());
             resultFeignDTO.setSysPubKey(tradeMemberDO.getSysPubKey());
         } else {
-            resultFeignDTO.feignFail("TRADE_MEMBER_EXISTED","创建交易会员失败，交易会员已存在");
+            resultFeignDTO.feignFail("TRADE_MEMBER_EXISTED", "创建交易会员失败，交易会员已存在");
             logger.error("创建交易会员失败，交易会员已存在。memberNumber:{}", tradeMemberCreateFeignDTO.getMemberNumber());
         }
         return resultFeignDTO;
@@ -86,8 +83,28 @@ public class PayApiFeignServiceImpl implements IPayApiFeignService {
     @Override
     public TradeMemberUpdateResultFeignDTO tradeMemberUpdate(TradeMemberUpdateFeignDTO tradeMemberUpdateFeignDTO) {
         TradeMemberUpdateResultFeignDTO resultFeignDTO = new TradeMemberUpdateResultFeignDTO();
-        //todo 更新交易会员
-        //判断是否需要调用dao更新
+        TradeMemberDO existTradeMemberDO = tradeMemberDao.selectByMemberNumber(tradeMemberUpdateFeignDTO.getMemberNumber());
+        if (existTradeMemberDO != null) {
+            existTradeMemberDO.setMemberPubKey(tradeMemberUpdateFeignDTO.getMemberPubKey());
+            tradeMemberDao.updateByPrimaryKeySelective(existTradeMemberDO);
+
+            resultFeignDTO.setMemberNumber(existTradeMemberDO.getMemberNumber());
+        } else {
+            resultFeignDTO.feignFail("TRADE_MEMBER_NOT_EXISTED", "更新交易会员失败，交易会员不存在");
+            logger.error("更新交易会员失败，交易会员不存在。memberNumber:{}", tradeMemberUpdateFeignDTO.getMemberNumber());
+        }
         return resultFeignDTO;
+    }
+
+    @Override
+    public TradeChannelConfigCreateResultFeignDTO tradeChannelCreate(TradeChannelConfigCreateFeignDTO tradeChannelConfigCreateFeignDTO) {
+        //todo 新增交易通道配置
+        return null;
+    }
+
+    @Override
+    public TradeChannelConfigUpdateResultFeignDTO tradeChannelUpdate(TradeChannelConfigUpdateFeignDTO tradeChannelConfigUpdateFeignDTO) {
+        //todo 更新交易通道配置
+        return null;
     }
 }

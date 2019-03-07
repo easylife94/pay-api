@@ -1,9 +1,6 @@
 package com.pay.api.client.service.hystric;
 
-import com.pay.api.client.dto.rest.TradeMemberCreateFeignDTO;
-import com.pay.api.client.dto.rest.TradeMemberCreateResultFeignDTO;
-import com.pay.api.client.dto.rest.TradeMemberUpdateFeignDTO;
-import com.pay.api.client.dto.rest.TradeMemberUpdateResultFeignDTO;
+import com.pay.api.client.dto.rest.*;
 import com.pay.api.client.service.client.IPayApiFeignServiceClient;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +25,20 @@ public class PayApiFeignServiceFallback implements IPayApiFeignServiceClient {
     @Override
     public TradeMemberUpdateResultFeignDTO tradeMemberUpdate(TradeMemberUpdateFeignDTO tradeMemberUpdateFeignDTO) {
         TradeMemberUpdateResultFeignDTO resultFeignDTO = new TradeMemberUpdateResultFeignDTO();
+        resultFeignDTO.feignFail("SERVICE_UNAVAILABLE", "服务不可用");
+        return resultFeignDTO;
+    }
+
+    @Override
+    public TradeChannelConfigCreateResultFeignDTO tradeChannelCreate(TradeChannelConfigCreateFeignDTO tradeChannelConfigCreateFeignDTO) {
+        TradeChannelConfigCreateResultFeignDTO resultFeignDTO = new TradeChannelConfigCreateResultFeignDTO();
+        resultFeignDTO.feignFail("SERVICE_UNAVAILABLE", "服务不可用");
+        return resultFeignDTO;
+    }
+
+    @Override
+    public TradeChannelConfigUpdateResultFeignDTO tradeChannelUpdate(TradeChannelConfigUpdateFeignDTO tradeChannelConfigUpdateFeignDTO) {
+        TradeChannelConfigUpdateResultFeignDTO resultFeignDTO = new TradeChannelConfigUpdateResultFeignDTO();
         resultFeignDTO.feignFail("SERVICE_UNAVAILABLE", "服务不可用");
         return resultFeignDTO;
     }
