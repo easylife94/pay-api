@@ -1,8 +1,10 @@
 package com.pay.api.core.platform;
 
 import com.pay.api.client.constants.TradeHandleStatusEnum;
+import com.pay.api.client.dto.TradeChannelConfigDTO;
 import com.pay.api.client.dto.TradeHandleDTO;
 import com.pay.api.client.dto.TradeHandleResultDTO;
+import com.pay.api.client.dto.TradeMerchantConfigDTO;
 import com.pay.api.client.exception.PayApiException;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -20,22 +22,23 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
     private String preOrderUrl;
 
     @Override
-    final public TradeHandleResultDTO trade(TradeHandleDTO tradeHandleDTO) {
+    final public TradeHandleResultDTO trade(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO,
+                                            TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         switch (tradeHandleDTO.getDefrayalChannel()) {
             case ALI:
-                return aliPayment(tradeHandleDTO);
+                return aliPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case WECHAT:
-                return wechatPayment(tradeHandleDTO);
+                return wechatPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case JD:
-                return jdPayment(tradeHandleDTO);
+                return jdPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case BAIDU:
-                return baiduPayment(tradeHandleDTO);
+                return baiduPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case QQ:
-                return qqPayment(tradeHandleDTO);
+                return qqPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case UNION:
-                return unionPayment(tradeHandleDTO);
+                return unionPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case OFFLINE:
-                return offlinePayment(tradeHandleDTO);
+                return offlinePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             default:
                 throw new PayApiException("不支持支付渠道");
         }
@@ -47,133 +50,133 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
     }
 
     @Override
-    final public TradeHandleResultDTO aliPayment(TradeHandleDTO tradeHandleDTO) {
+    final public TradeHandleResultDTO aliPayment(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         switch (tradeHandleDTO.getDefrayalType()) {
             case SCAN:
-                return scanPayment(tradeHandleDTO);
+                return scanPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case NATIVE:
-                return nativePayment(tradeHandleDTO);
+                return nativePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case APP:
-                return appPayment(tradeHandleDTO);
+                return appPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case H5:
-                return h5Payment(tradeHandleDTO);
+                return h5Payment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case JSAPI:
-                return jsapiPayment(tradeHandleDTO);
+                return jsapiPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case SOLIDCODE:
-                return solidCodePayment(tradeHandleDTO);
+                return solidCodePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             default:
                 throw new PayApiException("支付宝不支持" + tradeHandleDTO.getDefrayalType() + "支付方式");
         }
     }
 
     @Override
-    final public TradeHandleResultDTO wechatPayment(TradeHandleDTO tradeHandleDTO) {
+    final public TradeHandleResultDTO wechatPayment(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         switch (tradeHandleDTO.getDefrayalType()) {
             case SCAN:
-                return scanPayment(tradeHandleDTO);
+                return scanPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case NATIVE:
-                return nativePayment(tradeHandleDTO);
+                return nativePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case APP:
-                return appPayment(tradeHandleDTO);
+                return appPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case H5:
-                return h5Payment(tradeHandleDTO);
+                return h5Payment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case JSAPI:
-                return jsapiPayment(tradeHandleDTO);
+                return jsapiPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case SOLIDCODE:
-                return solidCodePayment(tradeHandleDTO);
+                return solidCodePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             default:
                 throw new PayApiException("微信不支持" + tradeHandleDTO.getDefrayalType() + "支付方式");
         }
     }
 
     @Override
-    final public TradeHandleResultDTO qqPayment(TradeHandleDTO tradeHandleDTO) {
+    final public TradeHandleResultDTO qqPayment(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         switch (tradeHandleDTO.getDefrayalType()) {
             case SCAN:
-                return scanPayment(tradeHandleDTO);
+                return scanPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case NATIVE:
-                return nativePayment(tradeHandleDTO);
+                return nativePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case APP:
-                return appPayment(tradeHandleDTO);
+                return appPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case H5:
-                return h5Payment(tradeHandleDTO);
+                return h5Payment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case JSAPI:
-                return jsapiPayment(tradeHandleDTO);
+                return jsapiPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case SOLIDCODE:
-                return solidCodePayment(tradeHandleDTO);
+                return solidCodePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             default:
                 throw new PayApiException("qq钱包不支持" + tradeHandleDTO.getDefrayalType() + "支付方式");
         }
     }
 
     @Override
-    final public TradeHandleResultDTO jdPayment(TradeHandleDTO tradeHandleDTO) {
+    final public TradeHandleResultDTO jdPayment(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         switch (tradeHandleDTO.getDefrayalType()) {
             case SCAN:
-                return scanPayment(tradeHandleDTO);
+                return scanPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case NATIVE:
-                return nativePayment(tradeHandleDTO);
+                return nativePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case APP:
-                return appPayment(tradeHandleDTO);
+                return appPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case H5:
-                return h5Payment(tradeHandleDTO);
+                return h5Payment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case JSAPI:
-                return jsapiPayment(tradeHandleDTO);
+                return jsapiPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case SOLIDCODE:
-                return solidCodePayment(tradeHandleDTO);
+                return solidCodePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             default:
                 throw new PayApiException("京东钱包不支持" + tradeHandleDTO.getDefrayalType() + "支付方式");
         }
     }
 
     @Override
-    final public TradeHandleResultDTO unionPayment(TradeHandleDTO tradeHandleDTO) {
+    final public TradeHandleResultDTO unionPayment(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         switch (tradeHandleDTO.getDefrayalType()) {
             case SCAN:
-                return scanPayment(tradeHandleDTO);
+                return scanPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case NATIVE:
-                return nativePayment(tradeHandleDTO);
+                return nativePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case APP:
-                return appPayment(tradeHandleDTO);
+                return appPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case H5:
-                return h5Payment(tradeHandleDTO);
+                return h5Payment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case JSAPI:
-                return jsapiPayment(tradeHandleDTO);
+                return jsapiPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case SOLIDCODE:
-                return solidCodePayment(tradeHandleDTO);
+                return solidCodePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case B2B:
-                return b2bPayment(tradeHandleDTO);
+                return b2bPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case B2C_DEBIT:
-                return b2cDebitPayment(tradeHandleDTO);
+                return b2cDebitPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case B2C_CREDIT:
-                return b2cCreditPayment(tradeHandleDTO);
+                return b2cCreditPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             default:
                 throw new PayApiException("银联不支持" + tradeHandleDTO.getDefrayalType() + "支付方式");
         }
     }
 
     @Override
-    final public TradeHandleResultDTO baiduPayment(TradeHandleDTO tradeHandleDTO) {
+    final public TradeHandleResultDTO baiduPayment(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         switch (tradeHandleDTO.getDefrayalType()) {
             case SCAN:
-                return scanPayment(tradeHandleDTO);
+                return scanPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case NATIVE:
-                return nativePayment(tradeHandleDTO);
+                return nativePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case APP:
-                return appPayment(tradeHandleDTO);
+                return appPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case H5:
-                return h5Payment(tradeHandleDTO);
+                return h5Payment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case JSAPI:
-                return jsapiPayment(tradeHandleDTO);
+                return jsapiPayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             case SOLIDCODE:
-                return solidCodePayment(tradeHandleDTO);
+                return solidCodePayment(tradeHandleDTO,tradeChannelConfigDTO,tradeMerchantConfigDTO);
             default:
                 throw new PayApiException("百度钱包不支持" + tradeHandleDTO.getDefrayalType() + "支付方式");
         }
     }
 
     @Override
-    final public TradeHandleResultDTO offlinePayment(TradeHandleDTO tradeHandleDTO) {
+    final public TradeHandleResultDTO offlinePayment(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         switch (tradeHandleDTO.getDefrayalType()) {
             default:
                 throw new PayApiException("线下不支持" + tradeHandleDTO.getDefrayalType() + "支付方式");
@@ -186,7 +189,7 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
      * @param tradeHandleDTO
      * @return
      */
-    public TradeHandleResultDTO jsapiPreorder(TradeHandleDTO tradeHandleDTO) {
+    public TradeHandleResultDTO jsapiPreorder(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         String base64 = Base64.getEncoder().encodeToString(tradeHandleDTO.getSysOrderNumber().getBytes());
         TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, null, preOrderUrl + base64, null);
         return tradeHandleResultDTO;

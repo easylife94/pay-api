@@ -161,16 +161,17 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         tradeCreateAfterDTO.setTradeRouteId(routeMerchant.getTradeRouteId());
 
         //3.生成订单
-        TradeOrderCreateDTO tradeOrderCreateDTO = new TradeOrderCreateDTO(memberDTO.getMemberId(),memberDTO.getMemberNumber(),memberDTO.getMemberName(),memberDTO.getAgentId(), memberDTO.getAgentNumber(),
-                memberDTO.getAgentName(), memberDTO.getAgentLevel(),apiPayUnifiedPayDTO.getDefrayalChannel(),apiPayUnifiedPayDTO.getDefrayalType(), apiPayUnifiedPayDTO.getMemberOrderNumber(),
-                new BigDecimal(apiPayUnifiedPayDTO.getTradeAmount()),routeMerchant.getMerchantId(),routeMerchant.getMerchantNumber(), routeMerchant.getMerchantName(),routeMerchant.getPlatformId(),
-                routeMerchant.getPlatformMapped(),routeMerchant.getPlatformNumber(),routeMerchant.getPlatformName(),routeMerchant.getChannelId(),
-                routeMerchant.getChannelNumber(),routeMerchant.getChannelName(),apiPayUnifiedPayDTO.getTitle(),apiPayUnifiedPayDTO.getBody(),apiPayUnifiedPayDTO.getAttach());
+        TradeOrderCreateDTO tradeOrderCreateDTO = new TradeOrderCreateDTO(memberDTO.getMemberId(), memberDTO.getMemberNumber(), memberDTO.getMemberName(), memberDTO.getAgentId(), memberDTO.getAgentNumber(),
+                memberDTO.getAgentName(), memberDTO.getAgentLevel(), apiPayUnifiedPayDTO.getDefrayalChannel(), apiPayUnifiedPayDTO.getDefrayalType(), apiPayUnifiedPayDTO.getMemberOrderNumber(),
+                new BigDecimal(apiPayUnifiedPayDTO.getTradeAmount()), routeMerchant.getMerchantId(), routeMerchant.getMerchantNumber(), routeMerchant.getMerchantName(), routeMerchant.getPlatformId(),
+                routeMerchant.getPlatformMapped(), routeMerchant.getPlatformNumber(), routeMerchant.getPlatformName(), routeMerchant.getChannelId(),
+                routeMerchant.getChannelNumber(), routeMerchant.getChannelName(), apiPayUnifiedPayDTO.getTitle(), apiPayUnifiedPayDTO.getBody(), apiPayUnifiedPayDTO.getAttach());
         TradeOrderDO tradeOrder = tradeOrderService.createTradeOrder(tradeOrderCreateDTO);
 
         //4.交易处理
         //5.风控处理
-        TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(routeMerchant.getPlatformMapped(), tradeOrder.getSysOrderNumber(), tradeOrder.getTradeAmount(), defrayalChannel, defrayalType);
+        TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(routeMerchant.getPlatformMapped(), routeMerchant.getChannelNumber(), tradeOrder.getSysOrderNumber(),
+                tradeOrder.getTradeAmount(), defrayalChannel, defrayalType,apiPayUnifiedPayDTO.getAuthCode());
         TradeHandleResultDTO tradeHandleResultDTO = tradeService.tradeHandle(tradeHandleDTO);
         switch (tradeHandleResultDTO.getStatus()) {
             case SUCCESS:

@@ -20,6 +20,16 @@ public class TradeHandleDTO {
     private String platformMapped;
 
     /**
+     * 通道编号
+     */
+    private String channelNumber;
+
+    /**
+     * 商户编号
+     */
+    private String merchantNumber;
+
+    /**
      * 系统订单号
      */
     private String sysOrderNumber;
@@ -44,13 +54,33 @@ public class TradeHandleDTO {
      */
     private String userId;
 
-    public TradeHandleDTO(String platformMapped, String sysOrderNumber, BigDecimal tradeAmount,
-                          DefrayalChannelEnum defrayalChannel, DefrayalTypeEnum defrayalType) {
+
+    public TradeHandleDTO(String platformMapped, String channelNumber, String merchantNumber, String sysOrderNumber, BigDecimal tradeAmount,
+                          DefrayalChannelEnum defrayalChannel, DefrayalTypeEnum defrayalType, String userId) {
         this.platformMapped = platformMapped;
+        this.channelNumber = channelNumber;
+        this.merchantNumber = merchantNumber;
         this.sysOrderNumber = sysOrderNumber;
         this.tradeAmount = tradeAmount;
         this.defrayalChannel = defrayalChannel;
         this.defrayalType = defrayalType;
+        this.userId = userId;
+    }
+
+    public String getMerchantNumber() {
+        return merchantNumber;
+    }
+
+    public void setMerchantNumber(String merchantNumber) {
+        this.merchantNumber = merchantNumber;
+    }
+
+    public String getChannelNumber() {
+        return channelNumber;
+    }
+
+    public void setChannelNumber(String channelNumber) {
+        this.channelNumber = channelNumber;
     }
 
     public String getPlatformMapped() {
@@ -101,11 +131,14 @@ public class TradeHandleDTO {
         this.userId = userId;
     }
 
+
     @Override
     public String toString() {
         return new StringJoiner(", ",
                 TradeHandleDTO.class.getSimpleName() + "{", "}")
                 .add("platformMapped=" + platformMapped)
+                .add("channelNumber=" + channelNumber)
+                .add("merchantNumber=" + merchantNumber)
                 .add("sysOrderNumber=" + sysOrderNumber)
                 .add("tradeAmount=" + tradeAmount)
                 .add("defrayalChannel=" + defrayalChannel)
