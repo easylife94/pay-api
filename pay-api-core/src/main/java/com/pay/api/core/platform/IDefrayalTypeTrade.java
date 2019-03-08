@@ -43,7 +43,7 @@ interface IDefrayalTypeTrade {
     }
 
     /**
-     * todo
+     * todo 返回内容说明
      * app支付方式
      * 使用场景：在非支付app(微信、支付宝)内调用sdk可以唤起支付app进行支付
      * 返回内容:待定

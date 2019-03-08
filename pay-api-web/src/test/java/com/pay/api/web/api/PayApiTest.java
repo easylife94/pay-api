@@ -85,7 +85,7 @@ public class PayApiTest extends PayApiWebApplicationTests {
         apiPayDTO.setVersion("1.0");
 
         //设置返回结果加密
-        apiPayDTO.setEncrypt(true);
+        apiPayDTO.setEncrypt(false);
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
         apiPayUnifiedPayDTO.setTradeAmount("0.01");
@@ -93,7 +93,7 @@ public class PayApiTest extends PayApiWebApplicationTests {
         apiPayUnifiedPayDTO.setBody("测试下单详情，请看这里");
         apiPayUnifiedPayDTO.setAttach("查询订单和回调会返回");
         apiPayUnifiedPayDTO.setDefrayalChannel("ALI");
-        apiPayUnifiedPayDTO.setDefrayalType("NATIVE");
+        apiPayUnifiedPayDTO.setDefrayalType("JSAPI");
         apiPayUnifiedPayDTO.setCurrency("CNY");
         apiPayUnifiedPayDTO.setNotifyUrl("http://baidu.com");
         apiPayUnifiedPayDTO.setMemberOrderNumber(System.currentTimeMillis() + "");

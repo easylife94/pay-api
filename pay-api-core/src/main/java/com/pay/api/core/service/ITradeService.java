@@ -29,20 +29,10 @@ public interface ITradeService {
      */
     void afterTradeCreate(TradeOrderDO tradeOrderDO, TradeCreateAfterDTO tradeOrderCreateAfterDTO);
 
-    /**
-     * 预下单交易
-     *
-     * @param sysOrderNumber 系统订单号
-     * @return
-     */
-    TradeHandleResultDTO preOrderTrade(String sysOrderNumber);
+    //订单完成处理
 
-    /**
-     * 构建原生jsapi支付url
-     *
-     * @param sysOrderNumber
-     * @return
-     */
-    String buildJsapiUrl(String sysOrderNumber);
+    //订单关闭处理
+
+    //订单退款处理
 
 }

@@ -54,21 +54,4 @@ public class TradeServiceImpl implements ITradeService {
                 tradeOrderCreateAfterDTO.getTradeRisk(), tradeOrderCreateAfterDTO.getTradeWarn(), tradeOrderDO.getGmtCreate().getTime());
         rabbitMqSender.sendTradeCreateMessage(tradeCreateMessageDTO);
     }
-
-    @Override
-    public TradeHandleResultDTO preOrderTrade(String sysOrderNumber) {
-        //todo 预下单
-        TradeOrderDO tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(sysOrderNumber);
-        String content = null;
-        TradeHandleResultDTO tradeHandleResultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, null, content, null);
-        return tradeHandleResultDTO;
-    }
-
-    @Override
-    public String buildJsapiUrl(String sysOrderNumber) {
-        TradeOrderDO tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(sysOrderNumber);
-
-
-        return null;
-    }
 }
