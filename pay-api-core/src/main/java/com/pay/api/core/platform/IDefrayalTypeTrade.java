@@ -16,6 +16,8 @@ interface IDefrayalTypeTrade {
 
     /**
      * 反扫支付方式
+     * 使用场景：扫客户app付款码发起支付。需上传用户付款码参数。
+     * 返回内容：无
      *
      * @param tradeHandleDTO         交易处理参数
      * @param tradeChannelConfigDTO  交易通道配置参数
@@ -28,6 +30,8 @@ interface IDefrayalTypeTrade {
 
     /**
      * 正扫支付方式
+     * 使用场景：在支付app内使用扫一扫功能扫码发起支付
+     * 返回内容：链接地址
      *
      * @param tradeHandleDTO         交易处理参数
      * @param tradeChannelConfigDTO  交易通道配置参数
@@ -39,7 +43,10 @@ interface IDefrayalTypeTrade {
     }
 
     /**
+     * todo
      * app支付方式
+     * 使用场景：在非支付app(微信、支付宝)内调用sdk可以唤起支付app进行支付
+     * 返回内容:待定
      *
      * @param tradeHandleDTO         交易处理参数
      * @param tradeChannelConfigDTO  交易通道配置参数
@@ -52,6 +59,8 @@ interface IDefrayalTypeTrade {
 
     /**
      * h5支付方式
+     * 使用场景：浏览器或非支付app(微信，支付宝)的内置浏览器打开可以唤起支付app进行支付
+     * 返回内容:链接地址
      *
      * @param tradeHandleDTO         交易处理参数
      * @param tradeChannelConfigDTO  交易通道配置参数
@@ -64,6 +73,8 @@ interface IDefrayalTypeTrade {
 
     /**
      * jsapi支付方式
+     * 使用场景：链接地址转为二维码可以在app中识别相册打开并发起支付
+     * 返回内容：链接地址
      *
      * @param tradeHandleDTO         交易处理参数
      * @param tradeChannelConfigDTO  交易通道配置参数
@@ -76,6 +87,8 @@ interface IDefrayalTypeTrade {
 
     /**
      * 固码支付方式
+     * 使用场景：在app中的固码页面输入金额发起支付
+     * 返回内容：链接地址
      *
      * @param tradeHandleDTO         交易处理参数
      * @param tradeChannelConfigDTO  交易通道配置参数
@@ -111,7 +124,7 @@ interface IDefrayalTypeTrade {
     }
 
     /**
-     * b2c信用支付方式
+     * b2c信用卡支付方式
      *
      * @param tradeHandleDTO         交易处理参数
      * @param tradeChannelConfigDTO  交易通道配置参数
