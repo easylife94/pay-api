@@ -21,9 +21,19 @@ public interface IPlatformTradeHandle {
     TradeHandleResultDTO trade(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO);
 
     /**
+     * 预下单
+     *
+     * @param tradeHandleDTO         交易处理参数
+     * @param tradeChannelConfigDTO  交易通道配置参数
+     * @param tradeMerchantConfigDTO 交易商户配置参数
+     * @return 返回处理结果
+     */
+    TradeHandleResultDTO preOrder(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO);
+
+    /**
      * 原生jsapi支付
      *
-     * @param tradeHandleDTO 交易处理参数
+     * @param tradeHandleDTO         交易处理参数
      * @param primaryJsapiPaymentDTO 原生jsapi支付参数
      * @return 返回处理结果
      */

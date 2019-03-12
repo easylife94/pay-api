@@ -200,6 +200,19 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
     }
 
     /**
+     * 默认实现是调用原生jsapi预下单
+     *
+     * @param tradeHandleDTO         交易处理参数
+     * @param tradeChannelConfigDTO  交易通道配置参数
+     * @param tradeMerchantConfigDTO 交易商户配置参数
+     * @return 返回交易处理结果
+     */
+    @Override
+    public TradeHandleResultDTO preOrder(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
+        return primaryJsapiPreOrder(tradeHandleDTO, tradeChannelConfigDTO, tradeMerchantConfigDTO);
+    }
+
+    /**
      * 系统预下单
      * 跳转系统预下单地址
      *
@@ -231,7 +244,7 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
             String preOrderUrl;
             TradeSysConfigDTO jsapiPaymentConfig = tradeSysConfigService.getConfig(TradeSysConfigKeyEnum.JSAPI_PAYMENT_URL.name());
             //1.构建授权成功参数
-            OAuthSuccessDTO oAuthSuccessDTO = new OAuthSuccessDTO(tradeHandleDTO.getChannelNumber(), jsapiPaymentConfig.getConfigValue(),JSONObject.toJSONString(new JsapiPaymenDTO(tradeHandleDTO.getSysOrderNumber())));
+            OAuthSuccessDTO oAuthSuccessDTO = new OAuthSuccessDTO(tradeHandleDTO.getChannelNumber(), jsapiPaymentConfig.getConfigValue(), JSONObject.toJSONString(new JsapiPaymenDTO(tradeHandleDTO.getSysOrderNumber())));
 
             //2.授权地址构建
             switch (tradeHandleDTO.getDefrayalChannel()) {
