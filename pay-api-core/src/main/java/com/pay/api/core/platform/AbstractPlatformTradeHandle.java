@@ -221,12 +221,12 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
      */
     protected TradeHandleResultDTO preOrderPayment(TradeHandleDTO tradeHandleDTO) {
         String base64 = Base64.getEncoder().encodeToString(tradeHandleDTO.getSysOrderNumber().getBytes());
-        TradeSysConfigDTO config = tradeSysConfigService.getConfig(TradeSysConfigKeyEnum.PRE_ORDER_HOST.name());
-        if (config == null) {
-            logger.error("系统预下单失败，交易系统配置:{}不存在，", TradeSysConfigKeyEnum.PRE_ORDER_HOST, tradeHandleDTO.getSysOrderNumber());
-            return new TradeHandleResultDTO(TradeHandleStatusEnum.ERROR, "交易系统配置key:" + TradeSysConfigKeyEnum.PRE_ORDER_HOST + "不存在", null, null);
+        TradeSysConfigDTO preOrderHostConfig = tradeSysConfigService.getConfig(TradeSysConfigKeyEnum.PRE_ORDER_URL.name());
+        if (preOrderHostConfig == null) {
+            logger.error("系统预下单失败，交易系统配置:{}不存在，", TradeSysConfigKeyEnum.PRE_ORDER_URL, tradeHandleDTO.getSysOrderNumber());
+            return new TradeHandleResultDTO(TradeHandleStatusEnum.ERROR, "交易系统配置key:" + TradeSysConfigKeyEnum.PRE_ORDER_URL + "不存在", null, null);
         }
-        return new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, null, preOrderUrl + base64, null);
+        return new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS, null, preOrderHostConfig.getConfigValue() + base64, null);
     }
 
 

@@ -9,9 +9,9 @@ package com.pay.api.client.constants;
 public enum TradeSysConfigKeyEnum {
 
     /**
-     * 预下单主机地址
+     * 预下单地址
      */
-    PRE_ORDER_HOST,
+    PRE_ORDER_URL,
 
     /**
      * 支付宝授权回调地址

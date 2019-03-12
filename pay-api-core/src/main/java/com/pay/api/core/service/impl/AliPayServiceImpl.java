@@ -69,13 +69,12 @@ public class AliPayServiceImpl implements IAliPayService {
     @Override
     public String buildAuthUrl(OAuthSuccessDTO oAuthSuccessDTO, AliConfigDTO aliConfigDTO) throws UnsupportedEncodingException {
         StringBuilder aliAuthUrl = new StringBuilder();
-        aliAuthUrl.append("redirect:");
         aliAuthUrl.append("https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=");
         aliAuthUrl.append(aliConfigDTO.getAppId());
         aliAuthUrl.append("&scope=auth_userinfo&redirect_uri=");
         aliAuthUrl.append(URLEncoder.encode(aliConfigDTO.getAuthRedirectUrl(), "UTF-8"));
         aliAuthUrl.append("&state=");
-        aliAuthUrl.append(Base64.getEncoder().encode(JSONObject.toJSONString(oAuthSuccessDTO).getBytes()));
+        aliAuthUrl.append(Base64.getEncoder().encodeToString(JSONObject.toJSONString(oAuthSuccessDTO).getBytes()));
         return aliAuthUrl.toString();
     }
 }
