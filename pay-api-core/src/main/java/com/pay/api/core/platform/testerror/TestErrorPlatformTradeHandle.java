@@ -9,6 +9,7 @@ import com.pay.api.core.platform.AbstractPlatformTradeHandle;
 import com.pay.api.core.service.IAliPayService;
 import com.pay.api.core.service.ITradeOrderService;
 import com.pay.api.core.service.ITradeSysConfigService;
+import com.pay.api.core.service.IWechatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +23,9 @@ public class TestErrorPlatformTradeHandle extends AbstractPlatformTradeHandle {
     private final ITradeOrderService tradeOrderService;
 
     @Autowired
-    public TestErrorPlatformTradeHandle(ITradeSysConfigService tradeSysConfigService, IAliPayService aliPayService, ITradeOrderService tradeOrderService) {
-        super(tradeSysConfigService, aliPayService);
+    public TestErrorPlatformTradeHandle(ITradeSysConfigService tradeSysConfigService, IAliPayService aliPayService,
+                                        ITradeOrderService tradeOrderService, IWechatService wechatService) {
+        super(tradeSysConfigService, aliPayService, wechatService);
         this.tradeOrderService = tradeOrderService;
     }
 

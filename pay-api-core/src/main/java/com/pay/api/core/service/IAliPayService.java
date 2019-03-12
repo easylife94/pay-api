@@ -2,7 +2,7 @@ package com.pay.api.core.service;
 
 import com.alipay.api.AlipayApiException;
 import com.pay.api.client.dto.AliConfigDTO;
-import com.pay.api.client.dto.AliPayAuthDTO;
+import com.pay.api.client.dto.OAuthSuccessDTO;
 
 import java.io.UnsupportedEncodingException;
 
@@ -42,9 +42,9 @@ public interface IAliPayService {
     /**
      * 构建支付宝获取授权请求地址
      *
-     * @param aliPayAuthDTO 系统内部传递参数
+     * @param oAuthSuccessDTO 系统内部传递参数
      * @param aliConfigDTO  支付宝配置参数
      * @return 支付宝获取授权请求地址
      */
-    String buildAuthUrl(AliPayAuthDTO aliPayAuthDTO, AliConfigDTO aliConfigDTO) throws UnsupportedEncodingException;
+    String buildAuthUrl(OAuthSuccessDTO oAuthSuccessDTO, AliConfigDTO aliConfigDTO) throws UnsupportedEncodingException;
 }

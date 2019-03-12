@@ -9,11 +9,10 @@ import com.alipay.api.request.AlipaySystemOauthTokenRequest;
 import com.alipay.api.response.AlipayOpenAuthTokenAppResponse;
 import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.pay.api.client.dto.AliConfigDTO;
-import com.pay.api.client.dto.AliPayAuthDTO;
+import com.pay.api.client.dto.OAuthSuccessDTO;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.core.service.IAliPayService;
 import org.springframework.stereotype.Service;
-import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -57,24 +56,26 @@ public class AliPayServiceImpl implements IAliPayService {
         return response.getUserId();
     }
 
+
     /**
-     * state参数将做base64加密
+     * 构建支付宝授权请求地址
+     * oAuthSuccessDTO参数将转为json字符串并做base64加密
      *
-     * @param aliPayAuthDTO 系统内部传递参数
+     * @param oAuthSuccessDTO 系统内部传递参数
      * @param aliConfigDTO  支付宝配置参数
-     * @return
+     * @return 返回支付宝授权请求地址
      * @throws UnsupportedEncodingException
      */
     @Override
-    public String buildAuthUrl(AliPayAuthDTO aliPayAuthDTO, AliConfigDTO aliConfigDTO) throws UnsupportedEncodingException {
+    public String buildAuthUrl(OAuthSuccessDTO oAuthSuccessDTO, AliConfigDTO aliConfigDTO) throws UnsupportedEncodingException {
         StringBuilder aliAuthUrl = new StringBuilder();
         aliAuthUrl.append("redirect:");
         aliAuthUrl.append("https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=");
         aliAuthUrl.append(aliConfigDTO.getAppId());
         aliAuthUrl.append("&scope=auth_userinfo&redirect_uri=");
-        aliAuthUrl.append(URLEncoder.encode(aliConfigDTO.getAppId(), "UTF-8"));
+        aliAuthUrl.append(URLEncoder.encode(aliConfigDTO.getAuthRedirectUrl(), "UTF-8"));
         aliAuthUrl.append("&state=");
-        aliAuthUrl.append(Base64.getEncoder().encode(JSONObject.toJSONString(aliPayAuthDTO).getBytes("UTF-8")));
+        aliAuthUrl.append(Base64.getEncoder().encode(JSONObject.toJSONString(oAuthSuccessDTO).getBytes()));
         return aliAuthUrl.toString();
     }
 }

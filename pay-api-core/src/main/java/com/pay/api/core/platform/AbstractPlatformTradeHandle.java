@@ -1,11 +1,13 @@
 package com.pay.api.core.platform;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.TradeHandleStatusEnum;
 import com.pay.api.client.constants.TradeSysConfigKeyEnum;
 import com.pay.api.client.dto.*;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.core.service.IAliPayService;
 import com.pay.api.core.service.ITradeSysConfigService;
+import com.pay.api.core.service.IWechatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,10 +29,12 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
 
     private final ITradeSysConfigService tradeSysConfigService;
     private final IAliPayService aliPayService;
+    private final IWechatService wechatService;
 
-    protected AbstractPlatformTradeHandle(ITradeSysConfigService tradeSysConfigService, IAliPayService aliPayService) {
+    protected AbstractPlatformTradeHandle(ITradeSysConfigService tradeSysConfigService, IAliPayService aliPayService, IWechatService wechatService) {
         this.tradeSysConfigService = tradeSysConfigService;
         this.aliPayService = aliPayService;
+        this.wechatService = wechatService;
     }
 
     @Override
@@ -57,8 +61,8 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
     }
 
     @Override
-    public TradeHandleResultDTO preOrderTrade(TradeHandleDTO tradeHandleDTO) {
-        throw new PayApiException("不支预下单支付方式");
+    public TradeHandleResultDTO primaryJsapiPayment(TradeHandleDTO tradeHandleDTO, PrimaryJsapiPaymentDTO primaryJsapiPaymentDTO) {
+        throw new PayApiException("不支预原生jsapi支付");
     }
 
     @Override
@@ -215,7 +219,7 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
 
     /**
      * 原生jsapi预下单
-     * 需要先获取用户
+     * jsapi预下单是先构建授权请求,并将授权成功后回调地址jsapiPaymen页面。
      *
      * @param tradeHandleDTO         交易处理参数
      * @param tradeChannelConfigDTO  交易通道配置
@@ -224,15 +228,23 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
      */
     protected TradeHandleResultDTO primaryJsapiPreOrder(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO, TradeMerchantConfigDTO tradeMerchantConfigDTO) {
         try {
-            String preOrderUrl = null;
+            String preOrderUrl;
+            TradeSysConfigDTO jsapiPaymentConfig = tradeSysConfigService.getConfig(TradeSysConfigKeyEnum.JSAPI_PAYMENT_URL.name());
+            //1.构建授权成功参数
+            OAuthSuccessDTO oAuthSuccessDTO = new OAuthSuccessDTO(tradeHandleDTO.getChannelNumber(), jsapiPaymentConfig.getConfigValue(),JSONObject.toJSONString(new JsapiPaymenDTO(tradeHandleDTO.getSysOrderNumber())));
+
+            //2.授权地址构建
             switch (tradeHandleDTO.getDefrayalChannel()) {
                 case ALI:
-                    AliPayAuthDTO aliPayAuthDTO = new AliPayAuthDTO();
-                    AliConfigDTO aliConfigDTO = new AliConfigDTO();
-                    preOrderUrl = aliPayService.buildAuthUrl(aliPayAuthDTO, aliConfigDTO);
+                    TradeSysConfigDTO aliRedirectConfig = tradeSysConfigService.getConfig(TradeSysConfigKeyEnum.ALI_AUTH_REDIRECT.name());
+                    AliConfigDTO aliConfigDTO = new AliConfigDTO(tradeChannelConfigDTO.getAlipayAppId(), aliRedirectConfig.getConfigValue());
+                    preOrderUrl = aliPayService.buildAuthUrl(oAuthSuccessDTO, aliConfigDTO);
                     break;
                 case WECHAT:
-                    //todo 微信待实现
+                    TradeSysConfigDTO wechatRedirectConfig = tradeSysConfigService.getConfig(TradeSysConfigKeyEnum.WECHAT_AUTH_REDIRECT.name());
+                    WechatConfigDTO wechatConfigDTO = new WechatConfigDTO(tradeChannelConfigDTO.getWechatAppId(),
+                            tradeChannelConfigDTO.getWechatSecretKey(), wechatRedirectConfig.getConfigValue());
+                    preOrderUrl = wechatService.buildAuthUrl(oAuthSuccessDTO, wechatConfigDTO);
                     break;
                 default:
                     logger.error("原生jsapi预下单失败，不支持支付渠道：{},订单号：{}", tradeHandleDTO.getDefrayalChannel(), tradeHandleDTO.getSysOrderNumber());

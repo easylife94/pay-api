@@ -3,20 +3,25 @@ package com.pay.api.client.dto;
 import java.util.StringJoiner;
 
 /**
- * 支付宝授权配置参数
+ * 微信配置DTO
  *
  * @author chenwei
- * @date 2019/3/8 11:19
+ * @date 2019/3/12 15:02
  */
-public class AliConfigDTO {
+public class WechatConfigDTO {
 
     /**
-     * 支付宝应用appId
+     * app id
      */
     private String appId;
 
     /**
-     * 支付宝应用授权回调地址
+     * 密钥
+     */
+    private String secretKey;
+
+    /**
+     * 授权回调地址
      */
     private String authRedirectUrl;
 
@@ -28,6 +33,14 @@ public class AliConfigDTO {
         this.appId = appId;
     }
 
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
     public String getAuthRedirectUrl() {
         return authRedirectUrl;
     }
@@ -36,16 +49,18 @@ public class AliConfigDTO {
         this.authRedirectUrl = authRedirectUrl;
     }
 
-    public AliConfigDTO(String appId, String authRedirectUrl) {
+    public WechatConfigDTO(String appId, String secretKey, String authRedirectUrl) {
         this.appId = appId;
+        this.secretKey = secretKey;
         this.authRedirectUrl = authRedirectUrl;
     }
 
     @Override
     public String toString() {
         return new StringJoiner(", ",
-                AliConfigDTO.class.getSimpleName() + "{", "}")
+                WechatConfigDTO.class.getSimpleName() + "{", "}")
                 .add("appId=" + appId)
+                .add("secretKey=" + secretKey)
                 .add("authRedirectUrl=" + authRedirectUrl)
                 .toString();
     }

@@ -1,9 +1,10 @@
 package com.pay.api.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.PayResultPageStatusEnum;
 import com.pay.api.client.constants.TradeHandleStatusEnum;
-import com.pay.api.client.dto.TradeHandleDTO;
-import com.pay.api.client.dto.TradeHandleResultDTO;
+import com.pay.api.client.dto.*;
+import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.core.platform.IPlatformTradeHandle;
 import com.pay.api.core.service.ITradeOrderService;
@@ -65,7 +66,7 @@ public class TradeController {
                 DefrayalChannelEnum defrayalChannel = DefrayalChannelEnum.valueOf(oneOrder.getDefrayalChannel());
                 DefrayalTypeEnum defrayalType = DefrayalTypeEnum.valueOf(oneOrder.getDefrayalType());
                 TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(oneOrder.getPlatformMapped(), oneOrder.getChannelNumber(), oneOrder.getMerchantNumber(), oneOrder.getSysOrderNumber(), oneOrder.getTradeAmount(), defrayalChannel, defrayalType, null);
-                TradeHandleResultDTO tradeHandleResultDTO = platformTrade.preOrderTrade(tradeHandleDTO);
+                TradeHandleResultDTO tradeHandleResultDTO = platformTrade.primaryJsapiPayment(tradeHandleDTO);
                 switch (tradeHandleResultDTO.getStatus()) {
                     case SUCCESS:
                         return "redirect:" + tradeHandleResultDTO.getContent();
@@ -87,6 +88,57 @@ public class TradeController {
             }
         }
     }
+
+    /**
+     * jsapi 支付方式
+     *
+     * @param businessData 业务数据
+     * @param userId       支付宝userId
+     * @param openId       微信open id
+     * @return jsapi支付页面
+     */
+    @RequestMapping("/jsapiPayment")
+    public Object jsapiPayment(String businessData, String userId, String openId) {
+        try {
+            byte[] decode = Base64.getDecoder().decode(businessData.getBytes());
+            businessData = new String(decode);
+            JsapiPaymenDTO jsapiPaymenDTO = JSONObject.parseObject(businessData).toJavaObject(JsapiPaymenDTO.class);
+            TradeOrderDO oneOrder = tradeOrderService.findOneOrder(jsapiPaymenDTO.getSysOrderNumber(), null, null);
+            DefrayalChannelEnum defrayalChannel = DefrayalChannelEnum.valueOf(oneOrder.getDefrayalChannel());
+            TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(oneOrder.getPlatformMapped(),oneOrder.getChannelNumber(),oneOrder.getMerchantNumber(),
+                    oneOrder.getSysOrderNumber(),oneOrder.getTradeAmount(),defrayalChannel,DefrayalTypeEnum.JSAPI,null);
+            PrimaryJsapiPaymentDTO primaryJsapiPaymentDTO;
+            switch (defrayalChannel) {
+                case ALI:
+                    primaryJsapiPaymentDTO = new PrimaryJsapiPaymentDTO(userId);
+                    break;
+                case WECHAT:
+                    primaryJsapiPaymentDTO = new PrimaryJsapiPaymentDTO(openId,);
+                    break;
+                default:
+                    throw new PayApiException("jsapi支付不支持支付渠道：" + defrayalChannel);
+            }
+
+
+            Object bean = SpringContextUtil.getBean(tradeHandleDTO.getPlatformMapped());
+            if (bean instanceof IPlatformTradeHandle) {
+                IPlatformTradeHandle platformTrade = (IPlatformTradeHandle) bean;
+                TradeHandleResultDTO tradeHandleResultDTO = platformTrade.primaryJsapiPayment(tradeHandleDTO, primaryJsapiPaymentDTO);
+                if(){
+
+                }
+                return ;
+            } else {
+                return new TradeHandleResultDTO(TradeHandleStatusEnum.ERROR, "找不到平台交易处理器：" + tradeHandleDTO.getPlatformMapped(), null, null);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("jsapi支付异常，提示信息：{}",e.getMessage());
+        }
+        return null;
+    }
+
 
     private ModelAndView payResult(PayResultPageStatusEnum status, String info) {
         ModelAndView view = new ModelAndView("/trade/preOrderResult");

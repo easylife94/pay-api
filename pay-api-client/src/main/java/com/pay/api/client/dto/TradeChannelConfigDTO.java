@@ -1,5 +1,7 @@
 package com.pay.api.client.dto;
 
+import java.util.StringJoiner;
+
 /**
  * 交易通道配置
  *
@@ -27,6 +29,17 @@ public class TradeChannelConfigDTO {
      * 支付宝应用私钥
      */
     private String alipayAppPriKey;
+
+
+    /**
+     * 微信公众号appid
+     */
+    private String wechatAppId;
+
+    /**
+     * 微信公众号密钥
+     */
+    private String wechatSecretKey;
 
     public String getAlipayAppId() {
         return alipayAppId;
@@ -58,5 +71,34 @@ public class TradeChannelConfigDTO {
 
     public void setAlipayAppPriKey(String alipayAppPriKey) {
         this.alipayAppPriKey = alipayAppPriKey;
+    }
+
+    public String getWechatAppId() {
+        return wechatAppId;
+    }
+
+    public void setWechatAppId(String wechatAppId) {
+        this.wechatAppId = wechatAppId;
+    }
+
+    public String getWechatSecretKey() {
+        return wechatSecretKey;
+    }
+
+    public void setWechatSecretKey(String wechatSecretKey) {
+        this.wechatSecretKey = wechatSecretKey;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ",
+                TradeChannelConfigDTO.class.getSimpleName() + "{", "}")
+                .add("alipayAppId=" + alipayAppId)
+                .add("alipayPubKey=" + alipayPubKey)
+                .add("alipayAppPubKey=" + alipayAppPubKey)
+                .add("alipayAppPriKey=" + alipayAppPriKey)
+                .add("wechatAppId=" + wechatAppId)
+                .add("wechatSecretKey=" + wechatSecretKey)
+                .toString();
     }
 }

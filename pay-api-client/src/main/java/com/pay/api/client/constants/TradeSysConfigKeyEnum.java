@@ -13,6 +13,21 @@ public enum TradeSysConfigKeyEnum {
      */
     PRE_ORDER_HOST,
 
+    /**
+     * 支付宝授权回调地址
+     */
+    ALI_AUTH_REDIRECT,
+
+    /**
+     * 微信授权回调地址
+     */
+    WECHAT_AUTH_REDIRECT,
+
+    /**
+     * jsapi支付地址
+     */
+    JSAPI_PAYMENT_URL,
+
     ;
 
 }

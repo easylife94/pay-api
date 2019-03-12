@@ -1,14 +1,12 @@
 package com.pay.api.core.platform.test;
 
 import com.pay.api.client.constants.TradeHandleStatusEnum;
-import com.pay.api.client.dto.TradeChannelConfigDTO;
-import com.pay.api.client.dto.TradeHandleDTO;
-import com.pay.api.client.dto.TradeHandleResultDTO;
-import com.pay.api.client.dto.TradeMerchantConfigDTO;
+import com.pay.api.client.dto.*;
 import com.pay.api.core.platform.AbstractPlatformTradeHandle;
 import com.pay.api.core.service.IAliPayService;
 import com.pay.api.core.service.ITradeOrderService;
 import com.pay.api.core.service.ITradeSysConfigService;
+import com.pay.api.core.service.IWechatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +20,9 @@ public class TestPlatformTradeHandle extends AbstractPlatformTradeHandle {
     private final ITradeOrderService tradeOrderService;
 
     @Autowired
-    public TestPlatformTradeHandle(ITradeSysConfigService tradeSysConfigService, IAliPayService aliPayService, ITradeOrderService tradeOrderService) {
-        super(tradeSysConfigService, aliPayService);
+    public TestPlatformTradeHandle(ITradeSysConfigService tradeSysConfigService, IAliPayService aliPayService, ITradeOrderService tradeOrderService,
+                                   IWechatService wechatService) {
+        super(tradeSysConfigService, aliPayService, wechatService);
         this.tradeOrderService = tradeOrderService;
     }
 
@@ -90,8 +89,11 @@ public class TestPlatformTradeHandle extends AbstractPlatformTradeHandle {
     }
 
     @Override
-    public TradeHandleResultDTO preOrderTrade(TradeHandleDTO tradeHandleDTO) {
-        return super.preOrderTrade(tradeHandleDTO);
+    public TradeHandleResultDTO primaryJsapiPayment(TradeHandleDTO tradeHandleDTO, PrimaryJsapiPaymentDTO primaryJsapiPaymentDTO) {
+        TradeHandleResultDTO resultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS,"","","");
+        //todo 测试jsapi原生支付
+
+        return resultDTO;
     }
 
     private TradeHandleResultDTO testTrade(TradeHandleDTO tradeHandleDTO, TradeChannelConfigDTO tradeChannelConfigDTO,
