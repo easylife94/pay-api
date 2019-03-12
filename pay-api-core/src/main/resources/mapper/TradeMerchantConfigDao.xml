@@ -26,6 +26,13 @@
     from trade_merchant_config
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectOneByMerchantNumber" resultType="com.pay.api.client.model.TradeMerchantConfigDO">
+    select
+    <include refid="Base_Column_List" />
+    from trade_merchant_config
+    where is_deleted = 0
+    and merchant_number = #{merchantNumber,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from trade_merchant_config
     where id = #{id,jdbcType=BIGINT}

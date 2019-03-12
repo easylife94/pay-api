@@ -45,6 +45,13 @@
     from trade_channel_config
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectOneByChannelNumber" resultType="com.pay.api.client.model.TradeChannelConfigDO">
+    select
+    <include refid="Base_Column_List" />
+    from trade_channel_config
+    where is_deleted = 0
+    and channel_number = #{channelNumber,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from trade_channel_config
     where id = #{id,jdbcType=BIGINT}

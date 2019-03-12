@@ -14,4 +14,12 @@ public interface TradeChannelConfigDao {
     int updateByPrimaryKeySelective(TradeChannelConfigDO record);
 
     int updateByPrimaryKey(TradeChannelConfigDO record);
+
+    /**
+     * 根据通道编号获取唯一交易通道配置
+     *
+     * @param channelNumber 通道编号
+     * @return 交易通道配置
+     */
+    TradeChannelConfigDO selectOneByChannelNumber(String channelNumber);
 }
