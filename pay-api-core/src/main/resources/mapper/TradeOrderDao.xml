@@ -58,7 +58,7 @@
     <result column="close_type" jdbcType="VARCHAR" property="closeType" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="body" jdbcType="VARCHAR" property="body" />
-    <result column="businessData" jdbcType="VARCHAR" property="businessData" />
+    <result column="attach" jdbcType="VARCHAR" property="attach" />
     <result column="pay_content" jdbcType="VARCHAR" property="payContent" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -70,7 +70,7 @@
     channel_id, channel_number, channel_name, merchant_id, merchant_number, merchant_name, 
     trade_amount, pay_amount, privilege_amount, refund_amount, check_amount, channel_fee, 
     channel_platform_fee, channel_profit, sys_channel_profit, agent_channel_profit, service_fee, 
-    sys_service_profit, agent_service_profit,currency,close_cause,close_type,title,body,businessData,pay_content
+    sys_service_profit, agent_service_profit,currency,close_cause,close_type,title,body,attach,pay_content
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -113,7 +113,7 @@
       check_amount, channel_fee, channel_platform_fee, 
       channel_profit, sys_channel_profit, agent_channel_profit, 
       service_fee, sys_service_profit, agent_service_profit,currency,
-      close_cause,close_type,title,body,businessData,pay_content
+      close_cause,close_type,title,body,attach,pay_content
       )
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=BIT}, #{sysOrderNumber,jdbcType=VARCHAR}, #{memberOrderNumber,jdbcType=VARCHAR}, 
@@ -133,7 +133,7 @@
       #{channelProfit,jdbcType=DECIMAL}, #{sysChannelProfit,jdbcType=DECIMAL}, #{agentChannelProfit,jdbcType=DECIMAL}, 
       #{serviceFee,jdbcType=DECIMAL}, #{sysServiceProfit,jdbcType=DECIMAL}, #{agentServiceProfit,jdbcType=DECIMAL},
       #{currency,jdbcType=VARCHAR},#{closeCause,jdbcType=VARCHAR}, #{closeType,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
-      #{body,jdbcType=VARCHAR}, #{businessData,jdbcType=VARCHAR}, #{payContent,jdbcType=VARCHAR}
+      #{body,jdbcType=VARCHAR}, #{attach,jdbcType=VARCHAR}, #{payContent,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeOrderDO">
@@ -307,8 +307,8 @@
       <if test="body != null">
         body,
       </if>
-      <if test="businessData != null">
-        businessData,
+      <if test="attach != null">
+        attach,
       </if>
       <if test="payContent != null">
         pay_content,
@@ -483,8 +483,8 @@
       <if test="body != null">
         #{body,jdbcType=VARCHAR},
       </if>
-      <if test="businessData != null">
-        #{businessData,jdbcType=VARCHAR},
+      <if test="attach != null">
+        #{attach,jdbcType=VARCHAR},
       </if>
       <if test="payContent != null">
         #{pay_content,jdbcType=VARCHAR},
@@ -659,8 +659,8 @@
       <if test="body != null">
         body = #{body,jdbcType=VARCHAR},
       </if>
-      <if test="businessData != null">
-        businessData = #{businessData,jdbcType=VARCHAR},
+      <if test="attach != null">
+        attach = #{attach,jdbcType=VARCHAR},
       </if>
       <if test="payContent != null">
         pay_content = #{payContent,jdbcType=VARCHAR},
@@ -725,7 +725,7 @@
       close_type = #{closeType,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       body = #{body,jdbcType=VARCHAR},
-      businessData = #{businessData,jdbcType=VARCHAR},
+      attach = #{attach,jdbcType=VARCHAR},
       pay_content = #{payContent,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
