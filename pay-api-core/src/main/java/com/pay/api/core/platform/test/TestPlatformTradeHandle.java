@@ -91,7 +91,7 @@ public class TestPlatformTradeHandle extends AbstractPlatformTradeHandle {
     @Override
     public TradeHandleResultDTO primaryJsapiPayment(TradeHandleDTO tradeHandleDTO, PrimaryJsapiPaymentDTO primaryJsapiPaymentDTO) {
         TradeHandleResultDTO resultDTO = new TradeHandleResultDTO(TradeHandleStatusEnum.SUCCESS,"","","");
-        //todo 测试jsapi原生支付
+        //todo jsapi原生支付
 
         return resultDTO;
     }

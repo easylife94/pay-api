@@ -7,6 +7,8 @@ import com.pay.api.client.dto.*;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.core.platform.IPlatformTradeHandle;
+import com.pay.api.core.service.ITradeChannelConfigService;
+import com.pay.api.core.service.ITradeMerchantConfigService;
 import com.pay.api.core.service.ITradeOrderService;
 import com.pay.api.core.service.ITradeService;
 import com.pay.api.core.utils.SpringContextUtil;
@@ -34,11 +36,16 @@ public class TradeController {
 
     private final ITradeService tradeService;
     private final ITradeOrderService tradeOrderService;
+    private final ITradeChannelConfigService tradeChannelConfigService;
+    private final ITradeMerchantConfigService tradeMerchantConfigService;
 
     @Autowired
-    public TradeController(ITradeService tradeService, ITradeOrderService tradeOrderService) {
+    public TradeController(ITradeService tradeService, ITradeOrderService tradeOrderService, ITradeChannelConfigService tradeChannelConfigService,
+                           ITradeMerchantConfigService tradeMerchantConfigService) {
         this.tradeService = tradeService;
         this.tradeOrderService = tradeOrderService;
+        this.tradeChannelConfigService = tradeChannelConfigService;
+        this.tradeMerchantConfigService = tradeMerchantConfigService;
     }
 
 
@@ -65,8 +72,11 @@ public class TradeController {
                 IPlatformTradeHandle platformTrade = (IPlatformTradeHandle) bean;
                 DefrayalChannelEnum defrayalChannel = DefrayalChannelEnum.valueOf(oneOrder.getDefrayalChannel());
                 DefrayalTypeEnum defrayalType = DefrayalTypeEnum.valueOf(oneOrder.getDefrayalType());
-                TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(oneOrder.getPlatformMapped(), oneOrder.getChannelNumber(), oneOrder.getMerchantNumber(), oneOrder.getSysOrderNumber(), oneOrder.getTradeAmount(), defrayalChannel, defrayalType, null);
-                TradeHandleResultDTO tradeHandleResultDTO = platformTrade.primaryJsapiPayment(tradeHandleDTO);
+                TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(oneOrder.getPlatformMapped(), oneOrder.getChannelNumber(), oneOrder.getMerchantNumber(),
+                        oneOrder.getSysOrderNumber(), oneOrder.getTradeAmount(), defrayalChannel, defrayalType, null);
+                TradeChannelConfigDTO channelConfig = tradeChannelConfigService.getChannelConfig(oneOrder.getChannelNumber());
+                TradeMerchantConfigDTO merchantConfig = tradeMerchantConfigService.getMerchantConfig(oneOrder.getMerchantNumber());
+                TradeHandleResultDTO tradeHandleResultDTO = platformTrade.preOrder(tradeHandleDTO, channelConfig, merchantConfig);
                 switch (tradeHandleResultDTO.getStatus()) {
                     case SUCCESS:
                         return "redirect:" + tradeHandleResultDTO.getContent();
@@ -105,15 +115,16 @@ public class TradeController {
             JsapiPaymenDTO jsapiPaymenDTO = JSONObject.parseObject(businessData).toJavaObject(JsapiPaymenDTO.class);
             TradeOrderDO oneOrder = tradeOrderService.findOneOrder(jsapiPaymenDTO.getSysOrderNumber(), null, null);
             DefrayalChannelEnum defrayalChannel = DefrayalChannelEnum.valueOf(oneOrder.getDefrayalChannel());
-            TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(oneOrder.getPlatformMapped(),oneOrder.getChannelNumber(),oneOrder.getMerchantNumber(),
-                    oneOrder.getSysOrderNumber(),oneOrder.getTradeAmount(),defrayalChannel,DefrayalTypeEnum.JSAPI,null);
+            TradeHandleDTO tradeHandleDTO = new TradeHandleDTO(oneOrder.getPlatformMapped(), oneOrder.getChannelNumber(), oneOrder.getMerchantNumber(),
+                    oneOrder.getSysOrderNumber(), oneOrder.getTradeAmount(), defrayalChannel, DefrayalTypeEnum.JSAPI, null);
+            TradeChannelConfigDTO channelConfig = tradeChannelConfigService.getChannelConfig(oneOrder.getChannelNumber());
             PrimaryJsapiPaymentDTO primaryJsapiPaymentDTO;
             switch (defrayalChannel) {
                 case ALI:
                     primaryJsapiPaymentDTO = new PrimaryJsapiPaymentDTO(userId);
                     break;
                 case WECHAT:
-                    primaryJsapiPaymentDTO = new PrimaryJsapiPaymentDTO(openId,);
+                    primaryJsapiPaymentDTO = new PrimaryJsapiPaymentDTO(channelConfig.getWechatAppId(), openId);
                     break;
                 default:
                     throw new PayApiException("jsapi支付不支持支付渠道：" + defrayalChannel);
@@ -124,17 +135,26 @@ public class TradeController {
             if (bean instanceof IPlatformTradeHandle) {
                 IPlatformTradeHandle platformTrade = (IPlatformTradeHandle) bean;
                 TradeHandleResultDTO tradeHandleResultDTO = platformTrade.primaryJsapiPayment(tradeHandleDTO, primaryJsapiPaymentDTO);
-                if(){
+                switch (tradeHandleResultDTO.getStatus()) {
+                    case SUCCESS:
+                        break;
+                    case ERROR:
+                        break;
+                    case RISK:
+                        break;
+                    case UNKNOWN:
+                        break;
+                    default:
 
                 }
-                return ;
+                return null;
             } else {
                 return new TradeHandleResultDTO(TradeHandleStatusEnum.ERROR, "找不到平台交易处理器：" + tradeHandleDTO.getPlatformMapped(), null, null);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("jsapi支付异常，提示信息：{}",e.getMessage());
+            logger.error("jsapi支付异常，提示信息：{}", e.getMessage());
         }
         return null;
     }
