@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pay.api.core.dao.TradeMerchantConfigDao">
+  <resultMap id="BaseResultMap" type="com.pay.api.client.model.TradeMerchantConfigDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+    <result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
+    <result column="merchant_number" jdbcType="VARCHAR" property="merchantNumber" />
+    <result column="channel_merchant_id" jdbcType="VARCHAR" property="channelMerchantId" />
+    <result column="merchant_secret_key" jdbcType="VARCHAR" property="merchantSecretKey" />
+    <result column="merhcant_app_id" jdbcType="VARCHAR" property="merhcantAppId" />
+    <result column="ext_1" jdbcType="VARCHAR" property="ext1" />
+    <result column="ext_2" jdbcType="VARCHAR" property="ext2" />
+    <result column="ext_3" jdbcType="VARCHAR" property="ext3" />
+    <result column="ext_4" jdbcType="VARCHAR" property="ext4" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, gmt_create, gmt_update, is_deleted, merchant_id, merchant_number, channel_merchant_id, 
+    merchant_secret_key, merhcant_app_id, ext_1, ext_2, ext_3, ext_4
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trade_merchant_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from trade_merchant_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.pay.api.client.model.TradeMerchantConfigDO">
+    insert into trade_merchant_config (id, gmt_create, gmt_update, 
+      is_deleted, merchant_id, merchant_number, 
+      channel_merchant_id, merchant_secret_key, merhcant_app_id, 
+      ext_1, ext_2, ext_3, ext_4
+      )
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=BIT}, #{merchantId,jdbcType=BIGINT}, #{merchantNumber,jdbcType=VARCHAR}, 
+      #{channelMerchantId,jdbcType=VARCHAR}, #{merchantSecretKey,jdbcType=VARCHAR}, #{merhcantAppId,jdbcType=VARCHAR}, 
+      #{ext1,jdbcType=VARCHAR}, #{ext2,jdbcType=VARCHAR}, #{ext3,jdbcType=VARCHAR}, #{ext4,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeMerchantConfigDO">
+    insert into trade_merchant_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtUpdate != null">
+        gmt_update,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="merchantId != null">
+        merchant_id,
+      </if>
+      <if test="merchantNumber != null">
+        merchant_number,
+      </if>
+      <if test="channelMerchantId != null">
+        channel_merchant_id,
+      </if>
+      <if test="merchantSecretKey != null">
+        merchant_secret_key,
+      </if>
+      <if test="merhcantAppId != null">
+        merhcant_app_id,
+      </if>
+      <if test="ext1 != null">
+        ext_1,
+      </if>
+      <if test="ext2 != null">
+        ext_2,
+      </if>
+      <if test="ext3 != null">
+        ext_3,
+      </if>
+      <if test="ext4 != null">
+        ext_4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null">
+        #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="merchantId != null">
+        #{merchantId,jdbcType=BIGINT},
+      </if>
+      <if test="merchantNumber != null">
+        #{merchantNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="channelMerchantId != null">
+        #{channelMerchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantSecretKey != null">
+        #{merchantSecretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="merhcantAppId != null">
+        #{merhcantAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="ext1 != null">
+        #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="ext2 != null">
+        #{ext2,jdbcType=VARCHAR},
+      </if>
+      <if test="ext3 != null">
+        #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="ext4 != null">
+        #{ext4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pay.api.client.model.TradeMerchantConfigDO">
+    update trade_merchant_config
+    <set>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtUpdate != null">
+        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="merchantId != null">
+        merchant_id = #{merchantId,jdbcType=BIGINT},
+      </if>
+      <if test="merchantNumber != null">
+        merchant_number = #{merchantNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="channelMerchantId != null">
+        channel_merchant_id = #{channelMerchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantSecretKey != null">
+        merchant_secret_key = #{merchantSecretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="merhcantAppId != null">
+        merhcant_app_id = #{merhcantAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="ext1 != null">
+        ext_1 = #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="ext2 != null">
+        ext_2 = #{ext2,jdbcType=VARCHAR},
+      </if>
+      <if test="ext3 != null">
+        ext_3 = #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="ext4 != null">
+        ext_4 = #{ext4,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pay.api.client.model.TradeMerchantConfigDO">
+    update trade_merchant_config
+    set gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT},
+      merchant_id = #{merchantId,jdbcType=BIGINT},
+      merchant_number = #{merchantNumber,jdbcType=VARCHAR},
+      channel_merchant_id = #{channelMerchantId,jdbcType=VARCHAR},
+      merchant_secret_key = #{merchantSecretKey,jdbcType=VARCHAR},
+      merhcant_app_id = #{merhcantAppId,jdbcType=VARCHAR},
+      ext_1 = #{ext1,jdbcType=VARCHAR},
+      ext_2 = #{ext2,jdbcType=VARCHAR},
+      ext_3 = #{ext3,jdbcType=VARCHAR},
+      ext_4 = #{ext4,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
