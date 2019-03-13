@@ -1,9 +1,11 @@
 package com.pay.api.web.rest;
 
 import com.pay.api.client.dto.rest.*;
+import com.pay.api.client.model.TradeChannelConfigDO;
 import com.pay.api.client.model.TradeMemberDO;
 import com.pay.api.client.service.IPayApiFeignService;
 import com.pay.api.client.utils.RsaUtils;
+import com.pay.api.core.dao.TradeChannelConfigDao;
 import com.pay.api.core.dao.TradeMemberDao;
 import com.pay.api.core.service.IIdService;
 import org.slf4j.Logger;
@@ -29,13 +31,15 @@ public class PayApiFeignServiceImpl implements IPayApiFeignService {
     @Value("${security.rsa.key-size}")
     private Integer keySize;
 
-    private final IIdService iIdService;
+    private final IIdService idService;
     private final TradeMemberDao tradeMemberDao;
+    private final TradeChannelConfigDao tradeChannelConfigDao;
 
     @Autowired
-    public PayApiFeignServiceImpl(IIdService iIdService, TradeMemberDao tradeMemberDao) {
-        this.iIdService = iIdService;
+    public PayApiFeignServiceImpl(IIdService idService, TradeMemberDao tradeMemberDao, TradeChannelConfigDao tradeChannelConfigDao) {
+        this.idService = idService;
         this.tradeMemberDao = tradeMemberDao;
+        this.tradeChannelConfigDao = tradeChannelConfigDao;
     }
 
 
@@ -55,7 +59,7 @@ public class PayApiFeignServiceImpl implements IPayApiFeignService {
             //创建do，保存系统公钥私钥和会员公钥
             KeyPair keyPair = RsaUtils.generateKeyPair(keySize);
             TradeMemberDO tradeMemberDO = new TradeMemberDO();
-            tradeMemberDO.setId(iIdService.generateId());
+            tradeMemberDO.setId(idService.generateId());
             tradeMemberDO.setAgentId(tradeMemberCreateFeignDTO.getAgentId());
             tradeMemberDO.setAgentLevel(tradeMemberCreateFeignDTO.getAgentLevel());
             tradeMemberDO.setAgentName(tradeMemberCreateFeignDTO.getAgentName());
@@ -98,8 +102,57 @@ public class PayApiFeignServiceImpl implements IPayApiFeignService {
 
     @Override
     public TradeChannelConfigCreateResultFeignDTO tradeChannelCreate(TradeChannelConfigCreateFeignDTO tradeChannelConfigCreateFeignDTO) {
-        //todo 新增交易通道配置
-        return null;
+
+        TradeChannelConfigCreateResultFeignDTO resultFeignDTO = new TradeChannelConfigCreateResultFeignDTO();
+
+        TradeChannelConfigDO tradeChannelConfigDO = new TradeChannelConfigDO();
+        tradeChannelConfigDO.setId(idService.generateId());
+        tradeChannelConfigDO.setGmtCreate(new Date());
+        tradeChannelConfigDO.setIsDeleted(false);
+
+        //通道信息
+        tradeChannelConfigDO.setChannelId(tradeChannelConfigCreateFeignDTO.getChannelId());
+        tradeChannelConfigDO.setChannelName(tradeChannelConfigCreateFeignDTO.getChannelName());
+        tradeChannelConfigDO.setChannelNumber(tradeChannelConfigCreateFeignDTO.getChannelNumber());
+
+        //基础配置
+        tradeChannelConfigDO.setTradeNotifyUrl(tradeChannelConfigCreateFeignDTO.getTradeNotifyUrl());
+        tradeChannelConfigDO.setTradeReturnUrl(tradeChannelConfigCreateFeignDTO.getTradeReturnUrl());
+        tradeChannelConfigDO.setRegisterNotifyUrl(tradeChannelConfigCreateFeignDTO.getRegisterNotifyUrl());
+
+        //平台配置
+        tradeChannelConfigDO.setPlatformChannelId(tradeChannelConfigCreateFeignDTO.getPlatformChannelId());
+        tradeChannelConfigDO.setPlatformPubKey(tradeChannelConfigCreateFeignDTO.getPlatformPubKey());
+        tradeChannelConfigDO.setChannelSecretKey(tradeChannelConfigCreateFeignDTO.getChannelSecretKey());
+        tradeChannelConfigDO.setChannelPubKey(tradeChannelConfigCreateFeignDTO.getChannelPubKey());
+        tradeChannelConfigDO.setChannelPriKey(tradeChannelConfigCreateFeignDTO.getChannelPriKey());
+        tradeChannelConfigDO.setCertUrl(tradeChannelConfigCreateFeignDTO.getCertUrl());
+
+        //支付宝配置
+        tradeChannelConfigDO.setAlipayPid(tradeChannelConfigCreateFeignDTO.getAlipayPid());
+        tradeChannelConfigDO.setAlipayAppId(tradeChannelConfigCreateFeignDTO.getAlipayAppId());
+        tradeChannelConfigDO.setAlipayPubKey(tradeChannelConfigCreateFeignDTO.getAlipayPubKey());
+        tradeChannelConfigDO.setAlipayAppPriKey(tradeChannelConfigCreateFeignDTO.getAlipayAppPriKey());
+        tradeChannelConfigDO.setAlipayAppPubKey(tradeChannelConfigCreateFeignDTO.getAlipayAppPubKey());
+        tradeChannelConfigDO.setAlipayAuthRedirectUrl(tradeChannelConfigCreateFeignDTO.getAlipayAuthRedirectUrl());
+
+        //微信配置
+        tradeChannelConfigDO.setWechatAppId(tradeChannelConfigCreateFeignDTO.getWechatAppId());
+        tradeChannelConfigDO.setWechatAppSecretKey(tradeChannelConfigCreateFeignDTO.getWechatAppSecretKey());
+        tradeChannelConfigDO.setWechatAuthRedirectUrl(tradeChannelConfigCreateFeignDTO.getWechatAuthRedirectUrl());
+
+        //拓展配置
+        tradeChannelConfigDO.setExt1(tradeChannelConfigCreateFeignDTO.getExt1());
+        tradeChannelConfigDO.setExt2(tradeChannelConfigCreateFeignDTO.getExt2());
+        tradeChannelConfigDO.setExt3(tradeChannelConfigCreateFeignDTO.getExt3());
+        tradeChannelConfigDO.setExt4(tradeChannelConfigCreateFeignDTO.getExt4());
+
+        int insert = tradeChannelConfigDao.insert(tradeChannelConfigDO);
+        if (insert <= 0) {
+            resultFeignDTO.feignFail("FAIL", "新增交易通道配置记录失败");
+        }
+        return resultFeignDTO;
+
     }
 
     @Override
