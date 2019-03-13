@@ -1,7 +1,12 @@
 package com.pay.api.web.api;
 
+import com.pay.api.client.model.TradeChannelConfigDO;
 import com.pay.api.client.model.TradeMemberDO;
+import com.pay.api.client.model.TradeRouteDO;
+import com.pay.api.core.dao.TradeChannelConfigDao;
 import com.pay.api.core.dao.TradeMemberDao;
+import com.pay.api.core.dao.TradeMerchantConfigDao;
+import com.pay.api.core.dao.TradeRouteDao;
 import com.pay.api.core.service.IIdService;
 import com.pay.api.web.PayApiWebApplicationTests;
 import com.pay.center.client.constants.AgentLevelEnum;
@@ -10,6 +15,7 @@ import com.pay.center.client.constants.DefrayalTypeEnum;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -18,14 +24,18 @@ import java.util.*;
  */
 public class TestDataGenerate extends PayApiWebApplicationTests {
 
-    private final IIdService idService;
-    private final TradeMemberDao tradeMemberDao;
-
     @Autowired
-    public TestDataGenerate(IIdService idService, TradeMemberDao tradeMemberDao) {
-        this.idService = idService;
-        this.tradeMemberDao = tradeMemberDao;
-    }
+    private IIdService idService;
+    @Autowired
+    private TradeMemberDao tradeMemberDao;
+    @Autowired
+    private TradeChannelConfigDao tradeChannelConfigDao;
+    @Autowired
+    private TradeMerchantConfigDao tradeMerchantConfigDao;
+    @Autowired
+    private TradeRouteDao tradeRouteDao;
+
+
 
     /**
      * 生成交易压力测试数据
@@ -85,52 +95,300 @@ public class TestDataGenerate extends PayApiWebApplicationTests {
         //测试会员数量
         int memberCount = 500;
         //测试会员通道下商户数量
-        int memberChannelMerchantCount = 10;
+        int memberChannelMerchantCount = 5;
         //测试通道数量
         int channelCount = 10;
         //测试支付渠道和支付方式
         Map<String, List<String>> defrayal = new HashMap<>();
         List<String> aliDefrayalChannel = new ArrayList<>();
         aliDefrayalChannel.add(DefrayalTypeEnum.NATIVE.getType());
-        aliDefrayalChannel.add(DefrayalTypeEnum.JSAPI.getType());
-        List<String> wechatDefrayalChannel = new ArrayList<>();
-        wechatDefrayalChannel.add(DefrayalTypeEnum.NATIVE.getType());
-        wechatDefrayalChannel.add(DefrayalTypeEnum.JSAPI.getType());
-        defrayal.put(DefrayalChannelEnum.ALI.getName(), aliDefrayalChannel);
-        defrayal.put(DefrayalChannelEnum.WECHAT.getName(), wechatDefrayalChannel);
+//        aliDefrayalChannel.add(DefrayalTypeEnum.JSAPI.getType());
+//        List<String> wechatDefrayalChannel = new ArrayList<>();
+//        wechatDefrayalChannel.add(DefrayalTypeEnum.NATIVE.getType());
+//        wechatDefrayalChannel.add(DefrayalTypeEnum.JSAPI.getType());
+        defrayal.put(DefrayalChannelEnum.ALI.getType(), aliDefrayalChannel);
+//        defrayal.put(DefrayalChannelEnum.WECHAT.getType(), wechatDefrayalChannel);
 
+        //虚拟会员数据
+        class TestMember {
+            private Long memberId;
+            private String memberNumber;
+            private String memberName;
 
-        //2.生成交易通道配置数据
+            public Long getMemberId() {
+                return memberId;
+            }
+
+            public void setMemberId(Long memberId) {
+                this.memberId = memberId;
+            }
+
+            public String getMemberNumber() {
+                return memberNumber;
+            }
+
+            public void setMemberNumber(String memberNumber) {
+                this.memberNumber = memberNumber;
+            }
+
+            public String getMemberName() {
+                return memberName;
+            }
+
+            public void setMemberName(String memberName) {
+                this.memberName = memberName;
+            }
+        }
+        //虚拟通道数据
+        class TestChannel {
+            private Long channelId;
+            private String channelName;
+            private String channelNumber;
+
+            public Long getChannelId() {
+                return channelId;
+            }
+
+            public void setChannelId(Long channelId) {
+                this.channelId = channelId;
+            }
+
+            public String getChannelName() {
+                return channelName;
+            }
+
+            public void setChannelName(String channelName) {
+                this.channelName = channelName;
+            }
+
+            public String getChannelNumber() {
+                return channelNumber;
+            }
+
+            public void setChannelNumber(String channelNumber) {
+                this.channelNumber = channelNumber;
+            }
+        }
+        //虚拟商户数据
+        class TestMerchant {
+            private String memberNumber;
+            private Long platformId;
+            private String platformNumber;
+            private String platformName;
+            private String platformMapped;
+            private Long channelId;
+            private String channelNumber;
+            private String channelName;
+            private Long merchantId;
+            private String merchantNumber;
+            private String merchantName;
+
+            public String getMemberNumber() {
+                return memberNumber;
+            }
+
+            public void setMemberNumber(String memberNumber) {
+                this.memberNumber = memberNumber;
+            }
+
+            public Long getPlatformId() {
+                return platformId;
+            }
+
+            public void setPlatformId(Long platformId) {
+                this.platformId = platformId;
+            }
+
+            public String getPlatformNumber() {
+                return platformNumber;
+            }
+
+            public void setPlatformNumber(String platformNumber) {
+                this.platformNumber = platformNumber;
+            }
+
+            public String getPlatformName() {
+                return platformName;
+            }
+
+            public void setPlatformName(String platformName) {
+                this.platformName = platformName;
+            }
+
+            public String getPlatformMapped() {
+                return platformMapped;
+            }
+
+            public void setPlatformMapped(String platformMapped) {
+                this.platformMapped = platformMapped;
+            }
+
+            public Long getChannelId() {
+                return channelId;
+            }
+
+            public void setChannelId(Long channelId) {
+                this.channelId = channelId;
+            }
+
+            public String getChannelNumber() {
+                return channelNumber;
+            }
+
+            public void setChannelNumber(String channelNumber) {
+                this.channelNumber = channelNumber;
+            }
+
+            public String getChannelName() {
+                return channelName;
+            }
+
+            public void setChannelName(String channelName) {
+                this.channelName = channelName;
+            }
+
+            public Long getMerchantId() {
+                return merchantId;
+            }
+
+            public void setMerchantId(Long merchantId) {
+                this.merchantId = merchantId;
+            }
+
+            public String getMerchantNumber() {
+                return merchantNumber;
+            }
+
+            public void setMerchantNumber(String merchantNumber) {
+                this.merchantNumber = merchantNumber;
+            }
+
+            public String getMerchantName() {
+                return merchantName;
+            }
+
+            public void setMerchantName(String merchantName) {
+                this.merchantName = merchantName;
+            }
+        }
+
+        List<TestChannel> channels = new ArrayList<>();
         for (int i = 0; i < channelCount; i++) {
+            TestChannel channel = new TestChannel();
+            channel.setChannelId(idService.generateId());
+            channel.setChannelName("TEST-CHANNEL-" + i);
+            channel.setChannelNumber("TEST-CHANNEL-" + idService.generateId());
+            channels.add(channel);
+        }
+        List<TestMerchant> merchants = new ArrayList<>();
+        List<TestMember> members = new ArrayList<>();
+        for (int k = 0; k < memberCount; k++) {
+            //1.生成交易会员数据
+            TestMember member = new TestMember();
+            member.setMemberId(idService.generateId());
+            member.setMemberName("TEST-MEMBER-" + k);
+            member.setMemberNumber("TEST-MEMBER-" + idService.generateId());
+            members.add(member);
+
+            for(TestChannel channel : channels){
+                for (int j = 0; j < memberChannelMerchantCount; j++) {
+                    TestMerchant merchant = new TestMerchant();
+                    merchant.setMemberNumber(member.getMemberNumber());
+                    merchant.setPlatformId(1L);
+                    merchant.setPlatformMapped("TEST");
+                    merchant.setPlatformNumber("P00001");
+                    merchant.setPlatformName("测试平台");
+                    merchant.setChannelId(channel.getChannelId());
+                    merchant.setChannelName(channel.getChannelName());
+                    merchant.setChannelNumber(channel.getChannelNumber());
+                    merchant.setMerchantId(idService.generateId());
+                    merchant.setMerchantName("TEST-MERCHANT-" + j);
+                    merchant.setMerchantNumber("TEST-MERCHANT-" + idService.generateId());
+                    merchants.add(merchant);
+                }
+            }
 
         }
 
+        System.out.println(members.size());
+        //生成交易通道配置数据
+        for (TestChannel c : channels) {
+            TradeChannelConfigDO tradeChannelConfigDO = new TradeChannelConfigDO();
+            tradeChannelConfigDO.setId(idService.generateId());
+            tradeChannelConfigDO.setGmtCreate(date);
+            tradeChannelConfigDO.setIsDeleted(false);
+            tradeChannelConfigDO.setChannelId(c.getChannelId());
+            tradeChannelConfigDO.setChannelNumber(c.getChannelNumber());
+            tradeChannelConfigDO.setChannelName(c.getChannelName());
+            tradeChannelConfigDO.setAlipayAppId("123456789123456789");
+            tradeChannelConfigDO.setAlipayAuthRedirectUrl("http://pay-api:8081/alipay/support/auth");
 
-        for (int i = 0; i < memberCount; i++) {
-            //1.生成交易会员数据
+            tradeChannelConfigDO.setWechatAppId("qwertyuiop");
+            tradeChannelConfigDO.setWechatAppSecretKey("123456789123456789");
+            tradeChannelConfigDO.setWechatAuthRedirectUrl("http://pay-api:8081/wechat/support/auth");
+
+            tradeChannelConfigDao.insert(tradeChannelConfigDO);
+        }
+
+
+        //生成交易会员数据
+        for (TestMember m : members) {
             TradeMemberDO tradeMemberDO = new TradeMemberDO();
             tradeMemberDO.setId(idService.generateId());
             tradeMemberDO.setAgentId(testAgentId);
-            tradeMemberDO.setAgentLevel(AgentLevelEnum.LEVEL_1.getName());
+            tradeMemberDO.setAgentLevel(AgentLevelEnum.LEVEL_1.getType());
             tradeMemberDO.setAgentName(testAgentName);
             tradeMemberDO.setAgentNumber(testAgentNumber);
             tradeMemberDO.setGmtCreate(date);
             tradeMemberDO.setIsDeleted(false);
-            tradeMemberDO.setMemberId(idService.generateId());
-            tradeMemberDO.setMemberName("TEST-MEMBER-" + i);
-            tradeMemberDO.setMemberNumber("TEST-MEMBER-" + tradeMemberDO.getId());
+            tradeMemberDO.setMemberId(m.getMemberId());
+            tradeMemberDO.setMemberName(m.getMemberName());
+            tradeMemberDO.setMemberNumber(m.getMemberNumber());
             tradeMemberDO.setMemberPubKey(pubKey);
             tradeMemberDO.setSysPriKey(sysPubKey);
             tradeMemberDO.setSysPubKey(sysPriKey);
             tradeMemberDao.insert(tradeMemberDO);
+        }
 
+        //生成交易路由数据
+        BigDecimal singleMax = new BigDecimal("100000.00");
+        BigDecimal singleMin = new BigDecimal("0.00");
+        for (TestMerchant merchant : merchants) {
+            Set<String> defrayalChannels = defrayal.keySet();
+            for (String dc : defrayalChannels) {
+                List<String> defrayalTypes = defrayal.get(dc);
+                for (String dt : defrayalTypes) {
+                    TradeRouteDO tradeRouteDO = new TradeRouteDO();
+                    tradeRouteDO.setId(idService.generateId());
+                    tradeRouteDO.setGmtCreate(date);
+                    tradeRouteDO.setIsDeleted(false);
+                    tradeRouteDO.setChannelId(merchant.getChannelId());
+                    tradeRouteDO.setChannelNumber(merchant.getChannelNumber());
+                    tradeRouteDO.setChannelName(merchant.getChannelName());
+                    tradeRouteDO.setMerchantId(merchant.getMerchantId());
+                    tradeRouteDO.setMerchantName(merchant.getMerchantName());
+                    tradeRouteDO.setMerchantNumber(merchant.getMerchantNumber());
+                    tradeRouteDO.setDefrayalChannel(dc);
+                    tradeRouteDO.setDefrayalType(dt);
+                    tradeRouteDO.setStatus(true);
+                    tradeRouteDO.setTradeRisk(false);
+                    tradeRouteDO.setTradeLimit(false);
+                    tradeRouteDO.setSingleTradeAmountMax(singleMax);
+                    tradeRouteDO.setSingleTradeAmountMin(singleMin);
+                    tradeRouteDO.setPlatformId(merchant.getPlatformId());
+                    tradeRouteDO.setPlatformMapped(merchant.getPlatformMapped());
+                    tradeRouteDO.setPlatformName(merchant.getPlatformName());
+                    tradeRouteDO.setPlatformNumber(merchant.getPlatformNumber());
+
+                    tradeRouteDO.setMemberNumber(merchant.getMemberNumber());
+                    tradeRouteDao.insert(tradeRouteDO);
+                }
+            }
 
         }
 
-        //4.生成交易路由数据
+        //todo 生成交易商户配置数据
 
-
-        //3.生成交易商户配置数据
 
     }
 }
