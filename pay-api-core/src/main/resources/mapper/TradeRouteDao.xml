@@ -110,8 +110,8 @@
       #{channelName,jdbcType=VARCHAR}, #{merchantId,jdbcType=BIGINT}, #{merchantNumber,jdbcType=VARCHAR}, #{defrayalChannel,jdbcType=VARCHAR},
       #{defrayalType,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, #{singleTradeAmountMin,jdbcType=DECIMAL},
       #{singleTradeAmountMax,jdbcType=DECIMAL},#{tradeLimit,jdbcType=BIT}, #{tradeLimitTime,jdbcType=TIMESTAMP}, #{tradeRisk,jdbcType=BIT},
-      #{tradeRiskTime,jdbcType=TIMESTAMP},#{tradeIntervalTime,jdbcType=BIGINT}, #{tradeWarnDate,jdbcType=TIMESTAMP},#{tradeWarnTimes,jdbcType=INTEGER},
-      #{lastTradeSucTimestamp,jdbcType=BIGINT},#{dayTradeSucAmountTotal,jdbcType=DECIMAL},
+      #{tradeRiskTime,jdbcType=TIMESTAMP},#{tradeWarnDate,jdbcType=TIMESTAMP},#{tradeWarnTimes,jdbcType=INTEGER},#{tradeIntervalTime,jdbcType=BIGINT},
+      #{lastTradeTimestamp,jdbcType=BIGINT},#{lastTradeSucTimestamp,jdbcType=BIGINT},#{dayTradeSucAmountTotal,jdbcType=DECIMAL},
       #{monthTradeSucAmountTotal,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeRouteDO">
