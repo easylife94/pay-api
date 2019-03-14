@@ -4,6 +4,7 @@ import com.pay.api.client.constants.TradeRouteRuleEnum;
 import com.pay.api.client.dto.TradeRouteCreateDTO;
 import com.pay.api.client.dto.TradeRouteDTO;
 import com.pay.api.client.dto.TradeRouteMerchantDTO;
+import com.pay.api.client.dto.mapper.MemberTradeRouteDTO;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeRouteDO;
 import com.pay.api.core.dao.TradeRouteDao;
@@ -44,16 +45,19 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
     @Override
     public TradeRouteMerchantDTO route(TradeRouteDTO tradeRouteDTO, TradeRouteRuleEnum tradeRouteRule, BigDecimal tradeAmount) {
         TradeRouteMerchantDTO tradeRouteMerchantDTO = null;
-        TradeRouteDO finalTradeRoute = null;
+        MemberTradeRouteDTO finalTradeRoute = null;
         //筛选商户，禁用，限额，风控，
-        List<TradeRouteDO> tradeRouteDOS = tradeRouteDao.selectMemberTradableRoute(tradeRouteDTO.getMemberNumber(), tradeRouteDTO.getPlatformNumber(),
+        long ms = System.currentTimeMillis();
+        List<MemberTradeRouteDTO> tradeRouteDOS = tradeRouteDao.selectMemberTradableRoute(tradeRouteDTO.getMemberNumber(), tradeRouteDTO.getPlatformNumber(),
                 tradeRouteDTO.getChannelNumber(), tradeRouteDTO.getMerchantNumber(), tradeRouteDTO.getDefrayalChannel(), tradeRouteDTO.getDefrayalType());
+        System.out.println("可交易路由查询：" + (System.currentTimeMillis() - ms) + "ms");
+        logger.info("会员[{}]的支付方式[{} - {}]的路由数量：{}", tradeRouteDTO.getMemberNumber(),tradeRouteDTO.getDefrayalChannel(),
+                tradeRouteDTO.getDefrayalType(), tradeRouteDOS.size());
 
-        logger.info("可交易路由表：{}", tradeRouteDOS);
-
-        Iterator<TradeRouteDO> iterator = tradeRouteDOS.iterator();
+        Iterator<MemberTradeRouteDTO> iterator = tradeRouteDOS.iterator();
         while (iterator.hasNext()) {
-            TradeRouteDO next = iterator.next();
+            MemberTradeRouteDTO next = iterator.next();
+
             //单笔交易限额
             if (tradeSingleAmountLimit(next, tradeAmount)) {
                 iterator.remove();
@@ -82,9 +86,9 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
         }
 
         if (finalTradeRoute != null) {
-            tradeRouteMerchantDTO = new TradeRouteMerchantDTO(finalTradeRoute.getId(),finalTradeRoute.getPlatformMapped(),finalTradeRoute.getPlatformId(),finalTradeRoute.getPlatformNumber(),
-                    finalTradeRoute.getPlatformName(),finalTradeRoute.getChannelId(),finalTradeRoute.getChannelNumber(),finalTradeRoute.getChannelName(),finalTradeRoute.getMerchantId(),
-                    finalTradeRoute.getMerchantNumber(),finalTradeRoute.getMerchantName());
+            tradeRouteMerchantDTO = new TradeRouteMerchantDTO(finalTradeRoute.getId(), finalTradeRoute.getPlatformMapped(), finalTradeRoute.getPlatformId(), finalTradeRoute.getPlatformNumber(),
+                    finalTradeRoute.getPlatformName(), finalTradeRoute.getChannelId(), finalTradeRoute.getChannelNumber(), finalTradeRoute.getChannelName(), finalTradeRoute.getMerchantId(),
+                    finalTradeRoute.getMerchantNumber(), finalTradeRoute.getMerchantName());
         }
 
         return tradeRouteMerchantDTO;
@@ -97,7 +101,7 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
      * @param tradeAmount  交易金额，不能为空
      * @return 当且仅当交易金额在单笔限额区间内返回false
      */
-    private Boolean tradeSingleAmountLimit(TradeRouteDO tradeRouteDO, BigDecimal tradeAmount) {
+    private Boolean tradeSingleAmountLimit(MemberTradeRouteDTO tradeRouteDO, BigDecimal tradeAmount) {
         //小于最小单笔交易金额
         boolean lessSingleMin = tradeRouteDO.getSingleTradeAmountMin() != null && tradeAmount.compareTo(tradeRouteDO.getSingleTradeAmountMin()) < 0;
         //大于最大单笔交易金额
@@ -111,7 +115,7 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
      * @param tradeRouteDO
      * @return 当交易时间间隔设置为null或者0时永远返回false。其他当且仅当最近交易时间和当前时间小于等于交易时间间隔时返回true
      */
-    private Boolean tradeHighFrequency(TradeRouteDO tradeRouteDO) {
+    private Boolean tradeHighFrequency(MemberTradeRouteDTO tradeRouteDO) {
         Long tradeIntervalTime = tradeRouteDO.getTradeIntervalTime();
         if (tradeIntervalTime == null || tradeIntervalTime.equals(0)) {
             return false;
@@ -126,9 +130,9 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
      * @param tradeRouteDOS 交易路由列表
      * @return
      */
-    private TradeRouteDO roundRobin(List<TradeRouteDO> tradeRouteDOS) {
-        TradeRouteDO roundRobinTradeRouteDO = tradeRouteDOS.get(0);
-        for (TradeRouteDO routeDO : tradeRouteDOS) {
+    private MemberTradeRouteDTO roundRobin(List<MemberTradeRouteDTO> tradeRouteDOS) {
+        MemberTradeRouteDTO roundRobinTradeRouteDO = tradeRouteDOS.get(0);
+        for (MemberTradeRouteDTO routeDO : tradeRouteDOS) {
             if (routeDO.getLastTradeTimestamp() == null) {
                 //未交易路由直接返回
                 return routeDO;

@@ -44,11 +44,10 @@ public class PayApi {
      * @return 统一返回结果
      */
     @RequestMapping(value = "/gateway", method = RequestMethod.POST)
-    public ApiPayResultDTO gateway(@RequestBody ApiPayDTO apiPayDTO) {
+    public ApiPayResultDTO gateway(@RequestBody(required = false) ApiPayDTO apiPayDTO) {
         logger.info("支付接口网关，请求参数:{}", apiPayDTO);
         ApiPayResultDTO apiPayResultDTO = new ApiPayResultDTO();
         try {
-
             //1.公共参数校验
             ApiPayParamsCheckResultDTO paramsCheckResultDTO = payApiGatewayService.publicParamsCheck(apiPayDTO);
             if (Boolean.FALSE.equals(paramsCheckResultDTO.getPass())) {

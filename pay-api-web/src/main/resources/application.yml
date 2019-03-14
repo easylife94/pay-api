@@ -23,7 +23,7 @@ mybatis:
     ##允许JDBC支持生成的键
     use-generated-keys: true
     ##开启日志打印
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 feign:
   hystrix:

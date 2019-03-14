@@ -74,7 +74,6 @@ public final class SignUtils {
         }
         //移除最后一个&
         str.deleteCharAt(str.length() - 1);
-        System.out.println(str);
         return str.toString();
     }
 

@@ -1,5 +1,6 @@
 package com.pay.api.core.dao;
 
+import com.pay.api.client.dto.mapper.MemberTradeRouteDTO;
 import com.pay.api.client.model.TradeRouteDO;
 
 import java.math.BigDecimal;
@@ -20,7 +21,7 @@ public interface TradeRouteDao {
     int updateByPrimaryKey(TradeRouteDO record);
 
     /**
-     * 查询可交易路由
+     * 查询会员交易路由
      *
      * @param memberNumber    会员编号
      * @param platformNumber  平台编号
@@ -30,8 +31,8 @@ public interface TradeRouteDao {
      * @param defrayalType    支付方式
      * @return
      */
-    List<TradeRouteDO> selectMemberTradableRoute(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
-                                                 String defrayalChannel, String defrayalType);
+    List<MemberTradeRouteDTO> selectMemberTradableRoute(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
+                                                        String defrayalChannel, String defrayalType);
 
     /**
      * 查询路由

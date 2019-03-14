@@ -93,11 +93,11 @@ public class TestDataGenerate extends PayApiWebApplicationTests {
         //统一测试代理商编号
         String testAgentNumber = "TEST-AGENT-9999999999";
         //测试会员数量
-        int memberCount = 500;
+        int memberCount = 10;
         //测试会员通道下商户数量
-        int memberChannelMerchantCount = 5;
+        int memberChannelMerchantCount = 100;
         //测试通道数量
-        int channelCount = 10;
+        int channelCount = 5;
         //测试支付渠道和支付方式
         Map<String, List<String>> defrayal = new HashMap<>();
         List<String> aliDefrayalChannel = new ArrayList<>();
