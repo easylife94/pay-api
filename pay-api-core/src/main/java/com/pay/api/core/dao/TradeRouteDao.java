@@ -74,6 +74,15 @@ public interface TradeRouteDao {
      */
     int updateTradeRouteStatus(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
                                String defrayalChannel, String defrayalType, Boolean status, Boolean tradeLimit,
-                               Date tradeLimitDate, Boolean tradeRisk,Date tradeRiskDate);
+                               Date tradeLimitDate, Boolean tradeRisk, Date tradeRiskDate);
 
+
+    /**
+     * 更新交易路由交易时间
+     *
+     * @param id        交易路由id
+     * @param timestamp 时间戳
+     * @return
+     */
+    int updateTradeRouteTradeTime(Long id, Long timestamp);
 }

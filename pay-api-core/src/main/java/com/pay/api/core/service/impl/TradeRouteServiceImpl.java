@@ -17,10 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author chenwei
@@ -28,6 +27,8 @@ import java.util.List;
  */
 @Service
 public class TradeRouteServiceImpl implements ITradeRouteService {
+
+    private final static Map<String, Lock> MEMBER_TRADE_ROUTE_LOCKS = new HashMap<>();
 
     private final static Logger logger = LoggerFactory.getLogger(TradeRouteServiceImpl.class);
 
@@ -45,50 +46,70 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
     @Override
     public TradeRouteMerchantDTO route(TradeRouteDTO tradeRouteDTO, TradeRouteRuleEnum tradeRouteRule, BigDecimal tradeAmount) {
         TradeRouteMerchantDTO tradeRouteMerchantDTO = null;
-        MemberTradeRouteDTO finalTradeRoute = null;
-        //筛选商户，禁用，限额，风控，
-        long ms = System.currentTimeMillis();
-        List<MemberTradeRouteDTO> tradeRouteDOS = tradeRouteDao.selectMemberTradableRoute(tradeRouteDTO.getMemberNumber(), tradeRouteDTO.getPlatformNumber(),
-                tradeRouteDTO.getChannelNumber(), tradeRouteDTO.getMerchantNumber(), tradeRouteDTO.getDefrayalChannel(), tradeRouteDTO.getDefrayalType());
-        System.out.println("可交易路由查询：" + (System.currentTimeMillis() - ms) + "ms");
-        logger.info("会员[{}]的支付方式[{} - {}]的路由数量：{}", tradeRouteDTO.getMemberNumber(),tradeRouteDTO.getDefrayalChannel(),
-                tradeRouteDTO.getDefrayalType(), tradeRouteDOS.size());
-
-        Iterator<MemberTradeRouteDTO> iterator = tradeRouteDOS.iterator();
-        while (iterator.hasNext()) {
-            MemberTradeRouteDTO next = iterator.next();
-
-            //单笔交易限额
-            if (tradeSingleAmountLimit(next, tradeAmount)) {
-                iterator.remove();
-                continue;
-            }
-
-            //交易频率限制
-            if (tradeHighFrequency(next)) {
-                iterator.remove();
-            }
-        }
-
-        if (tradeRouteDOS == null || tradeRouteDOS.size() == 0) {
-            return null;
-        } else if (tradeRouteDOS.size() == 1) {
-            finalTradeRoute = tradeRouteDOS.get(0);
+        //加(会员编号 + 支付渠道 + 支付方式)锁,避免并发情况下轮询规则失效
+        String lockKey = tradeRouteDTO.getMemberNumber() + tradeRouteDTO.getDefrayalChannel() + tradeRouteDTO.getDefrayalType();
+        Lock lock;
+        if (MEMBER_TRADE_ROUTE_LOCKS.containsKey(lockKey)) {
+            lock = MEMBER_TRADE_ROUTE_LOCKS.get(lockKey);
+            lock.lock();
         } else {
-            //路由规则
-            switch (tradeRouteRule) {
-                case ROUND_ROBIN:
-                    finalTradeRoute = roundRobin(tradeRouteDOS);
-                    break;
-                default:
-                    throw new PayApiException("不支持交易路由规则：" + tradeRouteRule.getType());
-            }
+            lock = new ReentrantLock();
+            lock.lock();
+            MEMBER_TRADE_ROUTE_LOCKS.put(lockKey, lock);
         }
 
-        if (finalTradeRoute != null) {
-            tradeRouteMerchantDTO = new TradeRouteMerchantDTO(finalTradeRoute.getId(), finalTradeRoute.getPlatformMapped(), finalTradeRoute.getPlatformId(), finalTradeRoute.getPlatformNumber(),
-                    finalTradeRoute.getPlatformName(), finalTradeRoute.getChannelId(), finalTradeRoute.getChannelNumber(), finalTradeRoute.getChannelName(), finalTradeRoute.getMerchantId(),
-                    finalTradeRoute.getMerchantNumber(), finalTradeRoute.getMerchantName());
+
+        try {
+            MemberTradeRouteDTO finalTradeRoute = null;
+            //筛选商户，禁用，限额，风控，
+            long ms = System.currentTimeMillis();
+            List<MemberTradeRouteDTO> tradeRouteDOS = tradeRouteDao.selectMemberTradableRoute(tradeRouteDTO.getMemberNumber(), tradeRouteDTO.getPlatformNumber(),
+                    tradeRouteDTO.getChannelNumber(), tradeRouteDTO.getMerchantNumber(), tradeRouteDTO.getDefrayalChannel(), tradeRouteDTO.getDefrayalType());
+            System.out.println("可交易路由查询：" + (System.currentTimeMillis() - ms) + "ms");
+            logger.info("会员[{}]的支付方式[{} - {}]的路由数量：{}", tradeRouteDTO.getMemberNumber(), tradeRouteDTO.getDefrayalChannel(),
+                    tradeRouteDTO.getDefrayalType(), tradeRouteDOS.size());
+
+            Iterator<MemberTradeRouteDTO> iterator = tradeRouteDOS.iterator();
+            while (iterator.hasNext()) {
+                MemberTradeRouteDTO next = iterator.next();
+
+                //单笔交易限额
+                if (tradeSingleAmountLimit(next, tradeAmount)) {
+                    iterator.remove();
+                    continue;
+                }
+
+                //交易频率限制
+                if (tradeHighFrequency(next)) {
+                    iterator.remove();
+                }
+            }
+
+            if (tradeRouteDOS == null || tradeRouteDOS.size() == 0) {
+                return null;
+            } else if (tradeRouteDOS.size() == 1) {
+                finalTradeRoute = tradeRouteDOS.get(0);
+            } else {
+                //路由规则
+                switch (tradeRouteRule) {
+                    case ROUND_ROBIN:
+                        finalTradeRoute = roundRobin(tradeRouteDOS);
+                        break;
+                    default:
+                        throw new PayApiException("不支持交易路由规则：" + tradeRouteRule.getType());
+                }
+            }
+
+            if (finalTradeRoute != null) {
+                //更新路由交易时间
+                tradeRouteDao.updateTradeRouteTradeTime(finalTradeRoute.getId(), System.currentTimeMillis());
+
+                tradeRouteMerchantDTO = new TradeRouteMerchantDTO(finalTradeRoute.getId(), finalTradeRoute.getPlatformMapped(), finalTradeRoute.getPlatformId(), finalTradeRoute.getPlatformNumber(),
+                        finalTradeRoute.getPlatformName(), finalTradeRoute.getChannelId(), finalTradeRoute.getChannelNumber(), finalTradeRoute.getChannelName(), finalTradeRoute.getMerchantId(),
+                        finalTradeRoute.getMerchantNumber(), finalTradeRoute.getMerchantName());
+            }
+        } finally {
+            lock.unlock();
         }
 
         return tradeRouteMerchantDTO;

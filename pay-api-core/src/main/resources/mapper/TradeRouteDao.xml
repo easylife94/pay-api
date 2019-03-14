@@ -503,4 +503,9 @@
       and defrayal_type = #{defrayalType,jdbcType=VARCHAR}
     </if>
   </update>
+    <update id="updateTradeRouteTradeTime">
+      update trade_route
+      set last_trade_timestamp = #{timestamp,jdbcType=BIGINT}
+      where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

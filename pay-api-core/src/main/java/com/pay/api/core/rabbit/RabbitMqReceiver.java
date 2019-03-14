@@ -48,7 +48,7 @@ public class RabbitMqReceiver {
             //1.2是否交易风控、交易预警
             TradeRouteDO tradeRouteDO = tradeRouteDao.selectByPrimaryKey(tradeCreateMessageDTO.getTradeRouteId());
             if (tradeRouteDO != null) {
-                tradeRouteDO.setLastTradeTimestamp(tradeCreateMessageDTO.getTradeTimestamp());
+//                tradeRouteDO.setLastTradeTimestamp(tradeCreateMessageDTO.getTradeTimestamp());
 
                 //明确交易风控
                 if(Boolean.TRUE.equals(tradeCreateMessageDTO.getTradeRisk())){
