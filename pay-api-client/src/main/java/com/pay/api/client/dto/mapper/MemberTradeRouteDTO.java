@@ -1,6 +1,6 @@
 package com.pay.api.client.dto.mapper;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 
 /**
  * 会员交易路由
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * @author chenwei
  * @date 2019/3/14 17:41
  */
-public class MemberTradeRouteDTO {
+public class MemberTradeRouteDTO implements Serializable {
     private Long id;
     private String platformMapped;
     private Long platformId;
@@ -20,10 +20,7 @@ public class MemberTradeRouteDTO {
     private Long merchantId;
     private String merchantNumber;
     private String merchantName;
-    private Long lastTradeTimestamp;
-    private BigDecimal singleTradeAmountMin;
-    private BigDecimal singleTradeAmountMax;
-    private Long tradeIntervalTime;
+
 
     public Long getId() {
         return id;
@@ -113,35 +110,4 @@ public class MemberTradeRouteDTO {
         this.merchantName = merchantName;
     }
 
-    public Long getLastTradeTimestamp() {
-        return lastTradeTimestamp;
-    }
-
-    public void setLastTradeTimestamp(Long lastTradeTimestamp) {
-        this.lastTradeTimestamp = lastTradeTimestamp;
-    }
-
-    public BigDecimal getSingleTradeAmountMin() {
-        return singleTradeAmountMin;
-    }
-
-    public void setSingleTradeAmountMin(BigDecimal singleTradeAmountMin) {
-        this.singleTradeAmountMin = singleTradeAmountMin;
-    }
-
-    public BigDecimal getSingleTradeAmountMax() {
-        return singleTradeAmountMax;
-    }
-
-    public void setSingleTradeAmountMax(BigDecimal singleTradeAmountMax) {
-        this.singleTradeAmountMax = singleTradeAmountMax;
-    }
-
-    public Long getTradeIntervalTime() {
-        return tradeIntervalTime;
-    }
-
-    public void setTradeIntervalTime(Long tradeIntervalTime) {
-        this.tradeIntervalTime = tradeIntervalTime;
-    }
 }
