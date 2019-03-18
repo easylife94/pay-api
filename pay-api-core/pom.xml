@@ -41,6 +41,12 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>3.6.0.ALL</version>
         </dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- pay-api -->
         <dependency>

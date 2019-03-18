@@ -2,6 +2,8 @@ package com.pay.api.client.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 交易路由商户DTO
  *
@@ -33,8 +35,12 @@ public class TradeRouteMerchantDTO {
 
     private String merchantName;
 
+    private Date tradeWarnDate;
+
+    private Integer tradeWarnTimes;
+
     public TradeRouteMerchantDTO(Long tradeRouteId, String platformMapped, Long platformId, String platformNumber, String platformName, Long channelId, String channelNumber,
-                                 String channelName, Long merchantId, String merchantNumber, String merchantName) {
+                                 String channelName, Long merchantId, String merchantNumber, String merchantName, Date tradeWarnDate, Integer tradeWarnTimes) {
         this.tradeRouteId = tradeRouteId;
         this.platformMapped = platformMapped;
         this.platformId = platformId;
@@ -46,5 +52,7 @@ public class TradeRouteMerchantDTO {
         this.merchantId = merchantId;
         this.merchantNumber = merchantNumber;
         this.merchantName = merchantName;
+        this.tradeWarnDate = tradeWarnDate;
+        this.tradeWarnTimes = tradeWarnTimes;
     }
 }

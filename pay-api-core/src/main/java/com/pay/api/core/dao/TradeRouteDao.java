@@ -86,5 +86,5 @@ public interface TradeRouteDao {
      * @param timestamp 时间戳
      * @return
      */
-    int updateTradeRouteTradeTime(Long id, Long timestamp);
+    int updateTradeRoute(Long id, Long timestamp);
 }

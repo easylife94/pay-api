@@ -2,8 +2,8 @@ package com.pay.api.client.dto.mapper;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 会员交易路由
@@ -24,4 +24,6 @@ public class MemberTradeRouteDTO implements Serializable {
     private Long merchantId;
     private String merchantNumber;
     private String merchantName;
+    private Date tradeWarnDate;
+    private Integer tradeWarnTimes;
 }

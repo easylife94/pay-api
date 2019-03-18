@@ -2,8 +2,6 @@ package com.pay.api.client.dto;
 
 import lombok.Data;
 
-import java.util.StringJoiner;
-
 /**
  * 交易创建后参数DTO
  *
@@ -13,18 +11,5 @@ import java.util.StringJoiner;
 @Data
 public class TradeCreateAfterDTO {
 
-    /**
-     * 交易路由id
-     */
-    private Long tradeRouteId;
 
-    /**
-     * 是否交易风控
-     */
-    private Boolean tradeRisk;
-
-    /**
-     * 是否交易预警
-     */
-    private Boolean tradeWarn;
 }

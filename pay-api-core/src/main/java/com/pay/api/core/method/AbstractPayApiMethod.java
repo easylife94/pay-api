@@ -6,6 +6,7 @@ import com.pay.api.client.dto.ApiPayMethodParamsCheckResultDTO;
 import com.pay.api.client.dto.ApiPayMethodResultDTO;
 import com.pay.api.client.dto.TradeMemberDTO;
 import com.pay.center.client.dto.service.MemberDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +16,8 @@ import org.slf4j.LoggerFactory;
  * @author chenwei
  * @date 2019/2/1 13:34
  */
+@Slf4j
 public abstract class AbstractPayApiMethod<T> implements IPayApiMethod {
-
 
     /**
      * 定义参数校验方法
@@ -45,15 +46,25 @@ public abstract class AbstractPayApiMethod<T> implements IPayApiMethod {
      */
     @Override
     public final ApiPayMethodResultDTO operate(String content, TradeMemberDTO memberDTO) {
-        ApiPayMethodParamsCheckResultDTO<T> paramsCheckResultDTO = checkParams(content, memberDTO);
-        if (!Boolean.TRUE.equals(paramsCheckResultDTO.getPass())) {
+        try {
+            ApiPayMethodParamsCheckResultDTO<T> paramsCheckResultDTO = checkParams(content, memberDTO);
+            if (!Boolean.TRUE.equals(paramsCheckResultDTO.getPass())) {
+                ApiPayMethodResultDTO apiPayMethodResultDTO = new ApiPayMethodResultDTO();
+                apiPayMethodResultDTO.setSubCode(ApiPayMethodErrorEnum.CHECK_FAIL.getCode());
+                apiPayMethodResultDTO.setSubMsg(ApiPayMethodErrorEnum.CHECK_FAIL.getMsg() + ":" +
+                        paramsCheckResultDTO.getMsg());
+                apiPayMethodResultDTO.setResult(ApiPayMethodResultEnum.FAIL);
+                return apiPayMethodResultDTO;
+            }
+            return realOperate(paramsCheckResultDTO.getData(), memberDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("方法执行异常，ERROR：{}", e.getMessage());
             ApiPayMethodResultDTO apiPayMethodResultDTO = new ApiPayMethodResultDTO();
-            apiPayMethodResultDTO.setSubCode(ApiPayMethodErrorEnum.CHECK_FAIL.getCode());
-            apiPayMethodResultDTO.setSubMsg(ApiPayMethodErrorEnum.CHECK_FAIL.getMsg() + ":" +
-                    paramsCheckResultDTO.getMsg());
             apiPayMethodResultDTO.setResult(ApiPayMethodResultEnum.FAIL);
+            apiPayMethodResultDTO.setSubMsg(ApiPayMethodErrorEnum.OPERATE_EXCEPTION.getCode());
+            apiPayMethodResultDTO.setSubCode(ApiPayMethodErrorEnum.OPERATE_EXCEPTION.getMsg());
             return apiPayMethodResultDTO;
         }
-        return realOperate(paramsCheckResultDTO.getData(), memberDTO);
     }
 }

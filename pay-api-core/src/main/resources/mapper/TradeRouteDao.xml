@@ -44,7 +44,7 @@
   <select id="roundRobinMemberTradeRoute" resultType="com.pay.api.client.dto.mapper.MemberTradeRouteDTO">
     select
     id, platform_id,platform_number,platform_name,platform_mapped,channel_id, channel_number,channel_name ,
-    merchant_id, merchant_number,  merchant_name, single_trade_amount_min, single_trade_amount_max,trade_interval_time,last_trade_timestamp
+    merchant_id, merchant_number,  merchant_name,trade_interval_time,last_trade_timestamp,trade_warn_times,trade_warn_date
     from trade_route
     where is_deleted = 0
     and member_number = #{memberNumber,jdbcType=VARCHAR}
@@ -507,7 +507,7 @@
       and defrayal_type = #{defrayalType,jdbcType=VARCHAR}
     </if>
   </update>
-    <update id="updateTradeRouteTradeTime">
+    <update id="updateTradeRoute">
       update trade_route
       set last_trade_timestamp = #{timestamp,jdbcType=BIGINT}
       where id = #{id,jdbcType=BIGINT}

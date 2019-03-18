@@ -4,6 +4,7 @@ import com.pay.api.client.constants.TradeRouteRuleEnum;
 import com.pay.api.client.dto.TradeRouteCreateDTO;
 import com.pay.api.client.dto.TradeRouteDTO;
 import com.pay.api.client.dto.TradeRouteMerchantDTO;
+import com.pay.api.client.dto.TradeRouteUpdateDTO;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -29,12 +30,19 @@ public interface ITradeRouteService {
     /**
      * 交易路由
      *
-     * @param tradeRouteDTO 路由参数
+     * @param tradeRouteDTO  路由参数
      * @param tradeRouteRule 交易路由规则
-     * @param tradeAmount   交易金额
+     * @param tradeAmount    交易金额
      * @return
      */
     TradeRouteMerchantDTO route(TradeRouteDTO tradeRouteDTO, TradeRouteRuleEnum tradeRouteRule, BigDecimal tradeAmount);
+
+    /**
+     * 更新交易路由
+     *
+     * @param tradeRouteUpdateDTO 更新参数
+     */
+    void update(TradeRouteUpdateDTO tradeRouteUpdateDTO);
 
     /**
      * 路由风控
