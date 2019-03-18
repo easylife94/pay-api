@@ -58,6 +58,7 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
 
     @Override
     public void update(TradeRouteUpdateDTO tradeRouteUpdateDTO) {
+        Date now = new Date();
         TradeRouteDO tradeRouteDO = new TradeRouteDO();
         tradeRouteDO.setId(tradeRouteUpdateDTO.getId());
         //明确交易风控
@@ -85,11 +86,12 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
             //判断连续预警次数是都达到风控线
             if (warnTimes >= warnTimesMax) {
                 tradeRouteDO.setTradeRisk(true);
-                tradeRouteDO.setTradeRiskTime(new Date());
+                tradeRouteDO.setTradeRiskTime(now);
                 log.info("交易路由预警达到最大次数，触发系统风控。tradeRouteId：{}", tradeRouteUpdateDTO.getId());
             }
         }
         tradeRouteDO.setLastTradeTimestamp(System.currentTimeMillis());
+        tradeRouteDO.setGmtUpdate(now);
         tradeRouteDao.updateByPrimaryKeySelective(tradeRouteDO);
     }
 
