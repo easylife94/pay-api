@@ -1,5 +1,6 @@
 package com.pay.api.client.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -54,6 +55,19 @@ public class DateUtils {
     public static String time2StrFormat(Date date, String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
+    }
+
+    /**
+     * 字符串转为date
+     *
+     * @param dateStr 日期字符串
+     * @param format  日期格式
+     * @return
+     * @throws ParseException
+     */
+    public static Date parse(String dateStr, String format) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.parse(dateStr);
     }
 
 }

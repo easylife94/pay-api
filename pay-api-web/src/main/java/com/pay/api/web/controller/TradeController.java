@@ -14,14 +14,18 @@ import com.pay.api.core.service.ITradeService;
 import com.pay.api.core.utils.SpringContextUtil;
 import com.pay.center.client.constants.DefrayalChannelEnum;
 import com.pay.center.client.constants.DefrayalTypeEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 
 /**
@@ -165,6 +169,43 @@ public class TradeController {
         view.addObject("status", status.name());
         view.addObject("info", info);
         return view;
+    }
+
+
+    /**
+     * 根据上游回调地址要求匹配回调地址。
+     *
+     * @param channelMapped 通道标识
+     * @param channelNumber 通道编号
+     * @return
+     */
+    @RequestMapping("/notify/{channelMapped}/{channelNumber}")
+    public Object notify(@PathVariable(value = "channelMapped") String channelMapped, @PathVariable(value = "channelNumber", required = false) String channelNumber,
+                         @RequestBody(required = false) String body, HttpServletRequest request) {
+        try {
+            TradeChannelConfigDTO channelConfig = tradeChannelConfigService.getChannelConfig(channelNumber);
+            Object bean = SpringContextUtil.getBean(channelMapped);
+            if (bean instanceof IPlatformTradeHandle) {
+                IPlatformTradeHandle platformTrade = (IPlatformTradeHandle) bean;
+                TradeNotifyResultDTO notifyResultDTO = platformTrade.notify(channelConfig, body, request);
+                switch (notifyResultDTO.getResult()) {
+                    case SUCCESS:
+                        //todo 完成订单
+                        break;
+                    case FAIL:
+                        break;
+                    default:
+                        //跳过
+                }
+                return notifyResultDTO.getResponseContent();
+            } else {
+                throw new PayApiException("找不到平台交易处理器");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("上游回调异常,channelMapped:{},channelNumber:{},body:{}", channelMapped, channelNumber, body);
+            return "回调异常";
+        }
     }
 
 

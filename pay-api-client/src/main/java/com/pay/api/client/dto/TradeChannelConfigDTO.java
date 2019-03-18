@@ -41,6 +41,11 @@ public class TradeChannelConfigDTO {
      */
     private String wechatSecretKey;
 
+    /**
+     * 平台公钥
+     */
+    private String platformPubKey;
+
     public String getAlipayAppId() {
         return alipayAppId;
     }
@@ -89,6 +94,14 @@ public class TradeChannelConfigDTO {
         this.wechatSecretKey = wechatSecretKey;
     }
 
+    public String getPlatformPubKey() {
+        return platformPubKey;
+    }
+
+    public void setPlatformPubKey(String platformPubKey) {
+        this.platformPubKey = platformPubKey;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ",
@@ -99,6 +112,7 @@ public class TradeChannelConfigDTO {
                 .add("alipayAppPriKey=" + alipayAppPriKey)
                 .add("wechatAppId=" + wechatAppId)
                 .add("wechatSecretKey=" + wechatSecretKey)
+                .add("platformPubKey=" + platformPubKey)
                 .toString();
     }
 }

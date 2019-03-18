@@ -16,7 +16,7 @@ public enum TradeOrderCloseTypeEnum {
     ORDER_ERROR("ORDER_ERROR", "下单失败"),
 
     /**
-     * 查询订单后明确订单已关闭
+     * 查询订单或交易回调后明确订单已关闭
      */
     TRADE_CLOSE("TRADE_CLOSE", "上游订单关闭"),
 

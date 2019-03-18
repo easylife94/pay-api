@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 
 /**
@@ -269,5 +270,10 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
             logger.error("原生jsapi预下单异常，异常信息：{},订单号：{}", e.getMessage(), tradeHandleDTO.getSysOrderNumber());
             return new TradeHandleResultDTO(TradeHandleStatusEnum.ERROR, "原生jsapi预下单异常", null, null);
         }
+    }
+
+    @Override
+    public TradeNotifyResultDTO notify(TradeChannelConfigDTO channelConfigDTO, String body, HttpServletRequest request) {
+        throw new PayApiException("不支持交易回调");
     }
 }

@@ -93,11 +93,11 @@ public class TestDataGenerate extends PayApiWebApplicationTests {
         //统一测试代理商编号
         String testAgentNumber = "TEST-AGENT-9999999999";
         //测试会员数量
-        int memberCount = 10;
+        int memberCount = 30;
         //测试会员通道下商户数量
-        int memberChannelMerchantCount = 100;
+        int memberChannelMerchantCount = 20;
         //测试通道数量
-        int channelCount = 5;
+        int channelCount = 3;
         //测试支付渠道和支付方式
         Map<String, List<String>> defrayal = new HashMap<>();
         List<String> aliDefrayalChannel = new ArrayList<>();
@@ -345,8 +345,8 @@ public class TestDataGenerate extends PayApiWebApplicationTests {
             tradeMemberDO.setMemberName(m.getMemberName());
             tradeMemberDO.setMemberNumber(m.getMemberNumber());
             tradeMemberDO.setMemberPubKey(pubKey);
-            tradeMemberDO.setSysPriKey(sysPubKey);
-            tradeMemberDO.setSysPubKey(sysPriKey);
+            tradeMemberDO.setSysPriKey(sysPriKey);
+            tradeMemberDO.setSysPubKey(sysPubKey);
             tradeMemberDao.insert(tradeMemberDO);
         }
 
