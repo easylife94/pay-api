@@ -31,4 +31,6 @@ public interface TradeOrderDao {
      * @return
      */
     TradeOrderDO selectByMemberOrderNumber(String memberNumber, String memberOrderNumber);
+
+    long countByMemberOrderNumber(String memberNumber, String memberOrderNumber);
 }

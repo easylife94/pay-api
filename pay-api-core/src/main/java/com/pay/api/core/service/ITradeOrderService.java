@@ -13,7 +13,7 @@ public interface ITradeOrderService {
 
 
     /**
-     * 创建订单记录
+     * 创建订单对象
      * 会员订单号不能重复
      *
      * @param tradeOrderCreateDTO 创建订单参数
@@ -30,6 +30,14 @@ public interface ITradeOrderService {
     boolean updateTradeOrder(TradeOrderDO tradeOrderDO);
 
     /**
+     * 保存订单对象到数据库
+     *
+     * @param tradeOrderDO 订单对象
+     * @return 保存成功返回true
+     */
+    boolean saveTradeOrder(TradeOrderDO tradeOrderDO);
+
+    /**
      * 查找唯一订单
      *
      * @param sysOrderNumber    系统订单号
@@ -38,5 +46,14 @@ public interface ITradeOrderService {
      * @return 返回唯一订单
      */
     TradeOrderDO findOneOrder(String sysOrderNumber, String memberNumber, String memberOrderNumber);
+
+    /**
+     * 会员订单号是否存在
+     *
+     * @param memberNumber      会员编号
+     * @param memberOrderNumber 会员订单号
+     * @return 当且仅当会员订单号不存在时返回false
+     */
+    Boolean memberOrderExisted(String memberNumber, String memberOrderNumber);
 
 }

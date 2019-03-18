@@ -91,6 +91,11 @@
     where member_number = #{memberNumber,jdbcType=VARCHAR}
     and member_order_number = #{memberOrderNumber,jdbcType=VARCHAR}
   </select>
+  <select id="countByMemberOrderNumber" resultType="java.lang.Long">
+    select count(*) from trade_order
+    where member_number = #{memberNumber,jdbcType=VARCHAR}
+    and member_order_number = #{memberOrderNumber,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from trade_order
     where id = #{id,jdbcType=BIGINT}
@@ -487,7 +492,7 @@
         #{attach,jdbcType=VARCHAR},
       </if>
       <if test="payContent != null">
-        #{pay_content,jdbcType=VARCHAR},
+        #{payContent,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

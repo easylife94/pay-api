@@ -5,6 +5,7 @@ import com.pay.api.client.constants.*;
 import com.pay.api.client.dto.*;
 import com.pay.api.client.dto.method.ApiPayUnifiedPayDTO;
 import com.pay.api.client.dto.method.ApiPayUnifiedPayResultDTO;
+import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.client.utils.DateUtils;
 import com.pay.api.core.method.AbstractPayApiMethod;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -65,8 +67,8 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             checkResultDTO.setMsg("[memberOrderNumber]不能为空");
             return checkResultDTO;
         } else {
-            TradeOrderDO oneOrder = tradeOrderService.findOneOrder(null, memberDTO.getMemberNumber(), data.getMemberOrderNumber());
-            if (oneOrder != null) {
+            Boolean orderExisted = tradeOrderService.memberOrderExisted(memberDTO.getMemberNumber(), data.getMemberOrderNumber());
+            if (orderExisted) {
                 checkResultDTO.setPass(false);
                 checkResultDTO.setMsg("[memberOrderNumber]会员订单号：" + data.getMemberOrderNumber() + "已存在！");
                 return checkResultDTO;
@@ -143,6 +145,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         return checkResultDTO;
     }
 
+    @Transactional
     @Override
     public ApiPayMethodResultDTO realOperate(ApiPayUnifiedPayDTO apiPayUnifiedPayDTO, TradeMemberDTO memberDTO) {
         //对同一个路由(会员编号 + 支付渠道 + 支付方式)交易加锁
@@ -224,7 +227,10 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             }
 
             //6.保存订单
-            tradeOrderService.updateTradeOrder(tradeOrder);
+            boolean saveTradeOrder = tradeOrderService.saveTradeOrder(tradeOrder);
+            if (!saveTradeOrder) {
+                throw new PayApiException("保存订单失败");
+            }
 
             //7.更新路由
             tradeRouteService.update(tradeRouteUpdateDTO);

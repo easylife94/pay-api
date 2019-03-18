@@ -94,7 +94,6 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         //创建订单时实际发起支付金额 = 交易金额
         tradeOrderDO.setPayAmount(tradeOrderCreateDTO.getTradeAmount());
         tradeOrderDO.setTradeAmount(tradeOrderCreateDTO.getTradeAmount());
-        tradeOrderDao.insertSelective(tradeOrderDO);
         return tradeOrderDO;
     }
 
@@ -112,5 +111,20 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
             tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(sysOrderNumber);
         }
         return tradeOrderDO;
+    }
+
+    @Override
+    public Boolean memberOrderExisted(String memberNumber, String memberOrderNumber) {
+        long count = tradeOrderDao.countByMemberOrderNumber(memberNumber,memberOrderNumber);
+        if(count <= 0){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean saveTradeOrder(TradeOrderDO tradeOrderDO) {
+        return tradeOrderDao.insertSelective(tradeOrderDO) > 0;
     }
 }
