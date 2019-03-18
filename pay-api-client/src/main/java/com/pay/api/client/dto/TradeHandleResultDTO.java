@@ -1,8 +1,7 @@
 package com.pay.api.client.dto;
 
 import com.pay.api.client.constants.TradeHandleStatusEnum;
-
-import java.util.StringJoiner;
+import lombok.Data;
 
 /**
  * 交易处理返回结果
@@ -10,6 +9,7 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019-01-29
  */
+@Data
 public class TradeHandleResultDTO {
 
     /**
@@ -32,39 +32,6 @@ public class TradeHandleResultDTO {
      */
     private String platformOrderNumber;
 
-    public TradeHandleStatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(TradeHandleStatusEnum status) {
-        this.status = status;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getPlatformOrderNumber() {
-        return platformOrderNumber;
-    }
-
-    public void setPlatformOrderNumber(String platformOrderNumber) {
-        this.platformOrderNumber = platformOrderNumber;
-    }
-
-
     /**
      * 处理状态缺省值为UNKNOWN
      *
@@ -78,16 +45,5 @@ public class TradeHandleResultDTO {
         this.errorMsg = errorMsg;
         this.content = content;
         this.platformOrderNumber = platformOrderNumber;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                TradeHandleResultDTO.class.getSimpleName() + "{", "}")
-                .add("status=" + status)
-                .add("errorMsg=" + errorMsg)
-                .add("content=" + content)
-                .add("platformOrderNumber=" + platformOrderNumber)
-                .toString();
     }
 }

@@ -1,5 +1,7 @@
 package com.pay.api.client.dto;
 
+import lombok.Data;
+
 import java.util.StringJoiner;
 
 /**
@@ -8,14 +10,8 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/1/17 15:23
  */
+@Data
 public class TradeRoutePlatformDTO {
 
     private String platformNumber;
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", TradeRoutePlatformDTO.class.getSimpleName() + "[", "]")
-                .add("platformNumber='" + platformNumber + "'")
-                .toString();
-    }
 }

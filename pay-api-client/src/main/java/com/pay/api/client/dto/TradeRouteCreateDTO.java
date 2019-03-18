@@ -1,7 +1,8 @@
 package com.pay.api.client.dto;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
-import java.util.StringJoiner;
 
 /**
  * 路由新增dto
@@ -9,6 +10,7 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019-02-18
  */
+@Data
 public class TradeRouteCreateDTO {
 
     /**
@@ -86,120 +88,5 @@ public class TradeRouteCreateDTO {
         this.singleTradeAmountMin = singleTradeAmountMin;
         this.singleTradeAmountMax = singleTradeAmountMax;
         this.tradeIntervalTime = tradeIntervalTime;
-    }
-
-    public String getMemberNumber() {
-        return memberNumber;
-    }
-
-    public void setMemberNumber(String memberNumber) {
-        this.memberNumber = memberNumber;
-    }
-
-    public String getPlatformNumber() {
-        return platformNumber;
-    }
-
-    public void setPlatformNumber(String platformNumber) {
-        this.platformNumber = platformNumber;
-    }
-
-    public String getChannelNumber() {
-        return channelNumber;
-    }
-
-    public void setChannelNumber(String channelNumber) {
-        this.channelNumber = channelNumber;
-    }
-
-    public Long getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(Long merchantId) {
-        this.merchantId = merchantId;
-    }
-
-    public String getMerchantNumber() {
-        return merchantNumber;
-    }
-
-    public void setMerchantNumber(String merchantNumber) {
-        this.merchantNumber = merchantNumber;
-    }
-
-    public String getMerchantName() {
-        return merchantName;
-    }
-
-    public void setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
-    }
-
-    public String getDefrayalChannel() {
-        return defrayalChannel;
-    }
-
-    public void setDefrayalChannel(String defrayalChannel) {
-        this.defrayalChannel = defrayalChannel;
-    }
-
-    public String getDefrayalType() {
-        return defrayalType;
-    }
-
-    public void setDefrayalType(String defrayalType) {
-        this.defrayalType = defrayalType;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public BigDecimal getSingleTradeAmountMin() {
-        return singleTradeAmountMin;
-    }
-
-    public void setSingleTradeAmountMin(BigDecimal singleTradeAmountMin) {
-        this.singleTradeAmountMin = singleTradeAmountMin;
-    }
-
-    public BigDecimal getSingleTradeAmountMax() {
-        return singleTradeAmountMax;
-    }
-
-    public void setSingleTradeAmountMax(BigDecimal singleTradeAmountMax) {
-        this.singleTradeAmountMax = singleTradeAmountMax;
-    }
-
-    public Long getTradeIntervalTime() {
-        return tradeIntervalTime;
-    }
-
-    public void setTradeIntervalTime(Long tradeIntervalTime) {
-        this.tradeIntervalTime = tradeIntervalTime;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                TradeRouteCreateDTO.class.getSimpleName() + "{", "}")
-                .add("memberNumber=" + memberNumber)
-                .add("platformNumber=" + platformNumber)
-                .add("channelNumber=" + channelNumber)
-                .add("merchantId=" + merchantId)
-                .add("merchantNumber=" + merchantNumber)
-                .add("merchantName=" + merchantName)
-                .add("defrayalChannel=" + defrayalChannel)
-                .add("defrayalType=" + defrayalType)
-                .add("status=" + status)
-                .add("singleTradeAmountMin=" + singleTradeAmountMin)
-                .add("singleTradeAmountMax=" + singleTradeAmountMax)
-                .add("tradeIntervalTime=" + tradeIntervalTime)
-                .toString();
     }
 }

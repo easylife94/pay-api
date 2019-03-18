@@ -13,6 +13,11 @@ public enum ApiPayMethodErrorEnum {
      */
     CHECK_FAIL("CHECK_FAIL", "校验参数失败"),
 
+    /**
+     * 方法执行过程抛异常
+     */
+    OPERATE_EXCEPTION("OPERATE_EXCEPTION", "方法执行异常"),
+
     ;
 
     private String code;

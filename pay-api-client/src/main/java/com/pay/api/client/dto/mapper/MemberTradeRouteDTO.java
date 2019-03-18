@@ -1,6 +1,9 @@
 package com.pay.api.client.dto.mapper;
 
+import lombok.Data;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 会员交易路由
@@ -8,6 +11,7 @@ import java.io.Serializable;
  * @author chenwei
  * @date 2019/3/14 17:41
  */
+@Data
 public class MemberTradeRouteDTO implements Serializable {
     private Long id;
     private String platformMapped;
@@ -20,94 +24,6 @@ public class MemberTradeRouteDTO implements Serializable {
     private Long merchantId;
     private String merchantNumber;
     private String merchantName;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPlatformMapped() {
-        return platformMapped;
-    }
-
-    public void setPlatformMapped(String platformMapped) {
-        this.platformMapped = platformMapped;
-    }
-
-    public Long getPlatformId() {
-        return platformId;
-    }
-
-    public void setPlatformId(Long platformId) {
-        this.platformId = platformId;
-    }
-
-    public String getPlatformNumber() {
-        return platformNumber;
-    }
-
-    public void setPlatformNumber(String platformNumber) {
-        this.platformNumber = platformNumber;
-    }
-
-    public String getPlatformName() {
-        return platformName;
-    }
-
-    public void setPlatformName(String platformName) {
-        this.platformName = platformName;
-    }
-
-    public Long getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Long channelId) {
-        this.channelId = channelId;
-    }
-
-    public String getChannelNumber() {
-        return channelNumber;
-    }
-
-    public void setChannelNumber(String channelNumber) {
-        this.channelNumber = channelNumber;
-    }
-
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
-    }
-
-    public Long getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(Long merchantId) {
-        this.merchantId = merchantId;
-    }
-
-    public String getMerchantNumber() {
-        return merchantNumber;
-    }
-
-    public void setMerchantNumber(String merchantNumber) {
-        this.merchantNumber = merchantNumber;
-    }
-
-    public String getMerchantName() {
-        return merchantName;
-    }
-
-    public void setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
-    }
-
+    private Date tradeWarnDate;
+    private Integer tradeWarnTimes;
 }

@@ -1,6 +1,7 @@
 package com.pay.api.client.dto;
 
 import com.pay.api.client.constants.ApiPayMethodResultEnum;
+import lombok.Data;
 
 import java.util.StringJoiner;
 
@@ -10,10 +11,11 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/1/16 11:51
  */
+@Data
 public class ApiPayMethodResultDTO<T> {
 
     /**
-     *
+     * 支付方法执行结果
      */
     private ApiPayMethodResultEnum result;
 
@@ -28,50 +30,8 @@ public class ApiPayMethodResultDTO<T> {
     private String subMsg;
 
     /**
-     *
+     * 业务数据
      */
     private T data;
 
-    public ApiPayMethodResultEnum getResult() {
-        return result;
-    }
-
-    public void setResult(ApiPayMethodResultEnum result) {
-        this.result = result;
-    }
-
-    public String getSubCode() {
-        return subCode;
-    }
-
-    public void setSubCode(String subCode) {
-        this.subCode = subCode;
-    }
-
-    public String getSubMsg() {
-        return subMsg;
-    }
-
-    public void setSubMsg(String subMsg) {
-        this.subMsg = subMsg;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                ApiPayMethodResultDTO.class.getSimpleName() + "{", "}")
-                .add("result=" + result)
-                .add("subCode=" + subCode)
-                .add("subMsg=" + subMsg)
-                .add("data=" + data)
-                .toString();
-    }
 }

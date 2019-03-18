@@ -1,6 +1,6 @@
 package com.pay.api.client.dto;
 
-import java.util.StringJoiner;
+import lombok.Data;
 
 /**
  * 交易风控商户DTO
@@ -8,6 +8,7 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/2/1 11:43
  */
+@Data
 public class TradeMerchantRiskControlDTO {
 
     /**
@@ -15,23 +16,7 @@ public class TradeMerchantRiskControlDTO {
      */
     private String merchantNumber;
 
-    public String getMerchantNumber() {
-        return merchantNumber;
-    }
-
-    public void setMerchantNumber(String merchantNumber) {
-        this.merchantNumber = merchantNumber;
-    }
-
     public TradeMerchantRiskControlDTO(String merchantNumber) {
         this.merchantNumber = merchantNumber;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                TradeMerchantRiskControlDTO.class.getSimpleName() + "{", "}")
-                .add("merchantNumber=" + merchantNumber)
-                .toString();
     }
 }
