@@ -1,6 +1,6 @@
 package com.pay.api.client.dto;
 
-import java.util.StringJoiner;
+import lombok.Data;
 
 /**
  * 支付宝授权配置参数
@@ -8,6 +8,8 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/3/8 11:19
  */
+
+@Data
 public class AliConfigDTO {
 
     /**
@@ -20,33 +22,8 @@ public class AliConfigDTO {
      */
     private String authRedirectUrl;
 
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getAuthRedirectUrl() {
-        return authRedirectUrl;
-    }
-
-    public void setAuthRedirectUrl(String authRedirectUrl) {
-        this.authRedirectUrl = authRedirectUrl;
-    }
-
     public AliConfigDTO(String appId, String authRedirectUrl) {
         this.appId = appId;
         this.authRedirectUrl = authRedirectUrl;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                AliConfigDTO.class.getSimpleName() + "{", "}")
-                .add("appId=" + appId)
-                .add("authRedirectUrl=" + authRedirectUrl)
-                .toString();
     }
 }

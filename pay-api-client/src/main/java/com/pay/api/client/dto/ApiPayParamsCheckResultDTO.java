@@ -1,6 +1,6 @@
 package com.pay.api.client.dto;
 
-import java.util.StringJoiner;
+import lombok.Data;
 
 /**
  * 支付接口参数校验结果DTO
@@ -8,6 +8,7 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/1/21 11:53
  */
+@Data
 public class ApiPayParamsCheckResultDTO {
 
     /**
@@ -24,38 +25,4 @@ public class ApiPayParamsCheckResultDTO {
      * 错误信息
      */
     private String msg;
-
-    public Boolean getPass() {
-        return pass;
-    }
-
-    public void setPass(Boolean pass) {
-        this.pass = pass;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                ApiPayParamsCheckResultDTO.class.getSimpleName() + "{", "}")
-                .add("pass=" + pass)
-                .add("type=" + type)
-                .add("msg=" + msg)
-                .toString();
-    }
 }

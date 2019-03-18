@@ -1,6 +1,6 @@
 package com.pay.api.client.dto;
 
-import java.util.StringJoiner;
+import lombok.Data;
 
 /**
  * jsapi支付DTO
@@ -8,6 +8,7 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/3/12 16:40
  */
+@Data
 public class JsapiPaymenDTO {
 
     /**
@@ -25,13 +26,5 @@ public class JsapiPaymenDTO {
 
     public JsapiPaymenDTO(String sysOrderNumber) {
         this.sysOrderNumber = sysOrderNumber;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                JsapiPaymenDTO.class.getSimpleName() + "{", "}")
-                .add("sysOrderNumber=" + sysOrderNumber)
-                .toString();
     }
 }

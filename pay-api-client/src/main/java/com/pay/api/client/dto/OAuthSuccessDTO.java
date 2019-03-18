@@ -1,6 +1,6 @@
 package com.pay.api.client.dto;
 
-import java.util.StringJoiner;
+import lombok.Data;
 
 /**
  * oauth授权成功后，向重定向地址传递参数
@@ -8,6 +8,7 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/3/7 16:45
  */
+@Data
 public class OAuthSuccessDTO {
 
     /**
@@ -27,43 +28,9 @@ public class OAuthSuccessDTO {
      */
     private String businessData;
 
-    public String getChannelNumber() {
-        return channelNumber;
-    }
-
-    public void setChannelNumber(String channelNumber) {
-        this.channelNumber = channelNumber;
-    }
-
-    public String getBusinessUrl() {
-        return businessUrl;
-    }
-
-    public void setBusinessUrl(String businessUrl) {
-        this.businessUrl = businessUrl;
-    }
-
-    public String getBusinessData() {
-        return businessData;
-    }
-
-    public void setBusinessData(String businessData) {
-        this.businessData = businessData;
-    }
-
     public OAuthSuccessDTO(String channelNumber, String businessUrl, String businessData) {
         this.channelNumber = channelNumber;
         this.businessUrl = businessUrl;
         this.businessData = businessData;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                OAuthSuccessDTO.class.getSimpleName() + "{", "}")
-                .add("channelNumber=" + channelNumber)
-                .add("businessUrl=" + businessUrl)
-                .add("businessData=" + businessData)
-                .toString();
     }
 }
