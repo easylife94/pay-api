@@ -1,9 +1,10 @@
 package com.pay.api.client.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class TradeRouteDO {
+public class TradeRouteDO implements Serializable {
     private Long id;
 
     private Date gmtCreate;

@@ -1,8 +1,12 @@
 package com.pay.api.client.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TradeMemberDO {
+/**
+ * @author chenwei
+ */
+public class TradeMemberDO implements Serializable {
     private Long id;
 
     private Date gmtCreate;

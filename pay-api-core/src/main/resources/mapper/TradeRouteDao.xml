@@ -41,7 +41,7 @@
     trade_risk, trade_risk_time,trade_warn_date,trade_warn_times,trade_interval_time,last_trade_timestamp,
     last_trade_suc_timestamp,day_trade_suc_amount_total,month_trade_suc_amount_total
   </sql>
-  <select id="selectMemberTradableRoute" resultType="com.pay.api.client.dto.mapper.MemberTradeRouteDTO">
+  <select id="roundRobinMemberTradeRoute" resultType="com.pay.api.client.dto.mapper.MemberTradeRouteDTO">
     select
     id, platform_id,platform_number,platform_name,platform_mapped,channel_id, channel_number,channel_name ,
     merchant_id, merchant_number,  merchant_name, single_trade_amount_min, single_trade_amount_max,trade_interval_time,last_trade_timestamp
@@ -53,6 +53,8 @@
     and status = 1
     and trade_limit = 0
     and trade_risk = 0
+    and single_trade_amount_min <![CDATA[ <= ]]> #{tradeAmount,jdbcType=DECIMAL}
+    and single_trade_amount_max <![CDATA[ >= ]]> #{tradeAmount,jdbcType=DECIMAL}
     <if test="platformNumber != null and platformNumber != ''">
       and platform_number = #{platformNumber,jdbcType=VARCHAR}
     </if>
@@ -62,6 +64,8 @@
     <if test="merchantNumber != null and merchantNumber != ''">
       and merchant_number = #{merchantNumber,jdbcType=VARCHAR}
     </if>
+    order by last_trade_timestamp
+    limit 0,1
   </select>
   <select id="selectTradeRoute" resultType="com.pay.api.client.model.TradeRouteDO">
     select
@@ -503,4 +507,9 @@
       and defrayal_type = #{defrayalType,jdbcType=VARCHAR}
     </if>
   </update>
+    <update id="updateTradeRouteTradeTime">
+      update trade_route
+      set last_trade_timestamp = #{timestamp,jdbcType=BIGINT}
+      where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

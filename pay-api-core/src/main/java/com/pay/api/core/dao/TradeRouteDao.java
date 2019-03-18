@@ -2,6 +2,7 @@ package com.pay.api.core.dao;
 
 import com.pay.api.client.dto.mapper.MemberTradeRouteDTO;
 import com.pay.api.client.model.TradeRouteDO;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,7 +22,7 @@ public interface TradeRouteDao {
     int updateByPrimaryKey(TradeRouteDO record);
 
     /**
-     * 查询会员交易路由
+     * 轮询会员交易路由
      *
      * @param memberNumber    会员编号
      * @param platformNumber  平台编号
@@ -29,10 +30,11 @@ public interface TradeRouteDao {
      * @param merchantNumber  商户编号
      * @param defrayalChannel 支付渠道
      * @param defrayalType    支付方式
+     * @param tradeAmount     交易金额
      * @return
      */
-    List<MemberTradeRouteDTO> selectMemberTradableRoute(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
-                                                        String defrayalChannel, String defrayalType);
+    MemberTradeRouteDTO roundRobinMemberTradeRoute(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
+                                                   String defrayalChannel, String defrayalType, BigDecimal tradeAmount);
 
     /**
      * 查询路由
@@ -74,6 +76,15 @@ public interface TradeRouteDao {
      */
     int updateTradeRouteStatus(String memberNumber, String platformNumber, String channelNumber, String merchantNumber,
                                String defrayalChannel, String defrayalType, Boolean status, Boolean tradeLimit,
-                               Date tradeLimitDate, Boolean tradeRisk,Date tradeRiskDate);
+                               Date tradeLimitDate, Boolean tradeRisk, Date tradeRiskDate);
 
+
+    /**
+     * 更新交易路由交易时间
+     *
+     * @param id        交易路由id
+     * @param timestamp 时间戳
+     * @return
+     */
+    int updateTradeRouteTradeTime(Long id, Long timestamp);
 }

@@ -475,4 +475,8 @@ public class PayApiTest extends PayApiWebApplicationTests {
 
         //尝试解密
     }
+
+    @Test
+    public void redisPresureTest(){
+    }
 }
