@@ -84,6 +84,12 @@
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
+            <!--pay-asset-->
+            <dependency>
+                <groupId>com.pay</groupId>
+                <artifactId>pay-asset-client</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
