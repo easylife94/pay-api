@@ -1,8 +1,6 @@
 package com.pay.api.core.service;
 
-import com.pay.api.client.dto.TradeCreateAfterDTO;
-import com.pay.api.client.dto.TradeHandleDTO;
-import com.pay.api.client.dto.TradeHandleResultDTO;
+import com.pay.api.client.dto.*;
 import com.pay.api.client.model.TradeOrderDO;
 
 /**
@@ -29,7 +27,14 @@ public interface ITradeService {
      */
     void afterTradeCreate(TradeOrderDO tradeOrderDO, TradeCreateAfterDTO tradeOrderCreateAfterDTO);
 
-    //订单完成处理
+    /**
+     * 完成订单
+     *
+     * @param tradeCompleteDTO 完成订单参数
+     * @return 完成订单结果
+     */
+    TradeCompleteResultDTO complete(TradeCompleteDTO tradeCompleteDTO);
+
 
     //订单关闭处理
 

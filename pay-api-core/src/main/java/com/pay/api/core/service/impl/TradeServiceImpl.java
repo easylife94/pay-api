@@ -11,6 +11,7 @@ import com.pay.api.core.service.ITradeChannelConfigService;
 import com.pay.api.core.service.ITradeMerchantConfigService;
 import com.pay.api.core.service.ITradeService;
 import com.pay.api.core.utils.SpringContextUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
  * @date 2019-01-29
  */
 @Service
+@Slf4j
 public class TradeServiceImpl implements ITradeService {
 
     private final RabbitMqSender rabbitMqSender;
@@ -52,5 +54,19 @@ public class TradeServiceImpl implements ITradeService {
     public void afterTradeCreate(TradeOrderDO tradeOrderDO, TradeCreateAfterDTO tradeOrderCreateAfterDTO) {
         TradeCreateMessageDTO tradeCreateMessageDTO = new TradeCreateMessageDTO(tradeOrderDO.getSysOrderNumber(), tradeOrderDO.getGmtCreate().getTime());
         rabbitMqSender.sendTradeCreateMessage(tradeCreateMessageDTO);
+    }
+
+    @Override
+    public TradeCompleteResultDTO complete(TradeCompleteDTO tradeCompleteDTO) {
+        TradeCompleteResultDTO resultDTO = new TradeCompleteResultDTO();
+        try {
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("完成订单异常，sysOrderNumber:{},ERROR:{}", tradeCompleteDTO.getSysOrderNumber(), e.getMessage());
+        }
+        return resultDTO;
     }
 }

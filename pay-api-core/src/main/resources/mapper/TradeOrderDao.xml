@@ -734,4 +734,21 @@
       pay_content = #{payContent,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <update id="updateByCompleteTrade">
+    update trade_order
+    set
+        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+        platform_order_number = #{platformOrderNumber,jdbcType=VARCHAR},
+        source_order_number = #{sourceOrderNumber,jdbcType=VARCHAR},
+        platform_order_time = #{platformOrderTime,jdbcType=BIGINT},
+        pay_time = #{payTime,jdbcType=BIGINT},
+        sys_notify_time = #{sysNotifyTime,jdbcType=BIGINT},
+        platform_notify_time = #{platformNotifyTime,jdbcType=BIGINT},
+        trade_status = #{tradeStatus,jdbcType=VARCHAR},
+        notify_status = #{notifyStatus,jdbcType=VARCHAR}
+    where sys_order_number = #{sysOrderNumber,jdbcType=VARCHAR}
+      and trade_status = ''
+
+
+  </update>
 </mapper>
