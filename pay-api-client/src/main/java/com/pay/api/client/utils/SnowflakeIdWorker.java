@@ -171,6 +171,15 @@ public class SnowflakeIdWorker {
 
     //==============================Test=============================================
 
+
+    public long getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(long workerId) {
+        this.workerId = workerId;
+    }
+
     /**
      * 测试
      */

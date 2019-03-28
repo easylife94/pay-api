@@ -148,12 +148,14 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     @Transactional
     @Override
     public ApiPayMethodResultDTO realOperate(ApiPayUnifiedPayDTO apiPayUnifiedPayDTO, TradeMemberDTO memberDTO) {
+        long begin = System.currentTimeMillis();
         //对同一个路由(会员编号 + 支付渠道 + 支付方式)交易加锁
         String lockKey = memberDTO.getMemberNumber() + apiPayUnifiedPayDTO.getDefrayalChannel() + apiPayUnifiedPayDTO.getDefrayalType();
         Lock lock;
         if (MEMBER_TRADE_ROUTE_LOCKS.containsKey(lockKey)) {
             lock = MEMBER_TRADE_ROUTE_LOCKS.get(lockKey);
             lock.lock();
+            logger.error("加锁：{}",lockKey);
         } else {
             lock = new ReentrantLock();
             MEMBER_TRADE_ROUTE_LOCKS.put(lockKey, lock);
@@ -248,6 +250,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             return apiPayMethodResultDTO;
         } finally {
             lock.unlock();
+            logger.info("方法耗时：{}",(System.currentTimeMillis() - begin));
         }
     }
 

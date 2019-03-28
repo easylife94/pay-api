@@ -21,4 +21,11 @@ public interface IIdService {
      * @return
      */
     String generateTradeOrderNumber();
+
+    /**
+     * 设置workerId
+     *
+     * @param workerId
+     */
+    void setWorkerId(Long workerId);
 }
