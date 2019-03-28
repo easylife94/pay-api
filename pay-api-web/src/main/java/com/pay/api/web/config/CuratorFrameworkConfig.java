@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * curator框架配置
  * zookeeper使用api
@@ -28,16 +30,18 @@ public class CuratorFrameworkConfig {
 
 
     @Bean
-    public CuratorFramework curatorFramework() {
+    public CuratorFramework curatorFramework() throws InterruptedException {
         ExponentialBackoffRetry exponentialBackoffRetry = new ExponentialBackoffRetry(1000, 3);
         CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
-                                                .connectString(connectString)
-                                                .sessionTimeoutMs(sessionTimeoutMs)
-                                                .connectionTimeoutMs(connectionTimeoutMs)
-                                                .retryPolicy(exponentialBackoffRetry)
-                                                .namespace(applicationName)
-                                                .build();
+                .connectString(connectString)
+                .sessionTimeoutMs(sessionTimeoutMs)
+                .connectionTimeoutMs(connectionTimeoutMs)
+                .retryPolicy(exponentialBackoffRetry)
+                .namespace(applicationName)
+                .build();
         curatorFramework.start();
+        //阻塞直到连接创建，超时时间:10s
+        curatorFramework.blockUntilConnected(10, TimeUnit.SECONDS);
         return curatorFramework;
     }
 

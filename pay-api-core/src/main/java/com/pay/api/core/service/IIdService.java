@@ -27,5 +27,5 @@ public interface IIdService {
      *
      * @param workerId
      */
-    void setWorkerId(Long workerId);
+    void setWorkerId(Integer workerId);
 }

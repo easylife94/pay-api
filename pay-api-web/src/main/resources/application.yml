@@ -32,7 +32,10 @@ feign:
 ################################################自定义################################################
 
 snowflake:
-  data-center-id: 2
+  #数据中心
+  data-center-id: 0
+  #最大worker id
+  worker-id-max: 31
 
 security:
   rsa:

@@ -38,7 +38,7 @@ public class IdServiceImpl implements IIdService {
     }
 
     @Override
-    public void setWorkerId(Long workerId) {
+    public void setWorkerId(Integer workerId) {
         snowflakeIdWorker.setWorkerId(workerId);
     }
 }
