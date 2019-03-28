@@ -2,6 +2,9 @@ package com.pay.api.core.service.impl;
 
 import com.pay.api.client.utils.SnowflakeIdWorker;
 import com.pay.api.core.service.IIdService;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooDefs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,10 +22,9 @@ public class IdServiceImpl implements IIdService {
     @Value("${order.trade.number-prefix}")
     private String orderNumberPreFix;
 
-
     @Autowired
-    public IdServiceImpl(@Value("${snowflake.data-center-id}") Long dataCenterId) {
-        snowflakeIdWorker = new SnowflakeIdWorker(1L,dataCenterId);
+    public IdServiceImpl() {
+        snowflakeIdWorker = new SnowflakeIdWorker(1L,1L);
     }
 
     @Override
@@ -33,5 +35,10 @@ public class IdServiceImpl implements IIdService {
     @Override
     public String generateTradeOrderNumber() {
         return new StringBuilder(orderNumberPreFix).append(snowflakeIdWorker.nextId()).toString();
+    }
+
+    @Override
+    public void setWorkerId(Long workerId) {
+        snowflakeIdWorker.setWorkerId(workerId);
     }
 }

@@ -79,6 +79,23 @@
             <artifactId>okhttp</artifactId>
         </dependency>
 
+        <!-- curator(zookeeper) -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+        </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!--pay-api-->
         <dependency>
             <groupId>com.pay</groupId>
