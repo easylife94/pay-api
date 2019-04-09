@@ -92,6 +92,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
                     .forPath(baseKeyPath + "/" + workerId);
 
             iIdService.setWorkerId(workerId);
+            log.info("设置workerId:{}", workerId);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PayApiException("初始化workerId失败");

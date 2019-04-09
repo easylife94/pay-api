@@ -7,6 +7,11 @@ package com.pay.api.client.constants;
 public class ZookeeperNamespace {
 
     /**
+     * 锁路径
+     */
+    public static final String LOCKS = "/locks";
+
+    /**
      * 当前应用编号命名空间
      */
     public static final String WORKER_ID = "/workerId";
