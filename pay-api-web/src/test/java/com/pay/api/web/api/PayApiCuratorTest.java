@@ -25,4 +25,26 @@ public class PayApiCuratorTest extends PayApiWebApplicationTests {
                 .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
                 .forPath("/test");
     }
+
+    /**
+     *
+     */
+    @Test
+    public void testState() throws Exception {
+        int i = 0;
+        while (true){
+            curatorFramework
+                    .create()
+                    .creatingParentsIfNeeded()
+                    .withMode(CreateMode.EPHEMERAL)
+                    .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
+                    .forPath("/" + i);
+            Thread.sleep(1000);
+//            curatorFramework.delete().forPath("/" + i);
+//            Thread.sleep(1000);
+            System.out.println(curatorFramework.getState());
+            i++;
+        }
+
+    }
 }

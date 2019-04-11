@@ -1,7 +1,6 @@
 package com.pay.api.core.service;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 
 /**
  * 分布式锁服务

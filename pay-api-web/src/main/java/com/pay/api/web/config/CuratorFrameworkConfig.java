@@ -31,7 +31,7 @@ public class CuratorFrameworkConfig {
 
     @Bean
     public CuratorFramework curatorFramework() throws InterruptedException {
-        ExponentialBackoffRetry exponentialBackoffRetry = new ExponentialBackoffRetry(1000, 3);
+        ExponentialBackoffRetry exponentialBackoffRetry = new ExponentialBackoffRetry(1000, 10);
         CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
                 .connectString(connectString)
                 .sessionTimeoutMs(sessionTimeoutMs)
@@ -40,6 +40,7 @@ public class CuratorFrameworkConfig {
                 .namespace(applicationName)
                 .build();
         curatorFramework.start();
+
         //阻塞直到连接创建，超时时间:10s
         curatorFramework.blockUntilConnected(10, TimeUnit.SECONDS);
         return curatorFramework;
