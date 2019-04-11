@@ -4,20 +4,12 @@ import com.pay.api.client.constants.ZookeeperNamespace;
 import com.pay.api.core.service.IDistributedLockService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.imps.CuratorFrameworkState;
-import org.apache.curator.framework.recipes.cache.PathChildrenCache;
-import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.ZooDefs;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 
 /**
  * 基于zookeeper的分布式锁服务实现
@@ -26,7 +18,6 @@ import java.util.concurrent.locks.Lock;
  * @date 2019/4/9 15:37
  */
 @Slf4j
-@Service
 public class ZookeeperDistributedLockServiceImpl implements IDistributedLockService {
 
 
