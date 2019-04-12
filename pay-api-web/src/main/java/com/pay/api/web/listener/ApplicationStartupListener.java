@@ -4,7 +4,11 @@ import com.pay.api.client.constants.ZookeeperNamespace;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.core.service.IIdService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +33,15 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     @Value("${snowflake.worker-id-max}")
     private Integer workerIdMax;
 
-    private final CuratorFramework curatorFramework;
+    //    private final CuratorFramework curatorFramework;
+    private final CuratorFrameworkFactory.Builder curatorFrameworkFactoryBuilder;
     private final IIdService iIdService;
 
     @Autowired
-    public ApplicationStartupListener(CuratorFramework curatorFramework, IIdService iIdService) {
-        this.curatorFramework = curatorFramework;
+    public ApplicationStartupListener(CuratorFrameworkFactory.Builder curatorFrameworkFactoryBuilder, IIdService iIdService) {
+        this.curatorFrameworkFactoryBuilder = curatorFrameworkFactoryBuilder;
         this.iIdService = iIdService;
+//        this.curatorFramework = curatorFramework;
     }
 
     /**
@@ -56,6 +62,9 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 
     private void initSnowflakeIdWorkerId() {
         try {
+            CuratorFramework curatorFramework = curatorFrameworkFactoryBuilder.build();
+            curatorFramework.start();
+
             //使用zookeeper临时顺序节点生成worker id。0~31
             String baseKeyPath = ZookeeperNamespace.WORKER_ID;
             if (curatorFramework.checkExists().forPath(baseKeyPath) == null) {
@@ -66,6 +75,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
                         .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
                         .forPath(baseKeyPath);
             }
+
             Integer workerId = null;
             List<String> workerIds = curatorFramework.getChildren().forPath(baseKeyPath);
             log.info("已有workerIds:{}", workerIds);
@@ -83,16 +93,40 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
             } else {
                 workerId = 0;
             }
-
+            String fullPath = baseKeyPath + "/" + workerId;
             curatorFramework
                     .create()
                     .creatingParentsIfNeeded()
                     .withMode(CreateMode.EPHEMERAL)
                     .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
-                    .forPath(baseKeyPath + "/" + workerId);
+                    .forPath(fullPath);
 
             iIdService.setWorkerId(workerId);
             log.info("设置workerId:{}", workerId);
+
+
+            final PathChildrenCache cache = new PathChildrenCache(curatorFramework, baseKeyPath, false);
+            cache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
+            cache.getListenable().addListener((client, event) -> {
+                switch (event.getType()) {
+                    case CHILD_REMOVED:
+                        //判断是否是本节点
+                        if (StringUtils.equals(fullPath, event.getData().getPath())) {
+                            //重新创建连接
+                            log.info("workerId节点:{}连接断开，开始重新连接...", fullPath);
+                            CuratorFramework reconnectClient = curatorFrameworkFactoryBuilder.build();
+                            reconnectClient.start();
+                            reconnectClient.create()
+                                    .creatingParentsIfNeeded()
+                                    .withMode(CreateMode.EPHEMERAL)
+                                    .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
+                                    .forPath(fullPath);
+                            log.info("workerId节点:{}连接成功", fullPath);
+                        }
+                        break;
+                    default:
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             throw new PayApiException("初始化workerId失败");
