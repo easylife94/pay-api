@@ -9,6 +9,7 @@ import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.client.utils.DateUtils;
 import com.pay.api.core.method.AbstractPayApiMethod;
+import com.pay.api.core.service.IDistributedLockService;
 import com.pay.api.core.service.ITradeOrderService;
 import com.pay.api.core.service.ITradeRouteService;
 import com.pay.api.core.service.ITradeService;
@@ -48,12 +49,14 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     private final ITradeRouteService tradeRouteService;
     private final ITradeOrderService tradeOrderService;
     private final ITradeService tradeService;
+    private final IDistributedLockService distributedLockService;
 
     @Autowired
-    public PayApiMethodUnifiedPay(ITradeOrderService tradeOrderService, ITradeRouteService tradeRouteService, ITradeService tradeService) {
+    public PayApiMethodUnifiedPay(ITradeOrderService tradeOrderService, ITradeRouteService tradeRouteService, ITradeService tradeService, IDistributedLockService distributedLockService) {
         this.tradeOrderService = tradeOrderService;
         this.tradeRouteService = tradeRouteService;
         this.tradeService = tradeService;
+        this.distributedLockService = distributedLockService;
     }
 
     @Override
@@ -151,16 +154,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
         long begin = System.currentTimeMillis();
         //对同一个路由(会员编号 + 支付渠道 + 支付方式)交易加锁
         String lockKey = memberDTO.getMemberNumber() + apiPayUnifiedPayDTO.getDefrayalChannel() + apiPayUnifiedPayDTO.getDefrayalType();
-        Lock lock;
-        if (MEMBER_TRADE_ROUTE_LOCKS.containsKey(lockKey)) {
-            lock = MEMBER_TRADE_ROUTE_LOCKS.get(lockKey);
-            lock.lock();
-            logger.error("加锁：{}",lockKey);
-        } else {
-            lock = new ReentrantLock();
-            MEMBER_TRADE_ROUTE_LOCKS.put(lockKey, lock);
-            lock.lock();
-        }
+        distributedLockService.lock(lockKey);
         try {
             ApiPayMethodResultDTO<ApiPayUnifiedPayResultDTO> apiPayMethodResultDTO = new ApiPayMethodResultDTO<>();
 
@@ -249,7 +243,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             tradeService.afterTradeCreate(tradeOrder, tradeCreateAfterDTO);
             return apiPayMethodResultDTO;
         } finally {
-            lock.unlock();
+            distributedLockService.unlock(lockKey);
             logger.info("方法耗时：{}",(System.currentTimeMillis() - begin));
         }
     }
