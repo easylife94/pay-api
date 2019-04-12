@@ -4,8 +4,10 @@ import com.pay.api.client.constants.ZookeeperNamespace;
 import com.pay.api.core.service.IDistributedLockService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -18,16 +20,16 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/4/9 15:37
  */
 @Slf4j
+@Service
 public class ZookeeperDistributedLockServiceImpl implements IDistributedLockService {
 
 
-    private final CuratorFramework curatorFramework;
+    private final CuratorFrameworkFactory.Builder curatorFrameworkBuilder;
     private final ConcurrentHashMap<String, InterProcessMutex> locks;
-    private CountDownLatch countDownLatch = new CountDownLatch(1);
 
     @Autowired
-    public ZookeeperDistributedLockServiceImpl(CuratorFramework curatorFramework) {
-        this.curatorFramework = curatorFramework;
+    public ZookeeperDistributedLockServiceImpl(CuratorFrameworkFactory.Builder curatorFrameworkBuilder) {
+        this.curatorFrameworkBuilder = curatorFrameworkBuilder;
         this.locks = new ConcurrentHashMap<>();
     }
 
@@ -79,9 +81,10 @@ public class ZookeeperDistributedLockServiceImpl implements IDistributedLockServ
         try {
             String fullPath = ZookeeperNamespace.LOCKS + "/" + key;
             InterProcessMutex interProcessMutex = locks.get(fullPath);
-            interProcessMutex.release();
             if (!interProcessMutex.isAcquiredInThisProcess()) {
-                locks.remove(fullPath,interProcessMutex);
+                locks.remove(fullPath, interProcessMutex);
+            } else {
+                interProcessMutex.release();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,98 +104,14 @@ public class ZookeeperDistributedLockServiceImpl implements IDistributedLockServ
         if (locks.containsKey(key)) {
             interProcessMutex = locks.get(key);
         } else {
-            log.error("state1:{}",curatorFramework.getState());
-            log.error("创建");
-            interProcessMutex = new InterProcessMutex(curatorFramework, key);
+            CuratorFramework client = curatorFrameworkBuilder.build();
+            client.start();
+            interProcessMutex = new InterProcessMutex(client, key);
             InterProcessMutex absent = locks.putIfAbsent(key, interProcessMutex);
             if (absent != null) {
-                log.error("创建失败");
                 interProcessMutex = absent;
             }
-            log.error("state2:{}",curatorFramework.getState());
         }
         return interProcessMutex;
     }
-
-
-//    @Override
-//    public void lock(String key) throws Exception {
-//        String fullPath = ZookeeperNamespace.LOCKS + "/" + key;
-//        while (true) {
-//            try {
-//                curatorFramework
-//                        .create()
-//                        .creatingParentsIfNeeded()
-//                        .withMode(CreateMode.EPHEMERAL)
-//                        .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
-//                        .forPath(fullPath);
-//                log.info("success to acquire lock for path:{}", fullPath);
-//                break;
-//            } catch (Exception e) {
-//                log.info("failed to acquire lock for path:{}", fullPath);
-//                log.info("while try again .......");
-//                try {
-//                    if (countDownLatch.getCount() <= 0) {
-//                        countDownLatch = new CountDownLatch(1);
-//                    }
-//                    countDownLatch.await();
-//                } catch (InterruptedException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public boolean tryLock(String key, long time, TimeUnit unit) {
-//        return false;
-//    }
-//
-//    @Override
-//    public void unlock(String key) {
-//        try {
-//            String fullPath = ZookeeperNamespace.LOCKS + "/" + key;
-//            if (curatorFramework.checkExists().forPath(fullPath) != null) {
-//                curatorFramework.delete().forPath(fullPath);
-//            }
-//        } catch (Exception e) {
-//            log.error("failed to release lock");
-//        }
-//    }
-//
-//    @Override
-//    public void afterPropertiesSet() throws Exception {
-//        String lockPath = ZookeeperNamespace.LOCKS;
-//        try {
-//            if (curatorFramework.checkExists().forPath(lockPath) == null) {
-//                curatorFramework.create()
-//                        .creatingParentsIfNeeded()
-//                        .withMode(CreateMode.PERSISTENT)
-//                        .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
-//                        .forPath(lockPath);
-//            }
-//            addWatcher(lockPath);
-//            log.info("root path 的 watcher 事件创建成功");
-//        } catch (Exception e) {
-//            log.error("connect zookeeper fail，please check the log >> {}", e.getMessage(), e);
-//        }
-//    }
-//
-//    /**
-//     * 创建 watcher 事件
-//     */
-//    private void addWatcher(String path) throws Exception {
-//        final PathChildrenCache cache = new PathChildrenCache(curatorFramework, path, false);
-//        cache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
-//        cache.getListenable().addListener((client, event) -> {
-//            if (event.getType().equals(PathChildrenCacheEvent.Type.CHILD_REMOVED)) {
-//                String oldPath = event.getData().getPath();
-//                log.info("上一个节点 "+ oldPath + " 已经被断开");
-//                if (oldPath.contains(path)) {
-//                    //释放计数器，让当前的请求获取锁
-//                    countDownLatch.countDown();
-//                }
-//            }
-//        });
-//    }
 }

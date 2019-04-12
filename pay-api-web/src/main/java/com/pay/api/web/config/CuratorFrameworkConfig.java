@@ -46,4 +46,14 @@ public class CuratorFrameworkConfig {
         return curatorFramework;
     }
 
+    @Bean
+    public CuratorFrameworkFactory.Builder curatorFrameworkFactoryBuilder() throws InterruptedException {
+        ExponentialBackoffRetry exponentialBackoffRetry = new ExponentialBackoffRetry(1000, 10);
+        return CuratorFrameworkFactory.builder()
+                .connectString(connectString)
+                .sessionTimeoutMs(sessionTimeoutMs)
+                .connectionTimeoutMs(connectionTimeoutMs)
+                .retryPolicy(exponentialBackoffRetry)
+                .namespace(applicationName);
+    }
 }

@@ -20,46 +20,27 @@ public class DistributedLockServiceTest extends PayApiWebApplicationTests {
 
     @Test
     public void lock() throws InterruptedException {
+
         //测试并发
         final String key = "test";
-//        Thread t1 = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                distributedLockService.lock(key);
-//                COUNT++;
-//                System.out.println("t1 count:" + COUNT);
-//                distributedLockService.unlock(key);
-//            }
-//        });
-//        t1.start();
-//
-//        Thread t2 = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                distributedLockService.lock(key);
-//                COUNT++;
-//                System.out.println("t2 count:" + COUNT);
-//                distributedLockService.unlock(key);
-//            }
-//        });
-//        t1.start();
-//        t2.start();
-//
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    while ( COUNT < 100 ) {
+                while ( COUNT < 100 ) {
+                    try {
+                        long begin = System.currentTimeMillis();
                         distributedLockService.lock(key);
-                        System.out.println("t1 lock");
+                        System.out.println("t1 lock,ms : " + (System.currentTimeMillis() - begin));
                         COUNT++;
                         System.out.println("t1 count:" + COUNT);
-                        System.out.println("t1 unlock");
+                        begin = System.currentTimeMillis();
                         distributedLockService.unlock(key);
+                        System.out.println("t1 unlock ms :"  + (System.currentTimeMillis() - begin));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+
 
             }
         });
@@ -67,23 +48,28 @@ public class DistributedLockServiceTest extends PayApiWebApplicationTests {
         Thread t2 = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    while ( COUNT < 100 ) {
-                        distributedLockService.lock(key);
-                        System.out.println("t2 lock");
-                        COUNT++;
-                        System.out.println("t2 count:" + COUNT);
-                        Thread.sleep(1000);
-                        System.out.println("t2 unlock");
-                        distributedLockService.unlock(key);
 
+                    while ( COUNT < 100 ) {
+                        try {
+                            long begin = System.currentTimeMillis();
+                            distributedLockService.lock(key);
+                            System.out.println("t2 lock,ms : " + (System.currentTimeMillis() - begin));
+                            COUNT++;
+                            System.out.println("t2 count:" + COUNT);
+                            begin = System.currentTimeMillis();
+                            distributedLockService.unlock(key);
+                            System.out.println("t2 unlock ms :"  + (System.currentTimeMillis() - begin));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             }
         });
         t1.start();
         t2.start();
+
+
+        Thread.sleep(500000);
     }
 }
