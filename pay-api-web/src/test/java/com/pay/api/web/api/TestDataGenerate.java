@@ -7,11 +7,11 @@ import com.pay.api.core.dao.TradeChannelConfigDao;
 import com.pay.api.core.dao.TradeMemberDao;
 import com.pay.api.core.dao.TradeMerchantConfigDao;
 import com.pay.api.core.dao.TradeRouteDao;
-import com.pay.api.core.service.IIdService;
 import com.pay.api.web.PayApiWebApplicationTests;
 import com.pay.center.client.constants.AgentLevelEnum;
 import com.pay.center.client.constants.DefrayalChannelEnum;
 import com.pay.center.client.constants.DefrayalTypeEnum;
+import com.pay.common.core.service.IIdService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

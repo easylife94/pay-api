@@ -111,6 +111,16 @@
             <groupId>com.pay</groupId>
             <artifactId>pay-center-client</artifactId>
         </dependency>
+
+        <!--pay-common-->
+        <dependency>
+            <groupId>com.pay</groupId>
+            <artifactId>pay-common-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pay</groupId>
+            <artifactId>pay-common-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

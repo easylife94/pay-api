@@ -9,10 +9,9 @@ import com.pay.api.client.dto.mapper.MemberTradeRouteDTO;
 import com.pay.api.client.model.TradeRouteDO;
 import com.pay.api.core.dao.TradeRouteDao;
 import com.pay.api.core.service.ITradeRouteService;
+import com.pay.common.core.service.IIdService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author chenwei
@@ -33,11 +34,11 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
     @Value("${trade.warn-times-max}")
     private Integer warnTimesMax;
 
-    private final IdServiceImpl idService;
+    private final IIdService idService;
     private final TradeRouteDao tradeRouteDao;
 
     @Autowired
-    public TradeRouteServiceImpl(IdServiceImpl idService, TradeRouteDao tradeRouteDao) {
+    public TradeRouteServiceImpl(IIdService idService, TradeRouteDao tradeRouteDao) {
         this.idService = idService;
         this.tradeRouteDao = tradeRouteDao;
     }

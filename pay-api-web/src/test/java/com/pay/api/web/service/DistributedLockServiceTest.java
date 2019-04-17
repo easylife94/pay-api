@@ -1,7 +1,7 @@
 package com.pay.api.web.service;
 
-import com.pay.api.core.service.IDistributedLockService;
 import com.pay.api.web.PayApiWebApplicationTests;
+import com.pay.common.core.service.IDistributedLockService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

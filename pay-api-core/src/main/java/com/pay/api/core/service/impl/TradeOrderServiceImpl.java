@@ -7,10 +7,11 @@ import com.pay.api.client.constants.TradeOrderStatusEnum;
 import com.pay.api.client.dto.TradeOrderCreateDTO;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.core.dao.TradeOrderDao;
-import com.pay.api.core.service.IIdService;
 import com.pay.api.core.service.ITradeOrderService;
+import com.pay.common.core.service.IIdService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,6 +23,9 @@ import java.util.Date;
  */
 @Service
 public class TradeOrderServiceImpl implements ITradeOrderService {
+
+    @Value("${order.trade.number-prefix}")
+    private String tradeOrderNumberPrefix;
 
     private final TradeOrderDao tradeOrderDao;
     private final IIdService idService;
@@ -80,7 +84,7 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         tradeOrderDO.setChannelName(tradeOrderCreateDTO.getChannelName());
 
         //系统订单信息
-        tradeOrderDO.setSysOrderNumber(idService.generateTradeOrderNumber());
+        tradeOrderDO.setSysOrderNumber(idService.generateOrderNumber(tradeOrderNumberPrefix));
         tradeOrderDO.setSysOrderTime(orderTime.getTime());
         tradeOrderDO.setTitle(tradeOrderCreateDTO.getTitle());
         tradeOrderDO.setBody(tradeOrderCreateDTO.getBody());

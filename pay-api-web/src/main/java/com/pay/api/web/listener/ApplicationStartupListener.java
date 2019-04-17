@@ -1,16 +1,9 @@
 package com.pay.api.web.listener;
 
-import com.pay.api.client.constants.ZookeeperNamespace;
-import com.pay.api.client.exception.PayApiException;
-import com.pay.api.core.service.IIdService;
+
+import com.pay.common.core.service.IIdService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.recipes.cache.PathChildrenCache;
-import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.ZooDefs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
@@ -18,8 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author chenwei
@@ -33,7 +24,6 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     @Value("${snowflake.worker-id-max}")
     private Integer workerIdMax;
 
-    //    private final CuratorFramework curatorFramework;
     private final CuratorFrameworkFactory.Builder curatorFrameworkFactoryBuilder;
     private final IIdService iIdService;
 
@@ -41,7 +31,6 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     public ApplicationStartupListener(CuratorFrameworkFactory.Builder curatorFrameworkFactoryBuilder, IIdService iIdService) {
         this.curatorFrameworkFactoryBuilder = curatorFrameworkFactoryBuilder;
         this.iIdService = iIdService;
-//        this.curatorFramework = curatorFramework;
     }
 
     /**
@@ -56,11 +45,11 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         ApplicationContext applicationContext = event.getApplicationContext();
         if (applicationContext instanceof AnnotationConfigServletWebServerApplicationContext) {
             log.info("servlet容器监听事件");
-            initSnowflakeIdWorkerId();
+//            initSnowflakeIdWorkerId();
         }
     }
 
-    private void initSnowflakeIdWorkerId() {
+    /*private void initSnowflakeIdWorkerId() {
         try {
             CuratorFramework curatorFramework = curatorFrameworkFactoryBuilder.build();
             curatorFramework.start();
@@ -132,6 +121,6 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
             throw new PayApiException("初始化workerId失败");
         }
 
-    }
+    }*/
 
 }

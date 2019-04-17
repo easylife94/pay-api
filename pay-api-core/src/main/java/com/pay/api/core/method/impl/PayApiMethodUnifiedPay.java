@@ -9,12 +9,12 @@ import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.client.utils.DateUtils;
 import com.pay.api.core.method.AbstractPayApiMethod;
-import com.pay.api.core.service.IDistributedLockService;
 import com.pay.api.core.service.ITradeOrderService;
 import com.pay.api.core.service.ITradeRouteService;
 import com.pay.api.core.service.ITradeService;
 import com.pay.center.client.constants.DefrayalChannelEnum;
 import com.pay.center.client.constants.DefrayalTypeEnum;
+import com.pay.common.core.service.IDistributedLockService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +23,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 统一支付方法
@@ -38,12 +34,6 @@ import java.util.concurrent.locks.ReentrantLock;
 public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPayDTO> {
 
     private static Logger logger = LoggerFactory.getLogger(PayApiMethodUnifiedPay.class);
-
-    /**
-     * 会员交易类型锁
-     */
-    private final static Map<String, Lock> MEMBER_TRADE_ROUTE_LOCKS = new HashMap<>();
-
     private static BigDecimal minTradeAmount = new BigDecimal("0.01");
 
     private final ITradeRouteService tradeRouteService;

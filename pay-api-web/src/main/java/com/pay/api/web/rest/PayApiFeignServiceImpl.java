@@ -7,7 +7,7 @@ import com.pay.api.client.service.IPayApiFeignService;
 import com.pay.api.client.utils.RsaUtils;
 import com.pay.api.core.dao.TradeChannelConfigDao;
 import com.pay.api.core.dao.TradeMemberDao;
-import com.pay.api.core.service.IIdService;
+import com.pay.common.core.service.IIdService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
