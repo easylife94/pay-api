@@ -2,6 +2,7 @@ package com.pay.api.core.service.impl;
 
 import com.pay.api.client.constants.*;
 import com.pay.api.client.dto.*;
+import com.pay.api.client.dto.async.TradeCompleteMessageDTO;
 import com.pay.api.client.dto.async.TradeCreateMessageDTO;
 import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.core.dao.TradeOrderDao;
@@ -14,6 +15,8 @@ import com.pay.api.core.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * @author chenwei
@@ -29,7 +32,8 @@ public class TradeServiceImpl implements ITradeService {
     private final ITradeMerchantConfigService tradeMerchantConfigService;
 
     @Autowired
-    public TradeServiceImpl(RabbitMqSender rabbitMqSender, TradeOrderDao tradeOrderDao, ITradeChannelConfigService tradeChannelConfigService, ITradeMerchantConfigService tradeMerchantConfigService) {
+    public TradeServiceImpl(RabbitMqSender rabbitMqSender, TradeOrderDao tradeOrderDao, ITradeChannelConfigService tradeChannelConfigService,
+                            ITradeMerchantConfigService tradeMerchantConfigService) {
         this.rabbitMqSender = rabbitMqSender;
         this.tradeOrderDao = tradeOrderDao;
         this.tradeChannelConfigService = tradeChannelConfigService;
@@ -60,9 +64,31 @@ public class TradeServiceImpl implements ITradeService {
     public TradeCompleteResultDTO complete(TradeCompleteDTO tradeCompleteDTO) {
         TradeCompleteResultDTO resultDTO = new TradeCompleteResultDTO();
         try {
+            TradeOrderDO tradeOrderDO = tradeOrderDao.selectBySysOrderNumber(tradeCompleteDTO.getSysOrderNumber());
+            TradeOrderStatusEnum tradeOrderStatus = TradeOrderStatusEnum.valueOf(tradeOrderDO.getTradeStatus());
+            switch (tradeOrderStatus) {
+                case WAIT:
+                    //修改订单状态，并发送订单完成异步消息
+                    tradeOrderDO.setTradeStatus(TradeOrderStatusEnum.SUCCESS.getType());
+                    resultDTO.setSuccess(true);
+                    tradeOrderDao.updateByCompleteTrade(tradeCompleteDTO.getSysOrderNumber(), tradeCompleteDTO.getChannelOrderNumber(),
+                            tradeCompleteDTO.getSourceOrderNumber(), tradeCompleteDTO.getPayTime(), tradeCompleteDTO.getNotifyTime(), null,
+                            TradeOrderStatusEnum.SUCCESS.getType(), new Date());
+                    TradeCompleteMessageDTO tradeCompleteMessageDTO = new TradeCompleteMessageDTO();
+                    tradeCompleteMessageDTO.setSysOrderNumber(tradeOrderDO.getSysOrderNumber());
+                    tradeCompleteMessageDTO.setServiceFee(tradeOrderDO.getServiceFee());
+                    tradeCompleteMessageDTO.setTradeAmount(tradeOrderDO.getTradeAmount());
+                    rabbitMqSender.sendTradeCompleteMessages(tradeCompleteMessageDTO);
+                    break;
+                case SUCCESS:
+                    log.info("订单已支付成功,订单号：{}", tradeCompleteDTO.getSysOrderNumber());
+                    resultDTO.setSuccess(true);
+                    break;
+                default:
+                    log.error("订单状态异常,订单号：{},订单状态：{}", tradeCompleteDTO.getSysOrderNumber(), tradeOrderStatus);
+                    resultDTO.setSuccess(false);
 
-
-
+            }
         } catch (Exception e) {
             e.printStackTrace();
             log.error("完成订单异常，sysOrderNumber:{},ERROR:{}", tradeCompleteDTO.getSysOrderNumber(), e.getMessage());

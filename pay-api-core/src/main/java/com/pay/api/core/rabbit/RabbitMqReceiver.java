@@ -47,7 +47,7 @@ public class RabbitMqReceiver {
             rabbitMqSender.sendTradeStatisticsMessage(tradeStatisticsMessageDTO);
             //2.钱包流水
             //todo 创建钱包流水
-
+            //会员钱包冻结服务费
             //3.结算任务
             //todo 创建结算任务
         } catch (Exception e) {

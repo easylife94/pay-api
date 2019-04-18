@@ -2,13 +2,16 @@ package com.pay.api.client.dto;
 
 import com.pay.api.client.constants.PlatformTradeNotifyResultEnum;
 import com.pay.api.client.constants.TradeOrderStatusEnum;
+import lombok.Data;
 
 import java.util.Date;
+import java.util.StringJoiner;
 
 /**
  * @author chenwei
  * @date 2019-03-17
  */
+@Data
 public class TradeNotifyResultDTO {
 
     /**
@@ -34,6 +37,11 @@ public class TradeNotifyResultDTO {
     private String platformOrderNumber;
 
     /**
+     * 源订单号（微信或支付宝等）
+     */
+    private String sourceOrderNumber;
+
+    /**
      * 支付时间
      */
     private Date payTime;
@@ -52,81 +60,4 @@ public class TradeNotifyResultDTO {
      * 订单关闭原因
      */
     private String closeCause;
-
-    public String getResponseContent() {
-        return responseContent;
-    }
-
-    public void setResponseContent(String responseContent) {
-        this.responseContent = responseContent;
-    }
-
-    public PlatformTradeNotifyResultEnum getResult() {
-        return result;
-    }
-
-    public void setResult(PlatformTradeNotifyResultEnum result) {
-        this.result = result;
-    }
-
-    public String getSysOrderNumber() {
-        return sysOrderNumber;
-    }
-
-    public void setSysOrderNumber(String sysOrderNumber) {
-        this.sysOrderNumber = sysOrderNumber;
-    }
-
-    public String getPlatformOrderNumber() {
-        return platformOrderNumber;
-    }
-
-    public void setPlatformOrderNumber(String platformOrderNumber) {
-        this.platformOrderNumber = platformOrderNumber;
-    }
-
-    public Date getPayTime() {
-        return payTime;
-    }
-
-    public void setPayTime(Date payTime) {
-        this.payTime = payTime;
-    }
-
-    public Date getPlatformNotifyTime() {
-        return platformNotifyTime;
-    }
-
-    public void setPlatformNotifyTime(Date platformNotifyTime) {
-        this.platformNotifyTime = platformNotifyTime;
-    }
-
-    public TradeOrderStatusEnum getTradeStatus() {
-        return tradeStatus;
-    }
-
-    public void setTradeStatus(TradeOrderStatusEnum tradeStatus) {
-        this.tradeStatus = tradeStatus;
-    }
-
-    public String getCloseCause() {
-        return closeCause;
-    }
-
-    public void setCloseCause(String closeCause) {
-        this.closeCause = closeCause;
-    }
-
-    public TradeNotifyResultDTO() {
-    }
-
-    public TradeNotifyResultDTO(String responseContent, PlatformTradeNotifyResultEnum result, String sysOrderNumber,
-                                String platformOrderNumber, TradeOrderStatusEnum tradeStatus, Date payTime) {
-        this.responseContent = responseContent;
-        this.result = result;
-        this.sysOrderNumber = sysOrderNumber;
-        this.platformOrderNumber = platformOrderNumber;
-        this.payTime = payTime;
-        this.tradeStatus = tradeStatus;
-    }
 }

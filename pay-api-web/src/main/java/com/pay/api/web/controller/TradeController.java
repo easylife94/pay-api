@@ -2,7 +2,9 @@ package com.pay.api.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.PayResultPageStatusEnum;
+import com.pay.api.client.constants.PlatformTradeNotifyResultEnum;
 import com.pay.api.client.constants.TradeHandleStatusEnum;
+import com.pay.api.client.constants.TradeOrderNotifyStatusEnum;
 import com.pay.api.client.dto.*;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeOrderDO;
@@ -14,8 +16,7 @@ import com.pay.api.core.service.ITradeService;
 import com.pay.api.core.utils.SpringContextUtil;
 import com.pay.center.client.constants.DefrayalChannelEnum;
 import com.pay.center.client.constants.DefrayalTypeEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,16 +26,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
+import java.util.Date;
 
 /**
  * @author chenwei
  * @date 2019/2/21 15:38
  */
+@Slf4j
 @Controller
 @RequestMapping("trade")
 public class TradeController {
-
-    private static final Logger logger = LoggerFactory.getLogger(TradeController.class);
 
     private final ITradeService tradeService;
     private final ITradeOrderService tradeOrderService;
@@ -91,11 +92,11 @@ public class TradeController {
                         //关闭订单，触发预警
                         return payResult(PayResultPageStatusEnum.COSED, "系统异常");
                     default:
-                        logger.error("预下单异常，未知预下单处理返回状态枚举类：" + tradeHandleResultDTO.getStatus());
+                        log.error("预下单异常，未知预下单处理返回状态枚举类：" + tradeHandleResultDTO.getStatus());
                         return payResult(PayResultPageStatusEnum.FAIL, "系统异常");
                 }
             } else {
-                logger.error("预下单异常，找不到平台交易处理器：{},系统订单号：{}", oneOrder.getPlatformMapped(), oneOrder.getSysOrderNumber());
+                log.error("预下单异常，找不到平台交易处理器：{},系统订单号：{}", oneOrder.getPlatformMapped(), oneOrder.getSysOrderNumber());
                 return payResult(PayResultPageStatusEnum.FAIL, "系统异常");
             }
         }
@@ -156,7 +157,7 @@ public class TradeController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("jsapi支付异常，提示信息：{}", e.getMessage());
+            log.error("jsapi支付异常，提示信息：{}", e.getMessage());
         }
         return null;
     }
@@ -173,36 +174,36 @@ public class TradeController {
     /**
      * 根据上游回调地址要求匹配回调地址。
      *
-     * @param channelMapped 通道标识
-     * @param channelNumber 通道编号
+     * @param platformMapped 平台标识
+     * @param channelNumber  通道编号
      * @return
      */
-    @RequestMapping("/notify/{channelMapped}/{channelNumber}")
-    public Object notify(@PathVariable(value = "channelMapped") String channelMapped, @PathVariable(value = "channelNumber", required = false) String channelNumber,
+    @RequestMapping("/notify/{platformMapped}/{channelNumber}")
+    public Object notify(@PathVariable(value = "platformMapped") String platformMapped, @PathVariable(value = "channelNumber", required = false) String channelNumber,
                          @RequestBody(required = false) String body, HttpServletRequest request) {
         try {
             TradeChannelConfigDTO channelConfig = tradeChannelConfigService.getChannelConfig(channelNumber);
-            Object bean = SpringContextUtil.getBean(channelMapped);
+            Object bean = SpringContextUtil.getBean(platformMapped);
             if (bean instanceof IPlatformTradeHandle) {
                 IPlatformTradeHandle platformTrade = (IPlatformTradeHandle) bean;
                 TradeNotifyResultDTO notifyResultDTO = platformTrade.notify(channelConfig, body, request);
-                switch (notifyResultDTO.getResult()) {
-                    case SUCCESS:
-                        //todo 完成订单
-                        break;
-                    case FAIL:
-                        break;
-                    default:
-                        //跳过
+                if (PlatformTradeNotifyResultEnum.SUCCESS.equals(notifyResultDTO.getResult())) {
+                    TradeCompleteResultDTO completeResult = tradeService.complete(new TradeCompleteDTO(notifyResultDTO.getSysOrderNumber(),
+                            notifyResultDTO.getPlatformOrderNumber(), notifyResultDTO.getSourceOrderNumber(), notifyResultDTO.getPayTime(), new Date()));
+                    if (!completeResult.getSuccess()) {
+                        log.error("完成订单失败:{}", notifyResultDTO);
+                        return "完成订单失败";
+                    }
                 }
                 return notifyResultDTO.getResponseContent();
             } else {
-                throw new PayApiException("找不到平台交易处理器");
+                log.error("找不到平台交易处理器channelMapped:{},body:{}", platformMapped, body);
+                return "回调异常，详情请看日志";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("上游回调异常,channelMapped:{},channelNumber:{},body:{}", channelMapped, channelNumber, body);
-            return "回调异常";
+            log.error("上游回调异常,channelMapped:{},channelNumber:{},body:{}", platformMapped, channelNumber, body);
+            return "回调异常，详情请看日志";
         }
     }
 

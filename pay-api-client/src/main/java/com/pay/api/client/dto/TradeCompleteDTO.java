@@ -38,4 +38,11 @@ public class TradeCompleteDTO {
      */
     private Date notifyTime;
 
+    public TradeCompleteDTO(String sysOrderNumber, String channelOrderNumber, String sourceOrderNumber, Date payTime, Date notifyTime) {
+        this.sysOrderNumber = sysOrderNumber;
+        this.channelOrderNumber = channelOrderNumber;
+        this.sourceOrderNumber = sourceOrderNumber;
+        this.payTime = payTime;
+        this.notifyTime = notifyTime;
+    }
 }

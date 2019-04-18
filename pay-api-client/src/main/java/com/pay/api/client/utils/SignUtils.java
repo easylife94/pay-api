@@ -33,6 +33,7 @@ public final class SignUtils {
      */
     public static String signRsa(String content, String priKey)
             throws SignatureException, NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, InvalidKeySpecException {
+        System.out.println(content);
         PrivateKey privateKey = RsaUtils.getPrivateKey(RsaUtils.ALGORITHM_RSA, priKey);
         return RsaUtils.sign(content, privateKey, RsaUtils.SIGN_SHA256RSA_ALGORITHMS);
     }
@@ -52,6 +53,7 @@ public final class SignUtils {
      */
     public static boolean verifyRsa(String content, String pubKey, String sign)
             throws InvalidKeySpecException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, SignatureException {
+        System.out.println(content);
         PublicKey publicKey = RsaUtils.getPublicKey(RsaUtils.ALGORITHM_RSA, pubKey);
         return RsaUtils.verify(content, sign, publicKey, RsaUtils.SIGN_SHA256RSA_ALGORITHMS);
     }
@@ -93,7 +95,7 @@ public final class SignUtils {
             JSONObject json = (JSONObject) JSONObject.toJSON(content);
             SortedSet<String> sortedKeys = new TreeSet<>(json.keySet());
             for (String key : sortedKeys) {
-                if (StringUtils.isNotBlank(json.getString(key))) {
+                if (!StringUtils.equals(key, "sign") && StringUtils.isNotBlank(json.getString(key))) {
                     str.append(json.getString(key));
                     str.append(SPLIT);
                 }

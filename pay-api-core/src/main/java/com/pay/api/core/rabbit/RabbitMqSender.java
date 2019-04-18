@@ -1,12 +1,18 @@
 package com.pay.api.core.rabbit;
 
 import com.pay.api.client.constants.PayApiMessageQueueNames;
+import com.pay.api.client.dto.async.TradeCompleteMessageDTO;
 import com.pay.api.client.dto.async.TradeCreateMessageDTO;
-import com.pay.asset.client.constants.PayAssetMessageQueueNames;
+import com.pay.asset.client.constants.*;
+import com.pay.asset.client.dto.WalletSubRecordDTO;
 import com.pay.asset.client.dto.async.TradeStatisticsMessageDTO;
+import com.pay.asset.client.dto.async.WalletRecordMessageDTO;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * rabbitMq消息发送器
@@ -28,6 +34,33 @@ public class RabbitMqSender {
      */
     public void sendTradeCreateMessage(TradeCreateMessageDTO tradeCreateMessageDTO) {
         amqpTemplate.convertAndSend(PayApiMessageQueueNames.QUEUE_TRADE_CREATE, tradeCreateMessageDTO);
+    }
+
+    /**
+     * 发送交易完成异步消息
+     *
+     * @param tradeCompleteMessageDTO 异步消息
+     */
+    public void sendTradeCompleteMessages(TradeCompleteMessageDTO tradeCompleteMessageDTO) {
+        //（钱包记录、结算任务、回调任务、消息推送）
+        //1.钱包记录
+        WalletRecordMessageDTO walletRecordMessageDTO = new WalletRecordMessageDTO();
+        walletRecordMessageDTO.setOrderStatus(WalletRecordOrderStatusEnum.PAYMENT);
+        walletRecordMessageDTO.setOrderType(WalletRecordOrderTypeEnum.TRADE_ORDER);
+        walletRecordMessageDTO.setOwnNumber(tradeCompleteMessageDTO.getSysOrderNumber());
+        walletRecordMessageDTO.setOwnRole(WalletOwnRoleEnum.MEMBER);
+        List<WalletSubRecordDTO> subRecords = new ArrayList<>();
+        //1.1会员服务费支出
+        WalletSubRecordDTO memberServiceFeeOutRecord = new WalletSubRecordDTO();
+        memberServiceFeeOutRecord.setAmount(tradeCompleteMessageDTO.getServiceFee());
+        memberServiceFeeOutRecord.setPaymentType(WalletRecordPaymentTypeEnum.OUT);
+        memberServiceFeeOutRecord.setTradeType(WalletRecordTradeTypeEnum.MEMBER_TRADE_SERVICE_FEE);
+        walletRecordMessageDTO.setSubRecords(subRecords);
+        amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_WALLET_RECORD, walletRecordMessageDTO);
+        //2.结算任务
+        //3.回调任务
+        //4.消息推送
+
     }
 
     /**

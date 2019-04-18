@@ -3,7 +3,6 @@ package com.pay.api.core.platform.test;
 import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.PlatformTradeNotifyResultEnum;
 import com.pay.api.client.constants.TradeHandleStatusEnum;
-import com.pay.api.client.constants.TradeOrderNotifyStatusEnum;
 import com.pay.api.client.constants.TradeOrderStatusEnum;
 import com.pay.api.client.dto.*;
 import com.pay.api.client.utils.DateUtils;
@@ -14,6 +13,7 @@ import com.pay.api.core.service.IAliPayService;
 import com.pay.api.core.service.ITradeOrderService;
 import com.pay.api.core.service.ITradeSysConfigService;
 import com.pay.api.core.service.IWechatService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +26,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author chenwei
  * @date 2019/2/11 16:32
  */
+@Slf4j
 @Component("TEST")
 public class TestPlatformTradeHandle extends AbstractPlatformTradeHandle {
-
-    private static final Logger logger = LoggerFactory.getLogger(TestPlatformTradeHandle.class);
 
     private final ITradeOrderService tradeOrderService;
 
@@ -125,7 +124,6 @@ public class TestPlatformTradeHandle extends AbstractPlatformTradeHandle {
             if (StringUtils.equals(testNotifyDTO.getTradeStatus(), "SUCCESS")) {
                 //rsa验证签名
                 String sign = testNotifyDTO.getSign();
-                testNotifyDTO.setSign(null);
                 if (SignUtils.verifyRsa(SignUtils.str(testNotifyDTO), channelConfigDTO.getPlatformPubKey(), sign)) {
                     tradeNotifyResultDTO.setResult(PlatformTradeNotifyResultEnum.SUCCESS);
                     tradeNotifyResultDTO.setPayTime(DateUtils.parse(testNotifyDTO.getPayTime(), DateUtils.FORMAT_YYYYMMDDHHMMSS_1));
@@ -133,10 +131,12 @@ public class TestPlatformTradeHandle extends AbstractPlatformTradeHandle {
                     tradeNotifyResultDTO.setPlatformOrderNumber(testNotifyDTO.getTradeNo());
                     tradeNotifyResultDTO.setTradeStatus(TradeOrderStatusEnum.SUCCESS);
                 }
+            } else {
+
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("TEST平台回调处理异常，ERROR:{}", e.getMessage());
+            log.error("TEST平台回调处理异常，ERROR:{}", e.getMessage());
         }
         return tradeNotifyResultDTO;
     }

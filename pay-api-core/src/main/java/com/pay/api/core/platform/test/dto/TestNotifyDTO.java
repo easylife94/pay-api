@@ -1,9 +1,12 @@
 package com.pay.api.core.platform.test.dto;
 
+import lombok.Data;
+
 /**
  * @author chenwei
  * @date 2019-03-17
  */
+@Data
 public class TestNotifyDTO {
 
     /**
@@ -35,53 +38,5 @@ public class TestNotifyDTO {
      * 签名
      */
     private String sign;
-
-    public String getOutTradeNo() {
-        return outTradeNo;
-    }
-
-    public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public String getTradeNo() {
-        return tradeNo;
-    }
-
-    public void setTradeNo(String tradeNo) {
-        this.tradeNo = tradeNo;
-    }
-
-    public String getSourceTradeNo() {
-        return sourceTradeNo;
-    }
-
-    public void setSourceTradeNo(String sourceTradeNo) {
-        this.sourceTradeNo = sourceTradeNo;
-    }
-
-    public String getTradeStatus() {
-        return tradeStatus;
-    }
-
-    public void setTradeStatus(String tradeStatus) {
-        this.tradeStatus = tradeStatus;
-    }
-
-    public String getSign() {
-        return sign;
-    }
-
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
-
-    public String getPayTime() {
-        return payTime;
-    }
-
-    public void setPayTime(String payTime) {
-        this.payTime = payTime;
-    }
 
 }
