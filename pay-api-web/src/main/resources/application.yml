@@ -31,11 +31,12 @@ feign:
 
 ################################################自定义################################################
 
-snowflake:
-  #数据中心
-  data-center-id: 0
-  #最大worker id
-  worker-id-max: 31
+#弃用
+#snowflake:
+#  #数据中心
+#  data-center-id: 0
+#  #最大worker id
+#  worker-id-max: 31
 
 security:
   rsa:
