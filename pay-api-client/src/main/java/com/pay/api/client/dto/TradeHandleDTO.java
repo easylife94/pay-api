@@ -1,7 +1,7 @@
 package com.pay.api.client.dto;
 
-import com.pay.center.client.constants.DefrayalChannelEnum;
-import com.pay.center.client.constants.DefrayalTypeEnum;
+import com.pay.common.client.constants.DefrayalChannelEnum;
+import com.pay.common.client.constants.DefrayalTypeEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;

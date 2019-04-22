@@ -56,23 +56,12 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--pay-center-->
+        <!--pay-common-->
         <dependency>
             <groupId>com.pay</groupId>
-            <artifactId>pay-center-client</artifactId>
+            <artifactId>pay-common-client</artifactId>
         </dependency>
 
-        <!-- pay-api -->
-        <dependency>
-            <groupId>com.pay</groupId>
-            <artifactId>pay-center-client</artifactId>
-        </dependency>
-
-        <!-- pay-asset -->
-        <dependency>
-            <groupId>com.pay</groupId>
-            <artifactId>pay-asset-client</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
