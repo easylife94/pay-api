@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pay.api.core.dao.TradeRouteDetailDao">
+    <resultMap id="BaseResultMap" type="com.pay.api.client.model.TradeRouteDetailDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
+
+        <result column="trade_route_id" jdbcType="BIGINT" property="tradeRouteId"/>
+        <result column="service_fee_type" jdbcType="VARCHAR" property="serviceFeeType"/>
+        <result column="service_fee" jdbcType="DECIMAL" property="serviceFee"/>
+        <result column="trade_amount_min" jdbcType="DECIMAL" property="tradeAmountMin"/>
+        <result column="trade_amount_max" jdbcType="DECIMAL" property="tradeAmountMax"/>
+        <result column="platform_channel_profit_type" jdbcType="VARCHAR" property="platformChannelProfitType"/>
+        <result column="platform_channel_profit" jdbcType="DECIMAL" property="platformChannelProfit"/>
+        <result column="sys_channel_profit_type" jdbcType="VARCHAR" property="sysChannelProfitType"/>
+        <result column="sys_channel_profit" jdbcType="DECIMAL" property="sysChannelProfit"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        ,
+        gmt_create,
+        gmt_update,
+        is_deleted,
+
+        trade_route_id,
+        service_fee_type,
+        service_fee,
+        trade_amount_min,
+        trade_amount_max,
+        platform_channel_profit_type,
+        platform_channel_profit,
+        sys_channel_profit_type,
+        sys_channel_profit
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from trade_route_detailk
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from trade_route
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.pay.api.client.model.TradeRouteDetailDO">
+        insert into trade_route_detail (id, gmt_create, gmt_update, is_deleted,
+                                        trade_route_id,
+                                        service_fee_type,
+                                        service_fee,
+                                        trade_amount_min,
+                                        trade_amount_max,
+                                        platform_channel_profit_type,
+                                        platform_channel_profit,
+                                        sys_channel_profit_type,
+                                        sys_channel_profit)
+        values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP},
+                #{isDeleted,jdbcType=BIT},
+                #{tradeRouteId,jdbcType=BIGINT},
+                #{serviceFeeType,jdbcType=VARCHAR},
+                #{serviceFee,jdbcType=DECIMAL},
+                #{tradeAmountMin,jdbcType=DECIMAL},
+                #{tradeAmountMax,jdbcType=DECIMAL},
+                #{platformChannelProfitType,jdbcType=VARCHAR},
+                #{platformChannelProfit,jdbcType=DECIMAL},
+                #{sysChannelProfitType,jdbcType=VARCHAR},
+                #{sysChannelProfit,jdbcType=DECIMAL})
+    </insert>
+    <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeRouteDetailDO">
+        insert into trade_route_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtUpdate != null">
+                gmt_update,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+
+            <if test="tradeRouteId != null">
+                trade_route_id,
+            </if>
+            <if test="serviceFeeType != null">
+                service_fee_type,
+            </if>
+            <if test="serviceFee != null">
+                service_fee,
+            </if>
+            <if test="tradeAmountMin != null">
+                trade_amount_min,
+            </if>
+            <if test="tradeAmountMax != null">
+                trade_amount_max,
+            </if>
+            <if test="platformChannelProfitType != null">
+                platform_channel_profit_type,
+            </if>
+            <if test="platformChannelProfit != null">
+                platform_channel_profit,
+            </if>
+            <if test="sysChannelProfitType != null">
+                sys_channel_profit_type,
+            </if>
+            <if test="sysChannelProfit != null">
+                sys_channel_profit,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtUpdate != null">
+                #{gmtUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=BIT},
+            </if>
+
+            <if test="tradeRouteId != null">
+                #{tradeRouteId,jdbcType=BIGINT},
+            </if>
+            <if test="serviceFeeType != null">
+                #{serviceFeeType,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceFee != null">
+                #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeAmountMin != null">
+                #{tradeAmountMin,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeAmountMax != null">
+                #{tradeAmountMax,jdbcType=DECIMAL},
+            </if>
+            <if test="platformChannelProfitType != null">
+                #{platformChannelProfitType,jdbcType=VARCHAR},
+            </if>
+            <if test="platformChannelProfit != null">
+                #{platformChannelProfit,jdbcType=DECIMAL},
+            </if>
+            <if test="sysChannelProfitType != null">
+                #{sysChannelProfitType,jdbcType=VARCHAR},
+            </if>
+            <if test="sysChannelProfit != null">
+                #{sysChannelProfit,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.pay.api.client.model.TradeRouteDO">
+        update trade_route
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtUpdate != null">
+                gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=BIT},
+            </if>
+
+            <if test="tradeRouteId != null">
+                trade_route_id = #{tradeRouteId,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceFeeType != null">
+                service_fee_type = #{serviceFeeType,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceFee != null">
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeAmountMin != null">
+                trade_amount_min = #{tradeAmountMin,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeAmountMax != null">
+                trade_amount_max = #{tradeAmountMax,jdbcType=DECIMAL},
+            </if>
+            <if test="platformChannelProfitType != null">
+                platform_channel_profit_type = #{platformChannelProfitType,jdbcType=VARCHAR},
+            </if>
+            <if test="platformChannelProfit != null">
+                platform_channel_profit = #{platformChannelProfit,jdbcType=DECIMAL},
+            </if>
+            <if test="sysChannelProfitType != null">
+                sys_channel_profit_type = #{sysChannelProfitType,jdbcType=VARCHAR},
+            </if>
+            <if test="sysChannelProfit != null">
+                sys_channel_profit = #{sysChannelProfit,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.pay.api.client.model.TradeRouteDO">
+        update trade_route
+        set gmt_create                   = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_update                   = #{gmtUpdate,jdbcType=TIMESTAMP},
+            is_deleted                   = #{isDeleted,jdbcType=BIT},
+
+            trade_route_id               = #{tradeRouteId,jdbcType=VARCHAR},
+            service_fee_type             = #{serviceFeeType,jdbcType=VARCHAR},
+            service_fee                  = #{serviceFee,jdbcType=DECIMAL},
+            trade_amount_min             = #{tradeAmountMin,jdbcType=DECIMAL},
+            trade_amount_max             = #{tradeAmountMax,jdbcType=DECIMAL},
+            platform_channel_profit_type = #{platformChannelProfitType,jdbcType=VARCHAR},
+            platform_channel_profit      = #{platformChannelProfit,jdbcType=DECIMAL},
+            sys_channel_profit_type      = #{sysChannelProfitType,jdbcType=VARCHAR},
+            sys_channel_profit           = #{sysChannelProfit,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
