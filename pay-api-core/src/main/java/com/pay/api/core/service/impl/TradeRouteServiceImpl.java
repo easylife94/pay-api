@@ -1,5 +1,6 @@
 package com.pay.api.core.service.impl;
 
+import com.pay.api.client.constants.FeeTypeEnum;
 import com.pay.api.client.constants.TradeRouteRuleEnum;
 import com.pay.api.client.dto.TradeRouteCreateDTO;
 import com.pay.api.client.dto.TradeRouteDTO;
@@ -7,7 +8,9 @@ import com.pay.api.client.dto.TradeRouteMerchantDTO;
 import com.pay.api.client.dto.TradeRouteUpdateDTO;
 import com.pay.api.client.dto.mapper.MemberTradeRouteDTO;
 import com.pay.api.client.model.TradeRouteDO;
+import com.pay.api.client.model.TradeRouteDetailDO;
 import com.pay.api.core.dao.TradeRouteDao;
+import com.pay.api.core.dao.TradeRouteDetailDao;
 import com.pay.api.core.service.ITradeRouteService;
 import com.pay.common.core.service.IIdService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +39,13 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
 
     private final IIdService idService;
     private final TradeRouteDao tradeRouteDao;
+    private final TradeRouteDetailDao tradeRouteDetailDao;
 
     @Autowired
-    public TradeRouteServiceImpl(IIdService idService, TradeRouteDao tradeRouteDao) {
+    public TradeRouteServiceImpl(IIdService idService, TradeRouteDao tradeRouteDao, TradeRouteDetailDao tradeRouteDetailDao) {
         this.idService = idService;
         this.tradeRouteDao = tradeRouteDao;
+        this.tradeRouteDetailDao = tradeRouteDetailDao;
     }
 
     @Override
@@ -54,6 +59,15 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
                     finalTradeRoute.getMerchantNumber(), finalTradeRoute.getMerchantName(), finalTradeRoute.getTradeWarnDate(), finalTradeRoute.getTradeWarnTimes());
         }
 
+        TradeRouteDetailDO tradeRouteDetailDO = tradeRouteDetailDao.selectByTradeRouteId(finalTradeRoute.getId());
+        tradeRouteMerchantDTO.setServiceFeeType(FeeTypeEnum.valueOf(tradeRouteDetailDO.getServiceFeeType()));
+        tradeRouteMerchantDTO.setServiceFee(tradeRouteDetailDO.getServiceFee());
+        tradeRouteMerchantDTO.setTradeAmountMin(tradeRouteDetailDO.getTradeAmountMin());
+        tradeRouteMerchantDTO.setTradeAmountMax(tradeRouteDetailDO.getTradeAmountMax());
+        tradeRouteMerchantDTO.setPlatformChannelFeeType(FeeTypeEnum.valueOf(tradeRouteDetailDO.getPlatformChannelFeeType()));
+        tradeRouteMerchantDTO.setPlatformChannelFee(tradeRouteDetailDO.getPlatformChannelFee());
+        tradeRouteMerchantDTO.setSysChannelProfitTypeEnum(FeeTypeEnum.valueOf(tradeRouteDetailDO.getPlatformChannelFeeType()));
+        tradeRouteMerchantDTO.setSysChannelProfit(tradeRouteDetailDO.getSysChannelProfit());
         return tradeRouteMerchantDTO;
     }
 

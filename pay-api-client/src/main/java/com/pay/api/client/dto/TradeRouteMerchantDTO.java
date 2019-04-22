@@ -1,7 +1,9 @@
 package com.pay.api.client.dto;
 
+import com.pay.api.client.constants.FeeTypeEnum;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -38,6 +40,25 @@ public class TradeRouteMerchantDTO {
     private Date tradeWarnDate;
 
     private Integer tradeWarnTimes;
+
+
+    //todo 新增交易路由详情字段
+    private FeeTypeEnum serviceFeeType;
+
+    private BigDecimal serviceFee;
+
+    private BigDecimal tradeAmountMin;
+
+    private BigDecimal tradeAmountMax;
+
+    private FeeTypeEnum platformChannelFeeType;
+
+    private BigDecimal platformChannelFee;
+
+    private FeeTypeEnum sysChannelProfitTypeEnum;
+
+    private BigDecimal sysChannelProfit;
+
 
     public TradeRouteMerchantDTO(Long tradeRouteId, String platformMapped, Long platformId, String platformNumber, String platformName, Long channelId, String channelNumber,
                                  String channelName, Long merchantId, String merchantNumber, String merchantName, Date tradeWarnDate, Integer tradeWarnTimes) {

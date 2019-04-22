@@ -7,9 +7,11 @@ import com.pay.api.client.dto.method.ApiPayUnifiedPayDTO;
 import com.pay.api.client.dto.method.ApiPayUnifiedPayResultDTO;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeOrderDO;
+import com.pay.api.client.model.TradeRouteDetailDO;
 import com.pay.api.client.utils.DateUtils;
 import com.pay.api.core.method.AbstractPayApiMethod;
 import com.pay.api.core.service.ITradeOrderService;
+import com.pay.api.core.service.ITradeRouteDetailService;
 import com.pay.api.core.service.ITradeRouteService;
 import com.pay.api.core.service.ITradeService;
 import com.pay.common.client.constants.DefrayalChannelEnum;
@@ -37,14 +39,18 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
     private static BigDecimal minTradeAmount = new BigDecimal("0.01");
 
     private final ITradeRouteService tradeRouteService;
+    private final ITradeRouteDetailService tradeRouteDetailService;
     private final ITradeOrderService tradeOrderService;
     private final ITradeService tradeService;
     private final IDistributedLockService distributedLockService;
 
     @Autowired
-    public PayApiMethodUnifiedPay(ITradeOrderService tradeOrderService, ITradeRouteService tradeRouteService, ITradeService tradeService, IDistributedLockService distributedLockService) {
+    public PayApiMethodUnifiedPay(ITradeOrderService tradeOrderService, ITradeRouteService tradeRouteService,
+                                  ITradeRouteDetailService tradeRouteDetailService, ITradeService tradeService,
+                                  IDistributedLockService distributedLockService) {
         this.tradeOrderService = tradeOrderService;
         this.tradeRouteService = tradeRouteService;
+        this.tradeRouteDetailService = tradeRouteDetailService;
         this.tradeService = tradeService;
         this.distributedLockService = distributedLockService;
     }

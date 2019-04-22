@@ -22,9 +22,9 @@ public class TradeRouteDetailDO extends AbstractBaseDO {
 
     private BigDecimal tradeAmountMax;
 
-    private String platformChannelProfitType;
+    private String platformChannelFeeType;
 
-    private BigDecimal platformChannelProfit;
+    private BigDecimal platformChannelFee;
 
     private String sysChannelProfitType;
 
