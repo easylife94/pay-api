@@ -85,7 +85,7 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
 
         //系统订单信息
         tradeOrderDO.setSysOrderNumber(idService.generateOrderNumber(tradeOrderNumberPrefix));
-        tradeOrderDO.setSysOrderTime(orderTime.getTime());
+        tradeOrderDO.setSysOrderTime(orderTime);
         tradeOrderDO.setTitle(tradeOrderCreateDTO.getTitle());
         tradeOrderDO.setBody(tradeOrderCreateDTO.getBody());
         tradeOrderDO.setAttach(tradeOrderCreateDTO.getAttach());
@@ -119,8 +119,8 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
 
     @Override
     public Boolean memberOrderExisted(String memberNumber, String memberOrderNumber) {
-        long count = tradeOrderDao.countByMemberOrderNumber(memberNumber,memberOrderNumber);
-        if(count <= 0){
+        long count = tradeOrderDao.countByMemberOrderNumber(memberNumber, memberOrderNumber);
+        if (count <= 0) {
             return false;
         } else {
             return true;

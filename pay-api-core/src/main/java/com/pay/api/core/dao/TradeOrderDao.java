@@ -56,6 +56,6 @@ public interface TradeOrderDao {
      * @return
      */
     int updateByCompleteTrade(String sysOrderNumber, String platformOrderNumber, String sourceOrderNumber,
-                              Long payTime, Long platformNotifyTime, Long platformOrderTime, String tradeStatus, Date gmtUpdate);
+                              Date payTime, Date platformNotifyTime, Date platformOrderTime, String tradeStatus, Date gmtUpdate);
 
 }

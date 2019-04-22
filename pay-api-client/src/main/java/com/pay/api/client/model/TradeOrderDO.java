@@ -25,19 +25,19 @@ public class TradeOrderDO {
 
     private String tradeType;
 
-    private Long sysOrderTime;
+    private Date sysOrderTime;
 
-    private Long platformOrderTime;
+    private Date platformOrderTime;
 
-    private Long payTime;
+    private Date payTime;
 
-    private Long sysCheckTime;
+    private Date sysCheckTime;
 
-    private Long platformCheckTime;
+    private Date platformCheckTime;
 
-    private Long sysNotifyTime;
+    private Date sysNotifyTime;
 
-    private Long platformNotifyTime;
+    private Date platformNotifyTime;
 
     private String tradeStatus;
 

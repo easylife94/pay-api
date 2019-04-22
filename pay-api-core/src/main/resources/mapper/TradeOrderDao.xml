@@ -11,13 +11,13 @@
     <result column="platform_order_number" jdbcType="VARCHAR" property="platformOrderNumber" />
     <result column="source_order_number" jdbcType="VARCHAR" property="sourceOrderNumber" />
     <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
-    <result column="sys_order_time" jdbcType="BIGINT" property="sysOrderTime" />
-    <result column="platform_order_time" jdbcType="BIGINT" property="platformOrderTime" />
-    <result column="pay_time" jdbcType="BIGINT" property="payTime" />
-    <result column="sys_check_time" jdbcType="BIGINT" property="sysCheckTime" />
-    <result column="platform_check_time" jdbcType="BIGINT" property="platformCheckTime" />
-    <result column="sys_notify_time" jdbcType="BIGINT" property="sysNotifyTime" />
-    <result column="platform_notify_time" jdbcType="BIGINT" property="platformNotifyTime" />
+    <result column="sys_order_time" jdbcType="TIMESTAMP" property="sysOrderTime" />
+    <result column="platform_order_time" jdbcType="TIMESTAMP" property="platformOrderTime" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="sys_check_time" jdbcType="TIMESTAMP" property="sysCheckTime" />
+    <result column="platform_check_time" jdbcType="TIMESTAMP" property="platformCheckTime" />
+    <result column="sys_notify_time" jdbcType="TIMESTAMP" property="sysNotifyTime" />
+    <result column="platform_notify_time" jdbcType="TIMESTAMP" property="platformNotifyTime" />
     <result column="trade_status" jdbcType="VARCHAR" property="tradeStatus" />
     <result column="notify_status" jdbcType="VARCHAR" property="notifyStatus" />
     <result column="check_status" jdbcType="VARCHAR" property="checkStatus" />
@@ -123,9 +123,9 @@
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=BIT}, #{sysOrderNumber,jdbcType=VARCHAR}, #{memberOrderNumber,jdbcType=VARCHAR}, 
       #{platformOrderNumber,jdbcType=VARCHAR}, #{sourceOrderNumber,jdbcType=VARCHAR}, 
-      #{tradeType,jdbcType=VARCHAR}, #{sysOrderTime,jdbcType=BIGINT}, #{platformOrderTime,jdbcType=BIGINT}, 
-      #{payTime,jdbcType=BIGINT}, #{sysCheckTime,jdbcType=BIGINT}, #{platformCheckTime,jdbcType=BIGINT}, 
-      #{sysNotifyTime,jdbcType=BIGINT}, #{platformNotifyTime,jdbcType=BIGINT}, #{tradeStatus,jdbcType=VARCHAR}, 
+      #{tradeType,jdbcType=VARCHAR}, #{sysOrderTime,jdbcType=TIMESTAMP}, #{platformOrderTime,jdbcType=TIMESTAMP},
+      #{payTime,jdbcType=TIMESTAMP}, #{sysCheckTime,jdbcType=TIMESTAMP}, #{platformCheckTime,jdbcType=TIMESTAMP},
+      #{sysNotifyTime,jdbcType=TIMESTAMP}, #{platformNotifyTime,jdbcType=TIMESTAMP}, #{tradeStatus,jdbcType=VARCHAR},
       #{notifyStatus,jdbcType=VARCHAR}, #{checkStatus,jdbcType=VARCHAR}, #{defrayalChannel,jdbcType=VARCHAR}, 
       #{defrayalType,jdbcType=VARCHAR}, #{memberId,jdbcType=BIGINT}, #{memberNumber,jdbcType=VARCHAR}, 
       #{memberName,jdbcType=VARCHAR}, #{agentId,jdbcType=BIGINT}, #{agentNumber,jdbcType=VARCHAR}, 
@@ -348,25 +348,25 @@
         #{tradeType,jdbcType=VARCHAR},
       </if>
       <if test="sysOrderTime != null">
-        #{sysOrderTime,jdbcType=BIGINT},
+        #{sysOrderTime,jdbcType=TIMESTAMP},
       </if>
       <if test="platformOrderTime != null">
-        #{platformOrderTime,jdbcType=BIGINT},
+        #{platformOrderTime,jdbcType=TIMESTAMP},
       </if>
       <if test="payTime != null">
-        #{payTime,jdbcType=BIGINT},
+        #{payTime,jdbcType=TIMESTAMP},
       </if>
       <if test="sysCheckTime != null">
-        #{sysCheckTime,jdbcType=BIGINT},
+        #{sysCheckTime,jdbcType=TIMESTAMP},
       </if>
       <if test="platformCheckTime != null">
-        #{platformCheckTime,jdbcType=BIGINT},
+        #{platformCheckTime,jdbcType=TIMESTAMP},
       </if>
       <if test="sysNotifyTime != null">
-        #{sysNotifyTime,jdbcType=BIGINT},
+        #{sysNotifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="platformNotifyTime != null">
-        #{platformNotifyTime,jdbcType=BIGINT},
+        #{platformNotifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="tradeStatus != null">
         #{tradeStatus,jdbcType=VARCHAR},
