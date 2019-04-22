@@ -78,6 +78,8 @@ public class TradeServiceImpl implements ITradeService {
                     tradeCompleteMessageDTO.setSysOrderNumber(tradeOrderDO.getSysOrderNumber());
                     tradeCompleteMessageDTO.setServiceFee(tradeOrderDO.getServiceFee());
                     tradeCompleteMessageDTO.setTradeAmount(tradeOrderDO.getTradeAmount());
+                    tradeCompleteMessageDTO.setOwnNumber(tradeOrderDO.getMemberNumber());
+                    tradeCompleteMessageDTO.setTradeTime(tradeOrderDO.getSysOrderTime());
                     rabbitMqSender.sendTradeCompleteMessages(tradeCompleteMessageDTO);
                     break;
                 case SUCCESS:

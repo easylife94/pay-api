@@ -1,5 +1,6 @@
 package com.pay.api.core.rabbit;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.PayApiMessageQueueNames;
 import com.pay.api.client.dto.async.TradeCompleteMessageDTO;
 import com.pay.api.client.dto.async.TradeCreateMessageDTO;
@@ -47,18 +48,23 @@ public class RabbitMqSender {
         WalletRecordMessageDTO walletRecordMessageDTO = new WalletRecordMessageDTO();
         walletRecordMessageDTO.setOrderStatus(WalletRecordOrderStatusEnum.PAYMENT);
         walletRecordMessageDTO.setOrderType(WalletRecordOrderTypeEnum.TRADE_ORDER);
+        walletRecordMessageDTO.setOrderNumber(tradeCompleteMessageDTO.getSysOrderNumber());
         walletRecordMessageDTO.setOwnNumber(tradeCompleteMessageDTO.getSysOrderNumber());
         walletRecordMessageDTO.setOwnRole(WalletOwnRoleEnum.MEMBER);
+        walletRecordMessageDTO.setOwnNumber(tradeCompleteMessageDTO.getOwnNumber());
         List<WalletSubRecordDTO> subRecords = new ArrayList<>();
         //1.1会员服务费支出
         WalletSubRecordDTO memberServiceFeeOutRecord = new WalletSubRecordDTO();
         memberServiceFeeOutRecord.setAmount(tradeCompleteMessageDTO.getServiceFee());
         memberServiceFeeOutRecord.setPaymentType(WalletRecordPaymentTypeEnum.OUT);
-        memberServiceFeeOutRecord.setTradeType(WalletRecordTradeTypeEnum.MEMBER_TRADE_SERVICE_FEE);
+        memberServiceFeeOutRecord.setTradeType(WalletRecordTradeTypeEnum.TRADE_SERVICE_FEE);
+        memberServiceFeeOutRecord.setTradeTime(tradeCompleteMessageDTO.getTradeTime());
+        subRecords.add(memberServiceFeeOutRecord);
         walletRecordMessageDTO.setSubRecords(subRecords);
-        amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_WALLET_RECORD, walletRecordMessageDTO);
-        //2.结算任务
-        //3.回调任务
+
+        amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_WALLET_RECORD, JSONObject.toJSONString(walletRecordMessageDTO));
+        //2.结算消息
+        //3.回调消息
         //4.消息推送
 
     }

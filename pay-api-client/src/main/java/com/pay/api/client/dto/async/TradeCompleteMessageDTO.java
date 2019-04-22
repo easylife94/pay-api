@@ -3,6 +3,7 @@ package com.pay.api.client.dto.async;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author chenwei
@@ -25,6 +26,16 @@ public class TradeCompleteMessageDTO {
      * 服务费
      */
     private BigDecimal serviceFee;
+
+    /**
+     * 拥有者编号
+     */
+    private String ownNumber;
+
+    /**
+     * 交易时间
+     */
+    private Date tradeTime;
 
 
 }
