@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pay.api.core.dao.TradeMemberServiceFeeDao">
+    <resultMap id="BaseResultMap" type="com.pay.api.client.model.TradeMemberServiceFeeDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
+
+        <result column="member_id" jdbcType="BIGINT" property="memberId"/>
+        <result column="service_fee_type" jdbcType="VARCHAR" property="serviceFeeType"/>
+        <result column="service_fee" jdbcType="DECIMAL" property="serviceFee"/>
+        <result column="trade_amount_min" jdbcType="DECIMAL" property="tradeAmountMin"/>
+        <result column="trade_amount_max" jdbcType="DECIMAL" property="tradeAmountMax"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        ,
+        gmt_create,
+        gmt_update,
+        is_deleted,
+
+        member_id,
+        service_fee_type,
+        service_fee,
+        trade_amount_min,
+        trade_amount_max
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from trade_member_service_fee
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from trade_member_service_fee
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.pay.api.client.model.TradeMemberServiceFeeDO">
+        insert into trade_member_service_fee (id, gmt_create, gmt_update, is_deleted,
+                                              member_id,
+                                              service_fee_type,
+                                              service_fee,
+                                              trade_amount_min,
+                                              trade_amount_max)
+        values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP},
+                #{isDeleted,jdbcType=BIT},
+                #{memberId,jdbcType=BIGINT},
+                #{serviceFeeType,jdbcType=VARCHAR},
+                #{serviceFee,jdbcType=DECIMAL},
+                #{tradeAmountMin,jdbcType=DECIMAL},
+                #{tradeAmountMax,jdbcType=DECIMAL})
+    </insert>
+    <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeMemberServiceFeeDO">
+        insert into trade_member_service_fee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtUpdate != null">
+                gmt_update,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="serviceFeeType != null">
+                service_fee_type,
+            </if>
+            <if test="serviceFee != null">
+                service_fee,
+            </if>
+            <if test="tradeAmountMin != null">
+                trade_amount_min,
+            </if>
+            <if test="tradeAmountMax != null">
+                trade_amount_max,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtUpdate != null">
+                #{gmtUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=BIT},
+            </if>
+
+            <if test="memberId != null">
+                #{memberId,jdbcType=BIGINT},
+            </if>
+            <if test="serviceFeeType != null">
+                #{serviceFeeType,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceFee != null">
+                #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeAmountMin != null">
+                #{tradeAmountMin,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeAmountMax != null">
+                #{tradeAmountMax,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.pay.api.client.model.TradeMemberServiceFeeDO">
+        update trade_member_service_fee
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtUpdate != null">
+                gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=BIT},
+            </if>
+
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceFeeType != null">
+                service_fee_type = #{serviceFeeType,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceFee != null">
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeAmountMin != null">
+                trade_amount_min = #{tradeAmountMin,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeAmountMax != null">
+                trade_amount_max = #{tradeAmountMax,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.pay.api.client.model.TradeMemberServiceFeeDO">
+        update trade_member_service_fee
+        set gmt_create                = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_update                = #{gmtUpdate,jdbcType=TIMESTAMP},
+            is_deleted                = #{isDeleted,jdbcType=BIT},
+
+            member_id                 = #{memberId,jdbcType=VARCHAR},
+            service_fee_type          = #{serviceFeeType,jdbcType=VARCHAR},
+            service_fee               = #{serviceFee,jdbcType=DECIMAL},
+            trade_amount_min          = #{tradeAmountMin,jdbcType=DECIMAL},
+            trade_amount_max          = #{tradeAmountMax,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByMemberId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from trade_member_service_fee
+        where member_id = #{memberId,jdbcType=BIGINT}
+    </select>
+
+</mapper>
