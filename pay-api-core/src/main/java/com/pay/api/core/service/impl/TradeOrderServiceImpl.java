@@ -6,6 +6,7 @@ import com.pay.api.client.constants.TradeOrderNotifyStatusEnum;
 import com.pay.api.client.constants.TradeOrderStatusEnum;
 import com.pay.api.client.dto.TradeOrderCreateDTO;
 import com.pay.api.client.model.TradeOrderDO;
+import com.pay.api.client.utils.FeeUtils;
 import com.pay.api.core.dao.TradeOrderDao;
 import com.pay.api.core.service.ITradeOrderService;
 import com.pay.common.core.service.IIdService;
@@ -93,8 +94,12 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
         //币种
         tradeOrderDO.setCurrency(TradeOrderCurrencyEnum.CNY.getType());
 
-        //todo 服务费,先暂时设置为0
-        tradeOrderDO.setServiceFee(new BigDecimal(0));
+
+        tradeOrderDO.setTradeRouteId(tradeOrderCreateDTO.getTradeRouteId());
+        //服务费
+        BigDecimal serviceFee = FeeUtils.fee(tradeOrderCreateDTO.getServiceFees(), tradeOrderCreateDTO.getTradeAmount());
+        tradeOrderDO.setServiceFee(serviceFee);
+
         //创建订单时实际发起支付金额 = 交易金额
         tradeOrderDO.setPayAmount(tradeOrderCreateDTO.getTradeAmount());
         tradeOrderDO.setTradeAmount(tradeOrderCreateDTO.getTradeAmount());
@@ -131,4 +136,6 @@ public class TradeOrderServiceImpl implements ITradeOrderService {
     public boolean saveTradeOrder(TradeOrderDO tradeOrderDO) {
         return tradeOrderDao.insertSelective(tradeOrderDO) > 0;
     }
+
+
 }

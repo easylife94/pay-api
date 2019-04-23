@@ -1,9 +1,11 @@
 package com.pay.api.client.dto;
 
+import com.pay.api.client.dto.method.ApiPayUnifiedPayDTO;
+import com.pay.api.client.utils.FeeUtils;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.StringJoiner;
+import java.util.List;
 
 /**
  * @author chenwei
@@ -36,34 +38,40 @@ public class TradeOrderCreateDTO {
     private String title;
     private String body;
     private String attach;
+    private Long tradeRouteId;
+    private List<FeeUtils.Fee> serviceFees;
 
-    public TradeOrderCreateDTO(Long memberId, String memberNumber, String memberName, Long agentId, String agentNumber, String agentName,
-                               String agentLevel, String defrayalChannel, String defrayalType, String memberOrderNumber, BigDecimal tradeAmount,
-                               Long merchantId, String merchantNumber, String merchantName, Long platformId,String platformMapped, String platformNumber, String platformName,
-                               Long channelId, String channelNumber, String channelName, String title, String body, String attach) {
-        this.memberId = memberId;
-        this.memberNumber = memberNumber;
-        this.memberName = memberName;
-        this.agentId = agentId;
-        this.agentNumber = agentNumber;
-        this.agentName = agentName;
-        this.agentLevel = agentLevel;
-        this.defrayalChannel = defrayalChannel;
-        this.defrayalType = defrayalType;
-        this.memberOrderNumber = memberOrderNumber;
-        this.tradeAmount = tradeAmount;
-        this.merchantId = merchantId;
-        this.merchantNumber = merchantNumber;
-        this.merchantName = merchantName;
-        this.platformId = platformId;
-        this.platformMapped = platformMapped;
-        this.platformNumber = platformNumber;
-        this.platformName = platformName;
-        this.channelId = channelId;
-        this.channelNumber = channelNumber;
-        this.channelName = channelName;
-        this.title = title;
-        this.body = body;
-        this.attach = attach;
+    public TradeOrderCreateDTO(ApiPayUnifiedPayDTO apiPayUnifiedPayDTO, TradeMemberDTO memberDTO, TradeRouteMerchantDTO tradeRouteDTO) {
+
+        this.memberOrderNumber = apiPayUnifiedPayDTO.getMemberOrderNumber();
+        this.tradeAmount = new BigDecimal(apiPayUnifiedPayDTO.getTradeAmount());
+        this.defrayalChannel = apiPayUnifiedPayDTO.getDefrayalChannel();
+        this.defrayalType = apiPayUnifiedPayDTO.getDefrayalType();
+        this.title = apiPayUnifiedPayDTO.getTitle();
+        this.body = apiPayUnifiedPayDTO.getBody();
+        this.attach = apiPayUnifiedPayDTO.getAttach();
+
+        this.memberId = memberDTO.getMemberId();
+        this.memberNumber = memberDTO.getMemberNumber();
+        this.memberName = memberDTO.getMemberName();
+        this.agentId = memberDTO.getAgentId();
+        this.agentNumber = memberDTO.getAgentNumber();
+        this.agentName = memberDTO.getAgentName();
+        this.agentLevel = memberDTO.getAgentLevel();
+
+        this.merchantId = tradeRouteDTO.getMerchantId();
+        this.merchantNumber = tradeRouteDTO.getMerchantNumber();
+        this.merchantName = tradeRouteDTO.getMerchantName();
+        this.platformId = tradeRouteDTO.getPlatformId();
+        this.platformMapped = tradeRouteDTO.getPlatformMapped();
+        this.platformNumber = tradeRouteDTO.getPlatformNumber();
+        this.platformName = tradeRouteDTO.getPlatformName();
+        this.channelId = tradeRouteDTO.getChannelId();
+        this.channelNumber = tradeRouteDTO.getChannelNumber();
+        this.channelName = tradeRouteDTO.getChannelName();
+        this.tradeRouteId = tradeRouteDTO.getTradeRouteId();
+
+        this.serviceFees = memberDTO.getServiceFees();
+
     }
 }
