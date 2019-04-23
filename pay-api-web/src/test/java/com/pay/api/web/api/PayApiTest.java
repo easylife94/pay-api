@@ -99,12 +99,12 @@ public class PayApiTest extends PayApiWebApplicationTests {
         apiPayDTO.setEncrypt(false);
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
-        apiPayUnifiedPayDTO.setTradeAmount("0.01");
+        apiPayUnifiedPayDTO.setTradeAmount("100.00");
         apiPayUnifiedPayDTO.setTitle("测试下单");
         apiPayUnifiedPayDTO.setBody("测试下单详情，请看这里");
         apiPayUnifiedPayDTO.setAttach("查询订单和回调会返回");
         apiPayUnifiedPayDTO.setDefrayalChannel("ALI");
-        apiPayUnifiedPayDTO.setDefrayalType("JSAPI");
+        apiPayUnifiedPayDTO.setDefrayalType("NATIVE");
         apiPayUnifiedPayDTO.setCurrency("CNY");
         apiPayUnifiedPayDTO.setNotifyUrl("http://baidu.com");
         apiPayUnifiedPayDTO.setMemberOrderNumber(System.currentTimeMillis() + "");
@@ -546,12 +546,12 @@ public class PayApiTest extends PayApiWebApplicationTests {
         apiPayDTO.setEncrypt(false);
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
-        apiPayUnifiedPayDTO.setTradeAmount("0.01");
+        apiPayUnifiedPayDTO.setTradeAmount("100.01");
         apiPayUnifiedPayDTO.setTitle("测试下单");
         apiPayUnifiedPayDTO.setBody("测试下单详情，请看这里");
         apiPayUnifiedPayDTO.setAttach("查询订单和回调会返回");
         apiPayUnifiedPayDTO.setDefrayalChannel("ALI");
-        apiPayUnifiedPayDTO.setDefrayalType("JSAPI");
+        apiPayUnifiedPayDTO.setDefrayalType("NATIVE");
         apiPayUnifiedPayDTO.setCurrency("CNY");
         apiPayUnifiedPayDTO.setNotifyUrl("http://baidu.com");
         apiPayUnifiedPayDTO.setMemberOrderNumber(System.currentTimeMillis() + "");
