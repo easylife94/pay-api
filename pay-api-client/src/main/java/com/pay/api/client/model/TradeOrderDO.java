@@ -122,4 +122,6 @@ public class TradeOrderDO {
     private String attach;
 
     private String payContent;
+
+    private Long tradeRouteId;
 }
