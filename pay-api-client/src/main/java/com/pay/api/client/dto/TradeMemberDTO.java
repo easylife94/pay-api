@@ -1,6 +1,9 @@
 package com.pay.api.client.dto;
 
+import com.pay.api.client.utils.FeeUtils;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author chenwei
@@ -19,10 +22,12 @@ public class TradeMemberDTO {
     private String agentNumber;
     private String agentName;
     private String agentLevel;
+    private List<FeeUtils.Fee> serviceFees;
+
 
     public TradeMemberDTO(Long memberId, String memberNumber, String memberName, String memberPubKey,
                           String sysPubKey, String sysPriKey, Long agentId, String agentNumber,
-                          String agentName, String agentLevel) {
+                          String agentName, String agentLevel,List<FeeUtils.Fee> serviceFees) {
         this.memberId = memberId;
         this.memberNumber = memberNumber;
         this.memberName = memberName;
@@ -33,5 +38,6 @@ public class TradeMemberDTO {
         this.agentNumber = agentNumber;
         this.agentName = agentName;
         this.agentLevel = agentLevel;
+        this.serviceFees = serviceFees;
     }
 }
