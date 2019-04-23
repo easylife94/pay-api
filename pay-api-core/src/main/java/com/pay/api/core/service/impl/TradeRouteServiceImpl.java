@@ -59,15 +59,13 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
                     finalTradeRoute.getMerchantNumber(), finalTradeRoute.getMerchantName(), finalTradeRoute.getTradeWarnDate(), finalTradeRoute.getTradeWarnTimes());
         }
 
-        TradeRouteDetailDO tradeRouteDetailDO = tradeRouteDetailDao.selectByTradeRouteId(finalTradeRoute.getId());
-        tradeRouteMerchantDTO.setServiceFeeType(FeeTypeEnum.valueOf(tradeRouteDetailDO.getServiceFeeType()));
-        tradeRouteMerchantDTO.setServiceFee(tradeRouteDetailDO.getServiceFee());
-        tradeRouteMerchantDTO.setTradeAmountMin(tradeRouteDetailDO.getTradeAmountMin());
-        tradeRouteMerchantDTO.setTradeAmountMax(tradeRouteDetailDO.getTradeAmountMax());
-        tradeRouteMerchantDTO.setPlatformChannelFeeType(FeeTypeEnum.valueOf(tradeRouteDetailDO.getPlatformChannelFeeType()));
-        tradeRouteMerchantDTO.setPlatformChannelFee(tradeRouteDetailDO.getPlatformChannelFee());
-        tradeRouteMerchantDTO.setSysChannelProfitTypeEnum(FeeTypeEnum.valueOf(tradeRouteDetailDO.getPlatformChannelFeeType()));
-        tradeRouteMerchantDTO.setSysChannelProfit(tradeRouteDetailDO.getSysChannelProfit());
+//        TradeRouteDetailDO tradeRouteDetailDO = tradeRouteDetailDao.selectByTradeRouteId(finalTradeRoute.getId());
+//        tradeRouteMerchantDTO.setTradeAmountMin(tradeRouteDetailDO.getTradeAmountMin());
+//        tradeRouteMerchantDTO.setTradeAmountMax(tradeRouteDetailDO.getTradeAmountMax());
+//        tradeRouteMerchantDTO.setPlatformChannelFeeType(FeeTypeEnum.valueOf(tradeRouteDetailDO.getPlatformChannelFeeType()));
+//        tradeRouteMerchantDTO.setPlatformChannelFee(tradeRouteDetailDO.getPlatformChannelFee());
+//        tradeRouteMerchantDTO.setSysChannelProfitTypeEnum(FeeTypeEnum.valueOf(tradeRouteDetailDO.getPlatformChannelFeeType()));
+//        tradeRouteMerchantDTO.setSysChannelProfit(tradeRouteDetailDO.getSysChannelProfit());
         return tradeRouteMerchantDTO;
     }
 

@@ -14,10 +14,6 @@ public class TradeRouteDetailDO extends AbstractBaseDO {
 
     private Long tradeRouteId;
 
-    private String serviceFeeType;
-
-    private BigDecimal serviceFee;
-
     private BigDecimal tradeAmountMin;
 
     private BigDecimal tradeAmountMax;

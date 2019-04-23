@@ -8,8 +8,6 @@
         <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
 
         <result column="trade_route_id" jdbcType="BIGINT" property="tradeRouteId"/>
-        <result column="service_fee_type" jdbcType="VARCHAR" property="serviceFeeType"/>
-        <result column="service_fee" jdbcType="DECIMAL" property="serviceFee"/>
         <result column="trade_amount_min" jdbcType="DECIMAL" property="tradeAmountMin"/>
         <result column="trade_amount_max" jdbcType="DECIMAL" property="tradeAmountMax"/>
         <result column="platform_channel_fee_type" jdbcType="VARCHAR" property="platformChannelFeeType"/>
@@ -25,8 +23,6 @@
         is_deleted,
 
         trade_route_id,
-        service_fee_type,
-        service_fee,
         trade_amount_min,
         trade_amount_max,
         platform_channel_fee_type,
@@ -37,7 +33,7 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from trade_route_detailk
+        from trade_route_detail
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -48,8 +44,6 @@
     <insert id="insert" parameterType="com.pay.api.client.model.TradeRouteDetailDO">
         insert into trade_route_detail (id, gmt_create, gmt_update, is_deleted,
                                         trade_route_id,
-                                        service_fee_type,
-                                        service_fee,
                                         trade_amount_min,
                                         trade_amount_max,
                                         platform_channel_fee_type,
@@ -59,8 +53,6 @@
         values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP},
                 #{isDeleted,jdbcType=BIT},
                 #{tradeRouteId,jdbcType=BIGINT},
-                #{serviceFeeType,jdbcType=VARCHAR},
-                #{serviceFee,jdbcType=DECIMAL},
                 #{tradeAmountMin,jdbcType=DECIMAL},
                 #{tradeAmountMax,jdbcType=DECIMAL},
                 #{platformChannelFeeType,jdbcType=VARCHAR},
@@ -86,12 +78,6 @@
 
             <if test="tradeRouteId != null">
                 trade_route_id,
-            </if>
-            <if test="serviceFeeType != null">
-                service_fee_type,
-            </if>
-            <if test="serviceFee != null">
-                service_fee,
             </if>
             <if test="tradeAmountMin != null">
                 trade_amount_min,
@@ -129,12 +115,6 @@
             <if test="tradeRouteId != null">
                 #{tradeRouteId,jdbcType=BIGINT},
             </if>
-            <if test="serviceFeeType != null">
-                #{serviceFeeType,jdbcType=VARCHAR},
-            </if>
-            <if test="serviceFee != null">
-                #{serviceFee,jdbcType=DECIMAL},
-            </if>
             <if test="tradeAmountMin != null">
                 #{tradeAmountMin,jdbcType=DECIMAL},
             </if>
@@ -171,12 +151,6 @@
             <if test="tradeRouteId != null">
                 trade_route_id = #{tradeRouteId,jdbcType=VARCHAR},
             </if>
-            <if test="serviceFeeType != null">
-                service_fee_type = #{serviceFeeType,jdbcType=VARCHAR},
-            </if>
-            <if test="serviceFee != null">
-                service_fee = #{serviceFee,jdbcType=DECIMAL},
-            </if>
             <if test="tradeAmountMin != null">
                 trade_amount_min = #{tradeAmountMin,jdbcType=DECIMAL},
             </if>
@@ -205,8 +179,6 @@
             is_deleted                = #{isDeleted,jdbcType=BIT},
 
             trade_route_id            = #{tradeRouteId,jdbcType=VARCHAR},
-            service_fee_type          = #{serviceFeeType,jdbcType=VARCHAR},
-            service_fee               = #{serviceFee,jdbcType=DECIMAL},
             trade_amount_min          = #{tradeAmountMin,jdbcType=DECIMAL},
             trade_amount_max          = #{tradeAmountMax,jdbcType=DECIMAL},
             platform_channel_fee_type = #{platformChannelFeeType,jdbcType=VARCHAR},
@@ -219,7 +191,7 @@
     <select id="selectByTradeRouteId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from trade_route_detailk
+        from trade_route_detail
         where trade_route_id = #{tradeRouteId,jdbcType=BIGINT}
     </select>
 
