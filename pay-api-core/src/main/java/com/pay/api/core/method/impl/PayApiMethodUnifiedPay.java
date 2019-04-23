@@ -7,7 +7,6 @@ import com.pay.api.client.dto.method.ApiPayUnifiedPayDTO;
 import com.pay.api.client.dto.method.ApiPayUnifiedPayResultDTO;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.client.model.TradeOrderDO;
-import com.pay.api.client.model.TradeRouteDetailDO;
 import com.pay.api.client.utils.DateUtils;
 import com.pay.api.core.method.AbstractPayApiMethod;
 import com.pay.api.core.service.ITradeOrderService;
@@ -180,11 +179,7 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             tradeRouteUpdateDTO.setTradeWarnDate(routeMerchant.getTradeWarnDate());
 
             //3.生成订单
-            TradeOrderCreateDTO tradeOrderCreateDTO = new TradeOrderCreateDTO(memberDTO.getMemberId(), memberDTO.getMemberNumber(), memberDTO.getMemberName(), memberDTO.getAgentId(), memberDTO.getAgentNumber(),
-                    memberDTO.getAgentName(), memberDTO.getAgentLevel(), apiPayUnifiedPayDTO.getDefrayalChannel(), apiPayUnifiedPayDTO.getDefrayalType(), apiPayUnifiedPayDTO.getMemberOrderNumber(),
-                    new BigDecimal(apiPayUnifiedPayDTO.getTradeAmount()), routeMerchant.getMerchantId(), routeMerchant.getMerchantNumber(), routeMerchant.getMerchantName(), routeMerchant.getPlatformId(),
-                    routeMerchant.getPlatformMapped(), routeMerchant.getPlatformNumber(), routeMerchant.getPlatformName(), routeMerchant.getChannelId(),
-                    routeMerchant.getChannelNumber(), routeMerchant.getChannelName(), apiPayUnifiedPayDTO.getTitle(), apiPayUnifiedPayDTO.getBody(), apiPayUnifiedPayDTO.getAttach());
+            TradeOrderCreateDTO tradeOrderCreateDTO = new TradeOrderCreateDTO(apiPayUnifiedPayDTO, memberDTO, routeMerchant);
             TradeOrderDO tradeOrder = tradeOrderService.createTradeOrder(tradeOrderCreateDTO);
 
             //4.交易处理
@@ -240,10 +235,9 @@ public class PayApiMethodUnifiedPay extends AbstractPayApiMethod<ApiPayUnifiedPa
             return apiPayMethodResultDTO;
         } finally {
             distributedLockService.unlock(lockKey);
-            logger.info("方法耗时：{}",(System.currentTimeMillis() - begin));
+            logger.info("方法耗时：{}", (System.currentTimeMillis() - begin));
         }
     }
-
 
 
 }
