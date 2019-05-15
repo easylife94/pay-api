@@ -31,7 +31,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * @author chenwei
@@ -99,7 +101,10 @@ public class PayApiTest extends PayApiWebApplicationTests {
         apiPayDTO.setEncrypt(false);
 
         ApiPayUnifiedPayDTO apiPayUnifiedPayDTO = new ApiPayUnifiedPayDTO();
-        apiPayUnifiedPayDTO.setTradeAmount("100.00");
+        BigDecimal unitAmount = new BigDecimal("0.01");
+        Random ra = new Random();
+        BigDecimal tradeAmount = unitAmount.multiply(new BigDecimal(ra.nextInt(10000) + 1));
+        apiPayUnifiedPayDTO.setTradeAmount(tradeAmount.toString());
         apiPayUnifiedPayDTO.setTitle("测试下单");
         apiPayUnifiedPayDTO.setBody("测试下单详情，请看这里");
         apiPayUnifiedPayDTO.setAttach("查询订单和回调会返回");
