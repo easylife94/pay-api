@@ -1,12 +1,12 @@
 package com.pay.api.web.api;
 
+import com.pay.api.client.constants.FeeTypeEnum;
+import com.pay.api.client.dto.query.TradeMemberQuery;
 import com.pay.api.client.model.TradeChannelConfigDO;
 import com.pay.api.client.model.TradeMemberDO;
+import com.pay.api.client.model.TradeMemberServiceFeeDO;
 import com.pay.api.client.model.TradeRouteDO;
-import com.pay.api.core.dao.TradeChannelConfigDao;
-import com.pay.api.core.dao.TradeMemberDao;
-import com.pay.api.core.dao.TradeMerchantConfigDao;
-import com.pay.api.core.dao.TradeRouteDao;
+import com.pay.api.core.dao.*;
 import com.pay.api.web.PayApiWebApplicationTests;
 import com.pay.center.client.constants.AgentLevelEnum;
 import com.pay.common.client.constants.DefrayalChannelEnum;
@@ -34,7 +34,8 @@ public class TestDataGenerate extends PayApiWebApplicationTests {
     private TradeMerchantConfigDao tradeMerchantConfigDao;
     @Autowired
     private TradeRouteDao tradeRouteDao;
-
+    @Autowired
+    private TradeMemberServiceFeeDao tradeMemberServiceFeeDao;
 
 
     /**
@@ -290,7 +291,7 @@ public class TestDataGenerate extends PayApiWebApplicationTests {
             member.setMemberNumber("TEST-MEMBER-" + idService.generateId());
             members.add(member);
 
-            for(TestChannel channel : channels){
+            for (TestChannel channel : channels) {
                 for (int j = 0; j < memberChannelMerchantCount; j++) {
                     TestMerchant merchant = new TestMerchant();
                     merchant.setMemberNumber(member.getMemberNumber());
@@ -390,5 +391,32 @@ public class TestDataGenerate extends PayApiWebApplicationTests {
         //todo 生成交易商户配置数据
 
 
+    }
+
+    @Test
+    public void completeTradeMemberServiceTestData() {
+        TradeMemberQuery query = new TradeMemberQuery();
+        query.setPageNumber(1L);
+        query.setPageSize(100L);
+        Long count = tradeMemberDao.countByQuery(query);
+
+        while (query.getStart() < count) {
+            List<TradeMemberDO> tradeMemberDOS = tradeMemberDao.selectByQuery(query);
+
+            for(TradeMemberDO tm : tradeMemberDOS){
+
+                List<TradeMemberServiceFeeDO> tradeMemberServiceFeeDOS = tradeMemberServiceFeeDao.selectByMemberId(tm.getMemberId());
+                if(tradeMemberServiceFeeDOS.size() == 0){
+                    TradeMemberServiceFeeDO tradeMemberServiceFeeDO = new TradeMemberServiceFeeDO(idService.generateId());
+                    tradeMemberServiceFeeDO.setMemberId(tm.getMemberId());
+                    tradeMemberServiceFeeDO.setServiceFee(new BigDecimal("0.01"));
+                    tradeMemberServiceFeeDO.setServiceFeeType(FeeTypeEnum.PERCENTAGE.name());
+                    tradeMemberServiceFeeDO.setTradeAmountMax(new BigDecimal("0.00"));
+                    tradeMemberServiceFeeDO.setTradeAmountMin(new BigDecimal("0.00"));
+                    tradeMemberServiceFeeDao.insert(tradeMemberServiceFeeDO);
+                }
+            }
+            query.setPageNumber(query.getPageNumber() + 1);
+        }
     }
 }
