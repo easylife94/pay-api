@@ -1,219 +1,255 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pay.api.core.dao.TradeMemberDao">
-  <resultMap id="BaseResultMap" type="com.pay.api.client.model.TradeMemberDO">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
-    <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate" />
-    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
-    <result column="member_id" jdbcType="BIGINT" property="memberId" />
-    <result column="member_number" jdbcType="VARCHAR" property="memberNumber" />
-    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
-    <result column="sys_pub_key" jdbcType="VARCHAR" property="sysPubKey" />
-    <result column="sys_pri_key" jdbcType="VARCHAR" property="sysPriKey" />
-    <result column="member_pub_key" jdbcType="VARCHAR" property="memberPubKey" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="agent_id" jdbcType="BIGINT" property="agentId" />
-    <result column="agent_number" jdbcType="VARCHAR" property="agentNumber" />
-    <result column="agent_name" jdbcType="VARCHAR" property="agentName" />
-    <result column="agent_level" jdbcType="VARCHAR" property="agentLevel" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, gmt_create, gmt_update, is_deleted, member_id, member_number, member_name, sys_pub_key, 
-    sys_pri_key, member_pub_key, status, agent_id, agent_number, agent_name, agent_level
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from trade_member
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="selectByMemberNumber" resultType="com.pay.api.client.model.TradeMemberDO">
-    select
-    <include refid="Base_Column_List" />
-    from trade_member
-    where is_deleted = 0
-      and member_number = #{memberNumber,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from trade_member
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.pay.api.client.model.TradeMemberDO">
-    insert into trade_member (id, gmt_create, gmt_update, 
-      is_deleted, member_id, member_number, 
-      member_name, sys_pub_key, sys_pri_key, 
-      member_pub_key, status, agent_id, 
-      agent_number, agent_name, agent_level
-      )
-    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=BIT}, #{memberId,jdbcType=BIGINT}, #{memberNumber,jdbcType=VARCHAR}, 
-      #{memberName,jdbcType=VARCHAR}, #{sysPubKey,jdbcType=VARCHAR}, #{sysPriKey,jdbcType=VARCHAR}, 
-      #{memberPubKey,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{agentId,jdbcType=BIGINT}, 
-      #{agentNumber,jdbcType=VARCHAR}, #{agentName,jdbcType=VARCHAR}, #{agentLevel,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeMemberDO">
-    insert into trade_member
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="gmtCreate != null">
+    <resultMap id="BaseResultMap" type="com.pay.api.client.model.TradeMemberDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
+        <result column="member_id" jdbcType="BIGINT" property="memberId"/>
+        <result column="member_number" jdbcType="VARCHAR" property="memberNumber"/>
+        <result column="member_name" jdbcType="VARCHAR" property="memberName"/>
+        <result column="sys_pub_key" jdbcType="VARCHAR" property="sysPubKey"/>
+        <result column="sys_pri_key" jdbcType="VARCHAR" property="sysPriKey"/>
+        <result column="member_pub_key" jdbcType="VARCHAR" property="memberPubKey"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="agent_id" jdbcType="BIGINT" property="agentId"/>
+        <result column="agent_number" jdbcType="VARCHAR" property="agentNumber"/>
+        <result column="agent_name" jdbcType="VARCHAR" property="agentName"/>
+        <result column="agent_level" jdbcType="VARCHAR" property="agentLevel"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        ,
         gmt_create,
-      </if>
-      <if test="gmtUpdate != null">
         gmt_update,
-      </if>
-      <if test="isDeleted != null">
         is_deleted,
-      </if>
-      <if test="memberId != null">
         member_id,
-      </if>
-      <if test="memberNumber != null">
         member_number,
-      </if>
-      <if test="memberName != null">
         member_name,
-      </if>
-      <if test="sysPubKey != null">
         sys_pub_key,
-      </if>
-      <if test="sysPriKey != null">
         sys_pri_key,
-      </if>
-      <if test="memberPubKey != null">
         member_pub_key,
-      </if>
-      <if test="status != null">
         status,
-      </if>
-      <if test="agentId != null">
         agent_id,
-      </if>
-      <if test="agentNumber != null">
         agent_number,
-      </if>
-      <if test="agentName != null">
         agent_name,
-      </if>
-      <if test="agentLevel != null">
-        agent_level,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="gmtCreate != null">
-        #{gmtCreate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtUpdate != null">
-        #{gmtUpdate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isDeleted != null">
-        #{isDeleted,jdbcType=BIT},
-      </if>
-      <if test="memberId != null">
-        #{memberId,jdbcType=BIGINT},
-      </if>
-      <if test="memberNumber != null">
-        #{memberNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="memberName != null">
-        #{memberName,jdbcType=VARCHAR},
-      </if>
-      <if test="sysPubKey != null">
-        #{sysPubKey,jdbcType=VARCHAR},
-      </if>
-      <if test="sysPriKey != null">
-        #{sysPriKey,jdbcType=VARCHAR},
-      </if>
-      <if test="memberPubKey != null">
-        #{memberPubKey,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="agentId != null">
-        #{agentId,jdbcType=BIGINT},
-      </if>
-      <if test="agentNumber != null">
-        #{agentNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="agentName != null">
-        #{agentName,jdbcType=VARCHAR},
-      </if>
-      <if test="agentLevel != null">
-        #{agentLevel,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pay.api.client.model.TradeMemberDO">
-    update trade_member
-    <set>
-      <if test="gmtCreate != null">
-        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtUpdate != null">
-        gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isDeleted != null">
-        is_deleted = #{isDeleted,jdbcType=BIT},
-      </if>
-      <if test="memberId != null">
-        member_id = #{memberId,jdbcType=BIGINT},
-      </if>
-      <if test="memberNumber != null">
-        member_number = #{memberNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="memberName != null">
-        member_name = #{memberName,jdbcType=VARCHAR},
-      </if>
-      <if test="sysPubKey != null">
-        sys_pub_key = #{sysPubKey,jdbcType=VARCHAR},
-      </if>
-      <if test="sysPriKey != null">
-        sys_pri_key = #{sysPriKey,jdbcType=VARCHAR},
-      </if>
-      <if test="memberPubKey != null">
-        member_pub_key = #{memberPubKey,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="agentId != null">
-        agent_id = #{agentId,jdbcType=BIGINT},
-      </if>
-      <if test="agentNumber != null">
-        agent_number = #{agentNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="agentName != null">
-        agent_name = #{agentName,jdbcType=VARCHAR},
-      </if>
-      <if test="agentLevel != null">
-        agent_level = #{agentLevel,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.pay.api.client.model.TradeMemberDO">
-    update trade_member
-    set gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
-      is_deleted = #{isDeleted,jdbcType=BIT},
-      member_id = #{memberId,jdbcType=BIGINT},
-      member_number = #{memberNumber,jdbcType=VARCHAR},
-      member_name = #{memberName,jdbcType=VARCHAR},
-      sys_pub_key = #{sysPubKey,jdbcType=VARCHAR},
-      sys_pri_key = #{sysPriKey,jdbcType=VARCHAR},
-      member_pub_key = #{memberPubKey,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      agent_id = #{agentId,jdbcType=BIGINT},
-      agent_number = #{agentNumber,jdbcType=VARCHAR},
-      agent_name = #{agentName,jdbcType=VARCHAR},
-      agent_level = #{agentLevel,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        agent_level
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from trade_member
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByMemberNumber" resultType="com.pay.api.client.model.TradeMemberDO">
+        select
+        <include refid="Base_Column_List"/>
+        from trade_member
+        where is_deleted = 0
+        and member_number = #{memberNumber,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from trade_member
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.pay.api.client.model.TradeMemberDO">
+        insert into trade_member (id, gmt_create, gmt_update,
+                                  is_deleted, member_id, member_number,
+                                  member_name, sys_pub_key, sys_pri_key,
+                                  member_pub_key, status, agent_id,
+                                  agent_number, agent_name, agent_level)
+        values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP},
+                #{isDeleted,jdbcType=BIT}, #{memberId,jdbcType=BIGINT}, #{memberNumber,jdbcType=VARCHAR},
+                #{memberName,jdbcType=VARCHAR}, #{sysPubKey,jdbcType=VARCHAR}, #{sysPriKey,jdbcType=VARCHAR},
+                #{memberPubKey,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{agentId,jdbcType=BIGINT},
+                #{agentNumber,jdbcType=VARCHAR}, #{agentName,jdbcType=VARCHAR}, #{agentLevel,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeMemberDO">
+        insert into trade_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtUpdate != null">
+                gmt_update,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="memberNumber != null">
+                member_number,
+            </if>
+            <if test="memberName != null">
+                member_name,
+            </if>
+            <if test="sysPubKey != null">
+                sys_pub_key,
+            </if>
+            <if test="sysPriKey != null">
+                sys_pri_key,
+            </if>
+            <if test="memberPubKey != null">
+                member_pub_key,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="agentId != null">
+                agent_id,
+            </if>
+            <if test="agentNumber != null">
+                agent_number,
+            </if>
+            <if test="agentName != null">
+                agent_name,
+            </if>
+            <if test="agentLevel != null">
+                agent_level,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtUpdate != null">
+                #{gmtUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=BIT},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=BIGINT},
+            </if>
+            <if test="memberNumber != null">
+                #{memberNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="memberName != null">
+                #{memberName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysPubKey != null">
+                #{sysPubKey,jdbcType=VARCHAR},
+            </if>
+            <if test="sysPriKey != null">
+                #{sysPriKey,jdbcType=VARCHAR},
+            </if>
+            <if test="memberPubKey != null">
+                #{memberPubKey,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="agentId != null">
+                #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="agentNumber != null">
+                #{agentNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="agentName != null">
+                #{agentName,jdbcType=VARCHAR},
+            </if>
+            <if test="agentLevel != null">
+                #{agentLevel,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.pay.api.client.model.TradeMemberDO">
+        update trade_member
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtUpdate != null">
+                gmt_update = #{gmtUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=BIT},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=BIGINT},
+            </if>
+            <if test="memberNumber != null">
+                member_number = #{memberNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="memberName != null">
+                member_name = #{memberName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysPubKey != null">
+                sys_pub_key = #{sysPubKey,jdbcType=VARCHAR},
+            </if>
+            <if test="sysPriKey != null">
+                sys_pri_key = #{sysPriKey,jdbcType=VARCHAR},
+            </if>
+            <if test="memberPubKey != null">
+                member_pub_key = #{memberPubKey,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="agentId != null">
+                agent_id = #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="agentNumber != null">
+                agent_number = #{agentNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="agentName != null">
+                agent_name = #{agentName,jdbcType=VARCHAR},
+            </if>
+            <if test="agentLevel != null">
+                agent_level = #{agentLevel,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.pay.api.client.model.TradeMemberDO">
+        update trade_member
+        set gmt_create     = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_update     = #{gmtUpdate,jdbcType=TIMESTAMP},
+            is_deleted     = #{isDeleted,jdbcType=BIT},
+            member_id      = #{memberId,jdbcType=BIGINT},
+            member_number  = #{memberNumber,jdbcType=VARCHAR},
+            member_name    = #{memberName,jdbcType=VARCHAR},
+            sys_pub_key    = #{sysPubKey,jdbcType=VARCHAR},
+            sys_pri_key    = #{sysPriKey,jdbcType=VARCHAR},
+            member_pub_key = #{memberPubKey,jdbcType=VARCHAR},
+            status         = #{status,jdbcType=VARCHAR},
+            agent_id       = #{agentId,jdbcType=BIGINT},
+            agent_number   = #{agentNumber,jdbcType=VARCHAR},
+            agent_name     = #{agentName,jdbcType=VARCHAR},
+            agent_level    = #{agentLevel,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByQuery" resultType="com.pay.api.client.model.TradeMemberDO">
+        select
+        <include refid="Base_Column_List"/>
+        from trade_member
+        <where>
+            <include refid="query_where"/>
+        </where>
+        limit #{start,jdbcType=BIGINT},#{pageSize,jdbcType=BIGINT}
+    </select>
+
+    <select id="countByQuery" resultType="java.lang.Long">
+        select count(*)
+        from trade_member
+        <where>
+            <include refid="query_where"/>
+        </where>
+    </select>
+
+    <sql id="query_where">
+        is_deleted = 0
+    </sql>
+
 </mapper>

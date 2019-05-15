@@ -22,4 +22,10 @@ public class TradeMemberServiceFeeDO extends AbstractBaseDO {
 
     private BigDecimal serviceFee;
 
+    public TradeMemberServiceFeeDO(Long id) {
+        super(id);
+    }
+
+    public TradeMemberServiceFeeDO() {
+    }
 }
