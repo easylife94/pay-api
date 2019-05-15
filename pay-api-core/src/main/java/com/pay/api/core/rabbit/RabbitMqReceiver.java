@@ -1,13 +1,16 @@
 package com.pay.api.core.rabbit;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pay.api.client.constants.PayApiMessageQueueNames;
 import com.pay.api.client.dto.async.TradeCreateMessageDTO;
 import com.pay.api.core.dao.TradeRouteDao;
 import com.pay.api.core.service.ITradeRouteService;
 import com.pay.asset.client.dto.async.TradeStatisticsMessageDTO;
+import com.pay.common.core.utils.MoneyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -38,24 +41,21 @@ public class RabbitMqReceiver {
     }
 
     @RabbitListener(queues = PayApiMessageQueueNames.QUEUE_TRADE_CREATE)
-    public void tradeCreate(TradeCreateMessageDTO tradeCreateMessageDTO) {
+    public void tradeCreate(String content) {
         try {
-            logger.info("收到交易创建消息：{}", tradeCreateMessageDTO);
-            //1.数据统计
-            //todo 创建订单数据统计
+            logger.info("收到交易创建消息：{}", content);
+            TradeCreateMessageDTO tradeCreateMessageDTO = JSONObject.toJavaObject(JSONObject.parseObject(content), TradeCreateMessageDTO.class);
+            //1.发送数据统计消息
             TradeStatisticsMessageDTO tradeStatisticsMessageDTO = new TradeStatisticsMessageDTO();
+            BeanUtils.copyProperties(tradeCreateMessageDTO, tradeStatisticsMessageDTO);
+            tradeStatisticsMessageDTO.setTradeAmount(MoneyUtils.toCentValue(tradeCreateMessageDTO.getTradeAmount()));
+            tradeStatisticsMessageDTO.setTradeServiceFee(MoneyUtils.toCentValue(tradeCreateMessageDTO.getTradeServiceFee()));
             rabbitMqSender.sendTradeStatisticsMessage(tradeStatisticsMessageDTO);
-            //2.钱包流水
-            //todo 创建钱包流水
-            //会员钱包冻结服务费
-            //3.结算任务
-            //todo 创建结算任务
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("交易创建消息处理异常，消息内容:{}，异常：{}", tradeCreateMessageDTO, e.getMessage());
+            logger.error("交易创建消息处理异常，消息内容:{}，异常：{}", content, e.getMessage());
         }
     }
-
 
 
 }

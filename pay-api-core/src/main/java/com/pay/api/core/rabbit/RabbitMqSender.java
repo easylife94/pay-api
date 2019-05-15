@@ -34,7 +34,7 @@ public class RabbitMqSender {
      * @param tradeCreateMessageDTO 异步消息
      */
     public void sendTradeCreateMessage(TradeCreateMessageDTO tradeCreateMessageDTO) {
-        amqpTemplate.convertAndSend(PayApiMessageQueueNames.QUEUE_TRADE_CREATE, tradeCreateMessageDTO);
+        amqpTemplate.convertAndSend(PayApiMessageQueueNames.QUEUE_TRADE_CREATE, JSONObject.toJSONString(tradeCreateMessageDTO));
     }
 
     /**
@@ -83,6 +83,6 @@ public class RabbitMqSender {
      * @param tradeStatisticsMessageDTO 异步消息
      */
     public void sendTradeStatisticsMessage(TradeStatisticsMessageDTO tradeStatisticsMessageDTO) {
-        amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_TRADE_STATISTICS, tradeStatisticsMessageDTO);
+        amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_TRADE_STATISTICS, JSONObject.toJSONString(tradeStatisticsMessageDTO));
     }
 }

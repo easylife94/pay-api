@@ -56,7 +56,10 @@ public class TradeServiceImpl implements ITradeService {
 
     @Override
     public void afterTradeCreate(TradeOrderDO tradeOrderDO, TradeCreateAfterDTO tradeOrderCreateAfterDTO) {
-        TradeCreateMessageDTO tradeCreateMessageDTO = new TradeCreateMessageDTO(tradeOrderDO.getSysOrderNumber(), tradeOrderDO.getGmtCreate().getTime());
+        TradeCreateMessageDTO tradeCreateMessageDTO = new TradeCreateMessageDTO(tradeOrderDO.getSysOrderNumber(), tradeOrderDO.getGmtCreate().getTime(),
+                tradeOrderDO.getTradeAmount(),tradeOrderDO.getServiceFee(),tradeOrderDO.getTradeStatus(),tradeOrderDO.getPlatformNumber(),
+                tradeOrderDO.getChannelNumber(),tradeOrderDO.getAgentNumber(),tradeOrderDO.getMemberNumber(),tradeOrderDO.getMerchantNumber(),
+                tradeOrderDO.getDefrayalChannel(),tradeOrderDO.getDefrayalType());
         rabbitMqSender.sendTradeCreateMessage(tradeCreateMessageDTO);
     }
 
