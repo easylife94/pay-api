@@ -121,7 +121,8 @@ public class TestPlatformTradeHandle extends AbstractPlatformTradeHandle {
         tradeNotifyResultDTO.setResult(PlatformTradeNotifyResultEnum.FAIL);
         try {
             TestNotifyDTO testNotifyDTO = JSONObject.toJavaObject(JSONObject.parseObject(body), TestNotifyDTO.class);
-            if (StringUtils.equals(testNotifyDTO.getTradeStatus(), "SUCCESS")) {
+            String successStatus = "SUCCESS";
+            if (StringUtils.equals(testNotifyDTO.getTradeStatus(), successStatus)) {
                 //rsa验证签名
                 String sign = testNotifyDTO.getSign();
                 if (SignUtils.verifyRsa(SignUtils.str(testNotifyDTO), channelConfigDTO.getPlatformPubKey(), sign)) {

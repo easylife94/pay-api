@@ -1,11 +1,14 @@
 package com.pay.api.client.dto.async;
 
+import lombok.Data;
+
 /**
  * 交易风控或预警消息DTO
  *
  * @author chenwei
  * @date 2019/3/5 18:03
  */
+@Data
 public class TradeRiskOrWarnMessageDTO {
 
     /**
@@ -38,46 +41,6 @@ public class TradeRiskOrWarnMessageDTO {
         this.tradeRouteId = tradeRouteId;
         this.tradeRisk = tradeRisk;
         this.tradeWarn = tradeWarn;
-        this.tradeTimestamp = tradeTimestamp;
-    }
-
-    public String getSysOrderNumber() {
-        return sysOrderNumber;
-    }
-
-    public void setSysOrderNumber(String sysOrderNumber) {
-        this.sysOrderNumber = sysOrderNumber;
-    }
-
-    public Long getTradeRouteId() {
-        return tradeRouteId;
-    }
-
-    public void setTradeRouteId(Long tradeRouteId) {
-        this.tradeRouteId = tradeRouteId;
-    }
-
-    public Boolean getTradeRisk() {
-        return tradeRisk;
-    }
-
-    public void setTradeRisk(Boolean tradeRisk) {
-        this.tradeRisk = tradeRisk;
-    }
-
-    public Boolean getTradeWarn() {
-        return tradeWarn;
-    }
-
-    public void setTradeWarn(Boolean tradeWarn) {
-        this.tradeWarn = tradeWarn;
-    }
-
-    public Long getTradeTimestamp() {
-        return tradeTimestamp;
-    }
-
-    public void setTradeTimestamp(Long tradeTimestamp) {
         this.tradeTimestamp = tradeTimestamp;
     }
 }

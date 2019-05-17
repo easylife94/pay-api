@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2019/3/7 16:45
  */
 @Data
-public class OAuthSuccessDTO {
+public class OauthSuccessDTO {
 
     /**
      * 通道编号，用来查询交易通道配置
@@ -28,7 +28,7 @@ public class OAuthSuccessDTO {
      */
     private String businessData;
 
-    public OAuthSuccessDTO(String channelNumber, String businessUrl, String businessData) {
+    public OauthSuccessDTO(String channelNumber, String businessUrl, String businessData) {
         this.channelNumber = channelNumber;
         this.businessUrl = businessUrl;
         this.businessData = businessData;

@@ -2,27 +2,43 @@ package com.pay.api.core.dao;
 
 import com.pay.api.client.model.TradeMemberDO;
 import com.pay.common.client.dto.QueryBase;
+import com.pay.common.core.dao.IBaseDao;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
-public interface TradeMemberDao {
+/**
+ * @author chenwei
+ */
+public interface TradeMemberDao extends IBaseDao<TradeMemberDO> {
 
-    int deleteByPrimaryKey(Long id);
-
-    int insert(TradeMemberDO record);
-
-    int insertSelective(TradeMemberDO record);
-
-    TradeMemberDO selectByPrimaryKey(Long id);
-
+    /**
+     * 更新记录，不设置值为null的字段
+     *
+     * @param record
+     * @return
+     */
+    @Override
     @CacheEvict(value = "tradeMemberCache", allEntries = true)
     int updateByPrimaryKeySelective(TradeMemberDO record);
 
+    /**
+     * 更新记录
+     *
+     * @param record
+     * @return
+     */
+    @Override
     @CacheEvict(value = "tradeMemberCache", allEntries = true)
     int updateByPrimaryKey(TradeMemberDO record);
 
+    /**
+     * 根据会员编号查询记录
+     *
+     * @param memberNumber
+     * @return
+     */
     @Cacheable(value = "tradeMemberCache", key = "'TradeMemberDO:memberNumber:'.concat(#root.args[0])")
     TradeMemberDO selectByMemberNumber(String memberNumber);
 

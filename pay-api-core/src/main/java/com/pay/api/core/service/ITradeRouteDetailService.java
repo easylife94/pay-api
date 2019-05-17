@@ -8,5 +8,11 @@ import com.pay.api.client.model.TradeRouteDetailDO;
  */
 public interface ITradeRouteDetailService {
 
+    /**
+     * 查找路由详情
+     *
+     * @param tradeRouteId 路由id
+     * @return
+     */
     TradeRouteDetailDO findOne(Long tradeRouteId);
 }

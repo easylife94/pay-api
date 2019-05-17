@@ -9,7 +9,7 @@ import com.alipay.api.request.AlipaySystemOauthTokenRequest;
 import com.alipay.api.response.AlipayOpenAuthTokenAppResponse;
 import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.pay.api.client.dto.AliConfigDTO;
-import com.pay.api.client.dto.OAuthSuccessDTO;
+import com.pay.api.client.dto.OauthSuccessDTO;
 import com.pay.api.client.exception.PayApiException;
 import com.pay.api.core.service.IAliPayService;
 import org.springframework.stereotype.Service;
@@ -67,7 +67,7 @@ public class AliPayServiceImpl implements IAliPayService {
      * @throws UnsupportedEncodingException
      */
     @Override
-    public String buildAuthUrl(OAuthSuccessDTO oAuthSuccessDTO, AliConfigDTO aliConfigDTO) throws UnsupportedEncodingException {
+    public String buildAuthUrl(OauthSuccessDTO oAuthSuccessDTO, AliConfigDTO aliConfigDTO) throws UnsupportedEncodingException {
         StringBuilder aliAuthUrl = new StringBuilder();
         aliAuthUrl.append("https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=");
         aliAuthUrl.append(aliConfigDTO.getAppId());

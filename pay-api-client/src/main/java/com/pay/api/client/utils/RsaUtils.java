@@ -141,8 +141,8 @@ public class RsaUtils {
         int inputLen = bytes.length;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int offSet = 0;
-
-        for (int i = 0; inputLen - offSet > 0; offSet = i * 117) {
+        int k = 117;
+        for (int i = 0; inputLen - offSet > 0; offSet = i * k) {
             byte[] cache;
             if (inputLen - offSet > 117) {
                 cache = cipher.doFinal(bytes, offSet, 117);
@@ -180,8 +180,8 @@ public class RsaUtils {
         int inputLen = bytes.length;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int offSet = 0;
-
-        for (int i = 0; inputLen - offSet > 0; offSet = i * 128) {
+        int k = 128;
+        for (int i = 0; inputLen - offSet > 0; offSet = i * k) {
             byte[] cache;
             if (inputLen - offSet > 128) {
                 cache = cipher.doFinal(bytes, offSet, 128);

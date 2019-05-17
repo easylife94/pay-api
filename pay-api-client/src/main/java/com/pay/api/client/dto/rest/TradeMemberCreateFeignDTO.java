@@ -1,5 +1,7 @@
 package com.pay.api.client.dto.rest;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +10,7 @@ import java.io.Serializable;
  * @author chenwei
  * @date 2019/3/2 16:45
  */
+@Data
 public class TradeMemberCreateFeignDTO implements Serializable {
 
     private static final long serialVersionUID = -7407570831436820634L;

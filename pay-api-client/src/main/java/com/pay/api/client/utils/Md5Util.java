@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 
 /**
  * Md5Util
+ * @author chenwei
  */
 public class Md5Util {
 
@@ -13,12 +14,12 @@ public class Md5Util {
      * @param s
      * @return
      */
-    public final static String md5(String s) {
+    public static String md5(String s) {
 
         /**
          * hexDigits
          */
-        char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};       
+        char[] hexDigits={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
         try {
             byte[] btInput = s.getBytes();
             // 获得MD5摘要算法的 MessageDigest 对象
@@ -29,7 +30,7 @@ public class Md5Util {
             byte[] md = mdInst.digest();
             // 把密文转换成十六进制的字符串形式
             int j = md.length;
-            char str[] = new char[j * MagicNumberConstants.N2];
+            char[] str = new char[j * MagicNumberConstants.N2];
             int k = MagicNumberConstants.N0;
 
             for (int i = MagicNumberConstants.N0; i < j; i++) {
