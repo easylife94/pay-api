@@ -4,7 +4,9 @@ import com.pay.api.client.constants.*;
 import com.pay.api.client.dto.*;
 import com.pay.api.client.dto.async.TradeCompleteMessageDTO;
 import com.pay.api.client.dto.async.TradeCreateMessageDTO;
+import com.pay.api.client.model.TradeChannelConfigDO;
 import com.pay.api.client.model.TradeOrderDO;
+import com.pay.api.core.dao.TradeChannelConfigDao;
 import com.pay.api.core.dao.TradeOrderDao;
 import com.pay.api.core.platform.IPlatformTradeHandle;
 import com.pay.api.core.rabbit.RabbitMqSender;
@@ -12,6 +14,8 @@ import com.pay.api.core.service.ITradeChannelConfigService;
 import com.pay.api.core.service.ITradeMerchantConfigService;
 import com.pay.api.core.service.ITradeService;
 import com.pay.api.core.utils.SpringContextUtil;
+import com.pay.common.client.constants.CheckDayEnum;
+import com.pay.common.client.constants.CheckMethodEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +34,16 @@ public class TradeServiceImpl implements ITradeService {
     private final TradeOrderDao tradeOrderDao;
     private final ITradeChannelConfigService tradeChannelConfigService;
     private final ITradeMerchantConfigService tradeMerchantConfigService;
+    private final TradeChannelConfigDao tradeChannelConfigDao;
 
     @Autowired
     public TradeServiceImpl(RabbitMqSender rabbitMqSender, TradeOrderDao tradeOrderDao, ITradeChannelConfigService tradeChannelConfigService,
-                            ITradeMerchantConfigService tradeMerchantConfigService) {
+                            ITradeMerchantConfigService tradeMerchantConfigService, TradeChannelConfigDao tradeChannelConfigDao) {
         this.rabbitMqSender = rabbitMqSender;
         this.tradeOrderDao = tradeOrderDao;
         this.tradeChannelConfigService = tradeChannelConfigService;
         this.tradeMerchantConfigService = tradeMerchantConfigService;
+        this.tradeChannelConfigDao = tradeChannelConfigDao;
     }
 
 
@@ -57,9 +63,9 @@ public class TradeServiceImpl implements ITradeService {
     @Override
     public void afterTradeCreate(TradeOrderDO tradeOrderDO, TradeCreateAfterDTO tradeOrderCreateAfterDTO) {
         TradeCreateMessageDTO tradeCreateMessageDTO = new TradeCreateMessageDTO(tradeOrderDO.getSysOrderNumber(), tradeOrderDO.getGmtCreate().getTime(),
-                tradeOrderDO.getTradeAmount(),tradeOrderDO.getServiceFee(),tradeOrderDO.getTradeStatus(),tradeOrderDO.getPlatformNumber(),
-                tradeOrderDO.getChannelNumber(),tradeOrderDO.getAgentNumber(),tradeOrderDO.getMemberNumber(),tradeOrderDO.getMerchantNumber(),
-                tradeOrderDO.getDefrayalChannel(),tradeOrderDO.getDefrayalType());
+                tradeOrderDO.getTradeAmount(), tradeOrderDO.getServiceFee(), tradeOrderDO.getTradeStatus(), tradeOrderDO.getPlatformNumber(),
+                tradeOrderDO.getChannelNumber(), tradeOrderDO.getAgentNumber(), tradeOrderDO.getMemberNumber(), tradeOrderDO.getMerchantNumber(),
+                tradeOrderDO.getDefrayalChannel(), tradeOrderDO.getDefrayalType());
         rabbitMqSender.sendTradeCreateMessage(tradeCreateMessageDTO);
     }
 
@@ -83,6 +89,12 @@ public class TradeServiceImpl implements ITradeService {
                     tradeCompleteMessageDTO.setTradeAmount(tradeOrderDO.getTradeAmount());
                     tradeCompleteMessageDTO.setOwnNumber(tradeOrderDO.getMemberNumber());
                     tradeCompleteMessageDTO.setTradeTime(tradeOrderDO.getSysOrderTime());
+
+                    TradeChannelConfigDO tradeChannelConfigDO = tradeChannelConfigDao.selectOneByChannelNumber(tradeOrderDO.getChannelNumber());
+                    tradeCompleteMessageDTO.setCheckDay(CheckDayEnum.valueOf(tradeChannelConfigDO.getCheckDay()));
+                    tradeCompleteMessageDTO.setCheckMethod(CheckMethodEnum.valueOf(tradeChannelConfigDO.getCheckMethod()));
+                    tradeCompleteMessageDTO.setCheckHour(tradeChannelConfigDO.getCheckTimeHour());
+                    tradeCompleteMessageDTO.setCheckMin(tradeChannelConfigDO.getCheckTimeMin());
                     rabbitMqSender.sendTradeCompleteMessages(tradeCompleteMessageDTO);
                     break;
                 case SUCCESS:
