@@ -1,5 +1,7 @@
 package com.pay.api.client.dto.rest;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.StringJoiner;
 
@@ -9,6 +11,7 @@ import java.util.StringJoiner;
  * @author chenwei
  * @date 2019/3/2 17:06
  */
+@Data
 public class TradeMemberUpdateFeignDTO implements Serializable {
     private static final long serialVersionUID = 6069173463664715819L;
 
@@ -25,30 +28,5 @@ public class TradeMemberUpdateFeignDTO implements Serializable {
     public TradeMemberUpdateFeignDTO(String memberNumber, String memberPubKey) {
         this.memberNumber = memberNumber;
         this.memberPubKey = memberPubKey;
-    }
-
-    public String getMemberNumber() {
-        return memberNumber;
-    }
-
-    public void setMemberNumber(String memberNumber) {
-        this.memberNumber = memberNumber;
-    }
-
-    public String getMemberPubKey() {
-        return memberPubKey;
-    }
-
-    public void setMemberPubKey(String memberPubKey) {
-        this.memberPubKey = memberPubKey;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ",
-                TradeMemberUpdateFeignDTO.class.getSimpleName() + "{", "}")
-                .add("memberNumber=" + memberNumber)
-                .add("memberPubKey=" + memberPubKey)
-                .toString();
     }
 }
