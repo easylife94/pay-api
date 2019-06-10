@@ -1,7 +1,13 @@
 package com.pay.api.client.model;
 
+import lombok.Data;
+
 import java.util.Date;
 
+/**
+ * @author chenwei
+ */
+@Data
 public class TradeSysConfigDO {
     private Long id;
 

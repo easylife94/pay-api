@@ -1,19 +1,12 @@
 package com.pay.api.core.dao;
 
 import com.pay.api.client.model.TradeSysConfigDO;
+import com.pay.common.core.dao.IBaseDao;
 
-public interface TradeSysConfigDao {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(TradeSysConfigDO record);
-
-    int insertSelective(TradeSysConfigDO record);
-
-    TradeSysConfigDO selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TradeSysConfigDO record);
-
-    int updateByPrimaryKey(TradeSysConfigDO record);
+/**
+ * @author chenwei
+ */
+public interface TradeSysConfigDao extends IBaseDao<TradeSysConfigDO> {
 
     /**
      * 根据配置key查询配置项

@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author chenwei
+ */
 @Data
 public class TradeChannelConfigDO {
     private Long id;
@@ -71,5 +74,4 @@ public class TradeChannelConfigDO {
     private Integer checkTimeHour;
 
     private Integer checkTimeMin;
-
 }

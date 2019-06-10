@@ -1,7 +1,7 @@
 package com.pay.api.core.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.pay.api.client.dto.OAuthSuccessDTO;
+import com.pay.api.client.dto.OauthSuccessDTO;
 import com.pay.api.client.dto.WechatConfigDTO;
 import com.pay.api.core.service.IWechatService;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.Base64;
 public class WechatServiceImpl implements IWechatService {
 
     @Override
-    public String buildAuthUrl(OAuthSuccessDTO oAuthSuccessDTO, WechatConfigDTO wechatConfigDTO) throws UnsupportedEncodingException {
+    public String buildAuthUrl(OauthSuccessDTO oAuthSuccessDTO, WechatConfigDTO wechatConfigDTO) throws UnsupportedEncodingException {
         StringBuilder wechatAuthUrl = new StringBuilder();
         wechatAuthUrl.append("https://open.weixin.qq.com/connect/oauth2/authorize?appid=");
         wechatAuthUrl.append(wechatConfigDTO.getAppId());

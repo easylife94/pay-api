@@ -6,6 +6,7 @@ import com.pay.api.client.dto.async.TradeCompleteMessageDTO;
 import com.pay.api.client.dto.async.TradeCreateMessageDTO;
 import com.pay.asset.client.constants.*;
 import com.pay.asset.client.dto.WalletSubRecordDTO;
+import com.pay.asset.client.dto.async.CheckTradeCreateMessageDTO;
 import com.pay.asset.client.dto.async.TradeStatisticsMessageDTO;
 import com.pay.asset.client.dto.async.WalletRecordMessageDTO;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -34,7 +35,7 @@ public class RabbitMqSender {
      * @param tradeCreateMessageDTO 异步消息
      */
     public void sendTradeCreateMessage(TradeCreateMessageDTO tradeCreateMessageDTO) {
-        amqpTemplate.convertAndSend(PayApiMessageQueueNames.QUEUE_TRADE_CREATE, tradeCreateMessageDTO);
+        amqpTemplate.convertAndSend(PayApiMessageQueueNames.QUEUE_TRADE_CREATE, JSONObject.toJSONString(tradeCreateMessageDTO));
     }
 
     /**
@@ -61,9 +62,19 @@ public class RabbitMqSender {
         memberServiceFeeOutRecord.setTradeTime(tradeCompleteMessageDTO.getTradeTime());
         subRecords.add(memberServiceFeeOutRecord);
         walletRecordMessageDTO.setSubRecords(subRecords);
-
         amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_WALLET_RECORD, JSONObject.toJSONString(walletRecordMessageDTO));
+
         //2.结算消息
+        CheckTradeCreateMessageDTO checkTradeCreateMessageDTO = new CheckTradeCreateMessageDTO();
+        checkTradeCreateMessageDTO.setCheckDay(tradeCompleteMessageDTO.getCheckDay());
+        checkTradeCreateMessageDTO.setCheckMethod(tradeCompleteMessageDTO.getCheckMethod());
+        checkTradeCreateMessageDTO.setCheckTimeHour(tradeCompleteMessageDTO.getCheckHour());
+        checkTradeCreateMessageDTO.setCheckTimeMin(tradeCompleteMessageDTO.getCheckMin());
+        checkTradeCreateMessageDTO.setSysOrderNumber(tradeCompleteMessageDTO.getSysOrderNumber());
+        checkTradeCreateMessageDTO.setTradeAmount(tradeCompleteMessageDTO.getTradeAmount());
+        checkTradeCreateMessageDTO.setTradeDate(tradeCompleteMessageDTO.getTradeTime());
+        amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_CHECK_TRADE_CREATE, JSONObject.toJSONString(checkTradeCreateMessageDTO));
+
         //3.回调消息
         //4.消息推送
 
@@ -83,6 +94,6 @@ public class RabbitMqSender {
      * @param tradeStatisticsMessageDTO 异步消息
      */
     public void sendTradeStatisticsMessage(TradeStatisticsMessageDTO tradeStatisticsMessageDTO) {
-        amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_TRADE_STATISTICS, tradeStatisticsMessageDTO);
+        amqpTemplate.convertAndSend(PayAssetMessageQueueNames.QUEUE_TRADE_STATISTICS, JSONObject.toJSONString(tradeStatisticsMessageDTO));
     }
 }

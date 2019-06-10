@@ -1,7 +1,7 @@
 package com.pay.api.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.pay.api.client.dto.OAuthSuccessDTO;
+import com.pay.api.client.dto.OauthSuccessDTO;
 import com.pay.api.client.dto.TradeChannelConfigDTO;
 import com.pay.api.core.service.IAliPayService;
 import com.pay.api.core.service.ITradeChannelConfigService;
@@ -40,14 +40,14 @@ public class AliPaySupportController {
      *
      * @param appAuthCode 应用授权码
      * @param authCode    支付宝授权码
-     * @param state 附带参数
+     * @param state       附带参数
      * @return 重定向
      */
     @RequestMapping("/auth")
     public String auth(@RequestParam(value = "app_auth_code", required = false) String appAuthCode, @RequestParam(value = "auth_code", required = false) String authCode, String state) {
         String appAuthToken = null;
         String userId = null;
-        OAuthSuccessDTO oAuthSuccessDTO = JSONObject.parseObject(state).toJavaObject(OAuthSuccessDTO.class);
+        OauthSuccessDTO oAuthSuccessDTO = JSONObject.parseObject(state).toJavaObject(OauthSuccessDTO.class);
         //参数校验
         if (StringUtils.isBlank(appAuthCode) && StringUtils.isBlank(authCode)) {
             logger.error("支付宝授权回调异常，app_auth_code和auth_code不能都为空");
@@ -64,11 +64,11 @@ public class AliPaySupportController {
                     } else {
                         //appAuthCode和authCode处理方式不同
                         if (StringUtils.isNotBlank(appAuthCode)) {
-                            appAuthToken = aliService.getAppAuthToken(appAuthCode,channelConfig.getAlipayAppId(),channelConfig.getAlipayAppPriKey(),channelConfig.getAlipayPubKey());
+                            appAuthToken = aliService.getAppAuthToken(appAuthCode, channelConfig.getAlipayAppId(), channelConfig.getAlipayAppPriKey(), channelConfig.getAlipayPubKey());
                         }
 
                         if (StringUtils.isNotBlank(authCode)) {
-                            userId = aliService.getUserId(authCode,channelConfig.getAlipayAppId(),channelConfig.getAlipayAppPriKey(),channelConfig.getAlipayPubKey());
+                            userId = aliService.getUserId(authCode, channelConfig.getAlipayAppId(), channelConfig.getAlipayAppPriKey(), channelConfig.getAlipayPubKey());
                         }
                     }
                 }
@@ -83,15 +83,16 @@ public class AliPaySupportController {
     /**
      * 构建重定向地址，附带参数
      *
-     * @param businessUrl 业务地址
+     * @param businessUrl  业务地址
      * @param businessData 业务数据
      * @param appAuthToken 应用授权token
-     * @param userId 支付宝userId
+     * @param userId       支付宝userId
      * @return 返回重定向地址
      */
     private String buildRedirectUrl(String businessUrl, String businessData, String appAuthToken, String userId) {
+        String querySplitStr = "?";
         //去除重定向地址中的参数
-        if(businessUrl.contains("?")){
+        if (businessUrl.contains(querySplitStr)) {
             businessUrl.substring(businessUrl.indexOf("?"));
         }
 

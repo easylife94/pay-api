@@ -1,5 +1,7 @@
 package com.pay.api.client.dto.async;
 
+import com.pay.common.client.constants.CheckDayEnum;
+import com.pay.common.client.constants.CheckMethodEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -37,5 +39,23 @@ public class TradeCompleteMessageDTO {
      */
     private Date tradeTime;
 
+    /**
+     * 结算日枚举
+     */
+    private CheckDayEnum checkDay;
 
+    /**
+     * 结算方式枚举
+     */
+    private CheckMethodEnum checkMethod;
+
+    /**
+     * 结算时间：小时
+     */
+    private Integer checkHour;
+
+    /**
+     * 结算时间：分钟
+     */
+    private Integer checkMin;
 }

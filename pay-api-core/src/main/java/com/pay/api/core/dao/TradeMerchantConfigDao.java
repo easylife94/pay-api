@@ -1,19 +1,12 @@
 package com.pay.api.core.dao;
 
 import com.pay.api.client.model.TradeMerchantConfigDO;
+import com.pay.common.core.dao.IBaseDao;
 
-public interface TradeMerchantConfigDao {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(TradeMerchantConfigDO record);
-
-    int insertSelective(TradeMerchantConfigDO record);
-
-    TradeMerchantConfigDO selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TradeMerchantConfigDO record);
-
-    int updateByPrimaryKey(TradeMerchantConfigDO record);
+/**
+ * @author chenwei
+ */
+public interface TradeMerchantConfigDao extends IBaseDao<TradeMerchantConfigDO> {
 
     /**
      * 根据商户编号获取交易商户配置

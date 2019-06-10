@@ -58,14 +58,6 @@ public class TradeRouteServiceImpl implements ITradeRouteService {
                     finalTradeRoute.getPlatformName(), finalTradeRoute.getChannelId(), finalTradeRoute.getChannelNumber(), finalTradeRoute.getChannelName(), finalTradeRoute.getMerchantId(),
                     finalTradeRoute.getMerchantNumber(), finalTradeRoute.getMerchantName(), finalTradeRoute.getTradeWarnDate(), finalTradeRoute.getTradeWarnTimes());
         }
-
-//        TradeRouteDetailDO tradeRouteDetailDO = tradeRouteDetailDao.selectByTradeRouteId(finalTradeRoute.getId());
-//        tradeRouteMerchantDTO.setTradeAmountMin(tradeRouteDetailDO.getTradeAmountMin());
-//        tradeRouteMerchantDTO.setTradeAmountMax(tradeRouteDetailDO.getTradeAmountMax());
-//        tradeRouteMerchantDTO.setPlatformChannelFeeType(FeeTypeEnum.valueOf(tradeRouteDetailDO.getPlatformChannelFeeType()));
-//        tradeRouteMerchantDTO.setPlatformChannelFee(tradeRouteDetailDO.getPlatformChannelFee());
-//        tradeRouteMerchantDTO.setSysChannelProfitTypeEnum(FeeTypeEnum.valueOf(tradeRouteDetailDO.getPlatformChannelFeeType()));
-//        tradeRouteMerchantDTO.setSysChannelProfit(tradeRouteDetailDO.getSysChannelProfit());
         return tradeRouteMerchantDTO;
     }
 

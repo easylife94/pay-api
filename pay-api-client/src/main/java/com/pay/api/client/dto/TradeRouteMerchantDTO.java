@@ -41,8 +41,6 @@ public class TradeRouteMerchantDTO {
 
     private Integer tradeWarnTimes;
 
-
-    //todo 新增交易路由详情字段
     private FeeTypeEnum serviceFeeType;
 
     private BigDecimal serviceFee;

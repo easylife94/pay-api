@@ -1,19 +1,12 @@
 package com.pay.api.core.dao;
 
 import com.pay.api.client.model.TradeChannelConfigDO;
+import com.pay.common.core.dao.IBaseDao;
 
-public interface TradeChannelConfigDao {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(TradeChannelConfigDO record);
-
-    int insertSelective(TradeChannelConfigDO record);
-
-    TradeChannelConfigDO selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TradeChannelConfigDO record);
-
-    int updateByPrimaryKey(TradeChannelConfigDO record);
+/**
+ * @author chenwei
+ */
+public interface TradeChannelConfigDao extends IBaseDao<TradeChannelConfigDO> {
 
     /**
      * 根据通道编号获取唯一交易通道配置

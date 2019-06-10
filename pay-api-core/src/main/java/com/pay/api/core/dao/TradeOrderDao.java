@@ -1,22 +1,14 @@
 package com.pay.api.core.dao;
 
-import com.pay.api.client.constants.TradeOrderStatusEnum;
 import com.pay.api.client.model.TradeOrderDO;
+import com.pay.common.core.dao.IBaseDao;
 
 import java.util.Date;
 
-public interface TradeOrderDao {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(TradeOrderDO record);
-
-    int insertSelective(TradeOrderDO record);
-
-    TradeOrderDO selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TradeOrderDO record);
-
-    int updateByPrimaryKey(TradeOrderDO record);
+/**
+ * @author chenwei
+ */
+public interface TradeOrderDao extends IBaseDao<TradeOrderDO> {
 
     /**
      * 根据系统订单号查询
@@ -36,6 +28,8 @@ public interface TradeOrderDao {
     TradeOrderDO selectByMemberOrderNumber(String memberNumber, String memberOrderNumber);
 
     /**
+     * 统计会员订单数
+     *
      * @param memberNumber
      * @param memberOrderNumber
      * @return

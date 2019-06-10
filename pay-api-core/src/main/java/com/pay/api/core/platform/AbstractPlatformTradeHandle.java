@@ -245,7 +245,7 @@ public abstract class AbstractPlatformTradeHandle implements IPlatformTradeHandl
             String preOrderUrl;
             TradeSysConfigDTO jsapiPaymentConfig = tradeSysConfigService.getConfig(TradeSysConfigKeyEnum.JSAPI_PAYMENT_URL.name());
             //1.构建授权成功参数
-            OAuthSuccessDTO oAuthSuccessDTO = new OAuthSuccessDTO(tradeHandleDTO.getChannelNumber(), jsapiPaymentConfig.getConfigValue(), JSONObject.toJSONString(new JsapiPaymenDTO(tradeHandleDTO.getSysOrderNumber())));
+            OauthSuccessDTO oAuthSuccessDTO = new OauthSuccessDTO(tradeHandleDTO.getChannelNumber(), jsapiPaymentConfig.getConfigValue(), JSONObject.toJSONString(new JsapiPaymenDTO(tradeHandleDTO.getSysOrderNumber())));
 
             //2.授权地址构建
             switch (tradeHandleDTO.getDefrayalChannel()) {

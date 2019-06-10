@@ -1,25 +1,19 @@
 package com.pay.api.core.dao;
 
 import com.pay.api.client.dto.mapper.MemberTradeRouteDTO;
+import com.pay.api.client.model.TradeOrderDO;
 import com.pay.api.client.model.TradeRouteDO;
+import com.pay.common.core.dao.IBaseDao;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public interface TradeRouteDao {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(TradeRouteDO record);
-
-    int insertSelective(TradeRouteDO record);
-
-    TradeRouteDO selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TradeRouteDO record);
-
-    int updateByPrimaryKey(TradeRouteDO record);
+/**
+ * @author chenwei
+ */
+public interface TradeRouteDao extends IBaseDao<TradeRouteDO> {
 
     /**
      * 轮询会员交易路由

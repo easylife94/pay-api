@@ -11,5 +11,11 @@ import java.util.List;
  */
 public interface TradeMemberServiceFeeDao extends IBaseDao<TradeMemberServiceFeeDO> {
 
+    /**
+     * 根据会员id查询会员交易服务费设置
+     *
+     * @param memberId
+     * @return
+     */
     List<TradeMemberServiceFeeDO> selectByMemberId(Long memberId);
 }
