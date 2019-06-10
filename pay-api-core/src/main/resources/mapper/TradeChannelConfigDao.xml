@@ -31,13 +31,18 @@
     <result column="wechat_app_id" jdbcType="VARCHAR" property="wechatAppId" />
     <result column="wechat_app_secret_key" jdbcType="VARCHAR" property="wechatAppSecretKey" />
     <result column="wechat_auth_redirect_url" jdbcType="VARCHAR" property="wechatAuthRedirectUrl" />
+    <result column="check_day" jdbcType="VARCHAR" property="checkDay" />
+    <result column="check_method" jdbcType="VARCHAR" property="checkMethod" />
+    <result column="check_time_hour" jdbcType="INTEGER" property="checkTimeHour" />
+    <result column="check_time_min" jdbcType="INTEGER" property="checkTimeMin" />
   </resultMap>
   <sql id="Base_Column_List">
     id, gmt_create, gmt_update, is_deleted, channel_id, channel_number, channel_name, 
     platform_channel_id, channel_secret_key, trade_notify_url, trade_return_url, register_notify_url, 
     channel_pub_key, channel_pri_key, platform_pub_key, cert_url, ext_1, ext_2, ext_3, 
     ext_4, alipay_pid, alipay_auth_redirect_url, alipay_app_id, alipay_pub_key, alipay_app_pub_key, 
-    alipay_app_pri_key, wechat_app_id, wechat_app_secret_key, wechat_auth_redirect_url
+    alipay_app_pri_key, wechat_app_id, wechat_app_secret_key, wechat_auth_redirect_url,
+    check_day,check_method,check_time_hour,check_time_min
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -66,7 +71,8 @@
       ext_3, ext_4, alipay_pid, 
       alipay_auth_redirect_url, alipay_app_id, alipay_pub_key, 
       alipay_app_pub_key, alipay_app_pri_key, wechat_app_id, 
-      wechat_app_secret_key, wechat_auth_redirect_url
+      wechat_app_secret_key, wechat_auth_redirect_url,
+      check_day,check_method,check_time_hour,check_time_min
       )
     values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtUpdate,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=BIT}, #{channelId,jdbcType=BIGINT}, #{channelNumber,jdbcType=VARCHAR}, 
@@ -77,7 +83,8 @@
       #{ext3,jdbcType=VARCHAR}, #{ext4,jdbcType=VARCHAR}, #{alipayPid,jdbcType=VARCHAR}, 
       #{alipayAuthRedirectUrl,jdbcType=VARCHAR}, #{alipayAppId,jdbcType=VARCHAR}, #{alipayPubKey,jdbcType=VARCHAR}, 
       #{alipayAppPubKey,jdbcType=VARCHAR}, #{alipayAppPriKey,jdbcType=VARCHAR}, #{wechatAppId,jdbcType=VARCHAR}, 
-      #{wechatAppSecretKey,jdbcType=VARCHAR}, #{wechatAuthRedirectUrl,jdbcType=VARCHAR}
+      #{wechatAppSecretKey,jdbcType=VARCHAR}, #{wechatAuthRedirectUrl,jdbcType=VARCHAR},
+      #{checkDay,jdbcType=VARCHAR}, #{checkMethod,jdbcType=VARCHAR},#{checkTimeHour,jdbcType=INTEGER}, #{checkTimeMin,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.pay.api.client.model.TradeChannelConfigDO">
@@ -170,6 +177,18 @@
       <if test="wechatAuthRedirectUrl != null">
         wechat_auth_redirect_url,
       </if>
+      <if test="checkDay != null">
+        check_day,
+      </if>
+      <if test="checkMethod != null">
+        check_method,
+      </if>
+      <if test="checkTimeHour != null">
+        check_time_hour,
+      </if>
+      <if test="checkTimeMin != null">
+        check_time_min,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -258,6 +277,18 @@
       </if>
       <if test="wechatAuthRedirectUrl != null">
         #{wechatAuthRedirectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDay != null">
+        #{checkDay,jdbcType=VARCHAR},
+      </if>
+      <if test="checkMethod != null">
+        #{checkMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTimeHour != null">
+        #{checkTimeHour,jdbcType=INTEGER},
+      </if>
+      <if test="checkTimeMin != null">
+        #{checkTimeMin,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -348,6 +379,18 @@
       <if test="wechatAuthRedirectUrl != null">
         wechat_auth_redirect_url = #{wechatAuthRedirectUrl,jdbcType=VARCHAR},
       </if>
+      <if test="checkDay != null">
+        check_day = #{checkDay,jdbcType=VARCHAR},
+      </if>
+      <if test="checkMethod != null">
+        check_method = #{checkMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTimeHour != null">
+        check_time_hour = #{checkTimeHour,jdbcType=INTEGER},
+      </if>
+      <if test="checkTimeMin != null">
+        check_time_min = #{checkTimeMin,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -380,7 +423,11 @@
       alipay_app_pri_key = #{alipayAppPriKey,jdbcType=VARCHAR},
       wechat_app_id = #{wechatAppId,jdbcType=VARCHAR},
       wechat_app_secret_key = #{wechatAppSecretKey,jdbcType=VARCHAR},
-      wechat_auth_redirect_url = #{wechatAuthRedirectUrl,jdbcType=VARCHAR}
+      wechat_auth_redirect_url = #{wechatAuthRedirectUrl,jdbcType=VARCHAR},
+      check_day = #{checkDay,jdbcType=VARCHAR},
+      check_method = #{checkMethod,jdbcType=VARCHAR},
+      check_time_hour = #{checkTimeHour,jdbcType=INTEGER},
+      check_time_min = #{checkTimeMin,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
